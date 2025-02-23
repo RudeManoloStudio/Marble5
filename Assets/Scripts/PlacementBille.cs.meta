@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8c0be356e140d6e4bb55548e1be45c23
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - billePrefab: {instanceID: 0}
+  - lineRenderer: {instanceID: 0}
+  - ligneMat: {fileID: 2100000, guid: d17a226a1c8f93d4c9f40bed04fae6a1, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

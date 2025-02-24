@@ -3,6 +3,96 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 
+    [SerializeField] private float panSpeed = 5f;
+    [SerializeField] private float panBorderThickness = 10f;
+    [SerializeField] private bool enableDragPan = true;
+    [SerializeField] private bool enableBorderPan = true;
+    [SerializeField] [Range(0.1f, 5f)] private float zoomSpeed = 2.5f; // Vitesse de zoom de la caméra
+
+
+    [SerializeField] private float minZoom = 6.0f; // Zoom minimum
+    [SerializeField] private float maxZoom = 10.0f; // Zoom maximum
+
+    private bool isPanning = false;
+    private Vector3 lastMousePosition;
+
+    private Vector2 minPosition; // Limite minimale de déplacement
+    private Vector2 maxPosition; // Limite maximale de déplacement
+
+    private Camera mainCamera;
+
+    void Start()
+    {
+        mainCamera = GetComponent<Camera>();
+
+        int x = GameManager.Instance.GridSize.x;
+        int y = GameManager.Instance.GridSize.y;
+
+        minPosition = new Vector2(0, 0);
+        maxPosition = new Vector2(x - 1, y - 1);
+
+        mainCamera.orthographicSize = 6;
+
+        mainCamera.transform.SetPositionAndRotation(new Vector3(x / 2, y / 2, -10), Quaternion.identity);
+
+    }
+
+    void Update()
+    {
+        if (enableDragPan)
+        {
+            if (Input.GetMouseButtonDown(1)) // Bouton droit de la souris enfoncé
+            {
+                isPanning = true;
+                lastMousePosition = Input.mousePosition;
+            }
+
+            if (Input.GetMouseButtonUp(1)) // Bouton droit de la souris relâché
+            {
+                isPanning = false;
+            }
+
+            if (isPanning)
+            {
+                Vector3 delta = Input.mousePosition - lastMousePosition;
+                Vector3 move = new Vector3(-delta.x, -delta.y, 0) * panSpeed / 4 * Time.deltaTime;
+                transform.Translate(move, Space.Self);
+                lastMousePosition = Input.mousePosition;
+            }
+        }
+
+        if (enableBorderPan && !isPanning)
+        {
+            Vector3 pos = transform.position;
+
+            if (Input.mousePosition.y >= Screen.height - panBorderThickness)
+            {
+                pos.y += panSpeed * Time.deltaTime;
+            }
+            if (Input.mousePosition.y <= panBorderThickness)
+            {
+                pos.y -= panSpeed * Time.deltaTime;
+            }
+            if (Input.mousePosition.x >= Screen.width - panBorderThickness)
+            {
+                pos.x += panSpeed * Time.deltaTime;
+            }
+            if (Input.mousePosition.x <= panBorderThickness)
+            {
+                pos.x -= panSpeed * Time.deltaTime;
+            }
+            //Vector3 newPosition = transform.position + new Vector3(moveHorizontal, moveVertical);
+            // Restreindre le déplacement dans les limites définies
+            pos.x = Mathf.Clamp(pos.x, minPosition.x, maxPosition.x);
+            pos.y = Mathf.Clamp(pos.y, minPosition.y, maxPosition.y);
+            transform.position = pos;
+        }
+
+        // Zoom de la caméra
+        float zoom = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+        mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize - zoom, minZoom, maxZoom);
+    }
+    /*
     [SerializeField] private float moveSpeed = 5.0f; // Vitesse de déplacement de la caméra
 
     [Range(0.1f, 5f)]
@@ -49,4 +139,5 @@ public class CameraController : MonoBehaviour
         float zoom = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
         mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize - zoom, minZoom, maxZoom);
     }
+    */
 }

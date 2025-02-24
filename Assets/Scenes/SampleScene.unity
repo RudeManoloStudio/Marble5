@@ -646,7 +646,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -664,9 +664,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f7070207bd27c45a79d905067cbb92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  panSpeed: 5
+  panBorderThickness: 10
+  enableDragPan: 1
+  enableBorderPan: 1
   zoomSpeed: 2.5
-  minZoom: 4
+  minZoom: 6
   maxZoom: 10
 --- !u!1 &1142380607
 GameObject:
@@ -1225,7 +1228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.22352941}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

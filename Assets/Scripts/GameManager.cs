@@ -111,4 +111,9 @@ public class GameManager : MonoBehaviour
         gridMaterial.mainTextureScale = new Vector2(gridSize.x, gridSize.y);
 
     }
+
+    public void Replay()
+    {
+        Debug.Log("replay!");
+    }
 }

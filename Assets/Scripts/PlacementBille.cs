@@ -11,14 +11,23 @@ public class PlacementBille : MonoBehaviour
     private bool verificationEffectuee = false;
 
     private GameObject billePrefab;
+    private bool gameOver = false;
 
     private void Start()
     {
         billePrefab = GameManager.Instance.BillePrefab;
+        EventManager.AddListener("GameOver", _OnGameOver);
+    }
+
+    private void _OnGameOver()
+    {
+        gameOver = true;
     }
 
     void Update()
     {
+        if (gameOver) { return; }
+
         if (Input.GetMouseButtonDown(0) && !verificationEffectuee)
         {
             verificationEffectuee = true;

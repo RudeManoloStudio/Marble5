@@ -6,10 +6,14 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    [SerializeField] private Text ScoreText;
+    //[SerializeField] private Text ScoreText;
+    [SerializeField] private Transform scorePanel;
+    private Text scoreText;
     private int score = 0;
 
-    [SerializeField] private Text CoinsText;
+    //[SerializeField] private Text CoinsText;
+    [SerializeField] private Transform coinsPanel;
+    private Text coinsText;
     private int coins;
 
     [SerializeField] private Transform gameOverPanel;
@@ -23,31 +27,40 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener("PoseBille", _OnPoseBille);
         EventManager.AddListener("GameOver", _OnGameOver);
 
-        ScoreText.text = score.ToString();
+        //ScoreText.text = score.ToString();
+        scoreText = scorePanel.GetComponent<Text>();
+        scoreText.text = score.ToString();
 
         coins = GameManager.Instance.Coins;
-        CoinsText.text = coins.ToString();
+        //CoinsText.text = coins.ToString();
+        coinsText = coinsPanel.GetComponent<Text>();
+        coinsText.text = coins.ToString();
 
     }
 
     void _OnUpdateScore()
     {
         score++;
-        ScoreText.text = score.ToString();
+        //ScoreText.text = score.ToString();
+        scoreText.text = score.ToString();
 
         coins++;
-        CoinsText.text = coins.ToString();
+        //CoinsText.text = coins.ToString();
+        coinsText.text = coins.ToString();
     }
 
     void _OnPoseBille()
     {
         coins--;
-        CoinsText.text = coins.ToString();
+        coinsText.text = coins.ToString();
     }
 
     void _OnGameOver()
     {
         gameOverPanel.gameObject.SetActive(true);
+        scorePanel.gameObject.SetActive(false);
+        coinsPanel.gameObject.SetActive(false);
+
     }
 }
     

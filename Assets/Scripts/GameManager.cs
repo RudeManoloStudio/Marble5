@@ -2,24 +2,27 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
     [Header("Paramètres Grille")]
     [SerializeField] private Vector2Int gridSize = new Vector2Int(21, 21); // Taille de la grille
     [SerializeField] private GameObject gridBackground;
     [SerializeField] private GameObject grid;
+    [SerializeField] private bool gridBorders = true;
     [SerializeField] private MotifData motif;
     [SerializeField] private GameObject billePrefab; // La bille à placer
-    [SerializeField] private GameObject marqueurPrefab; // Préfab du marqueur pour les emplacements vides
+    [SerializeField] private Transform container;
 
     [Space(5)]
     [Header("Paramètres Jeu")]
     [SerializeField] private int coins = 5;  // crédits au départ
     [SerializeField] private bool infinisCoins = false; // crédits infinis pour debug
+    private int initialCoins;
 
     public static GameManager Instance { get; private set; }
 
     public int Coins
     {
-        get { return coins; }
+        get { return initialCoins; }
         set { coins = value; }
     }
 
@@ -50,12 +53,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        GenererGrille();
-        GenererMotif();
-        PositionnerBackgroundEtGrille();
 
         EventManager.AddListener("UpdateScore", _OnUpdateScore);
         EventManager.AddListener("PoseBille", _OnPoseBille);
+
+        initialCoins = coins;
+
+        InitializeGame();
 
     }
 
@@ -73,20 +77,6 @@ public class GameManager : MonoBehaviour
             EventManager.TriggerEvent("GameOver");
         }
     }
-    
-    private void GenererGrille()
-    {
-        /*
-        for (int x = 0; x < gridSize.x; x++)
-        {
-            for (int y = 0; y < gridSize.y; y++)
-            {
-                Vector3 position = new Vector3(x, y, 0.5f);
-                GameObject marqueur = Instantiate(marqueurPrefab, position, Quaternion.identity);
-                marqueur.transform.SetParent(this.transform);
-            }
-        }*/
-    }
 
     private void GenererMotif()
     {
@@ -95,7 +85,7 @@ public class GameManager : MonoBehaviour
             foreach (Vector2Int position in motif.BillesMotif)
             {
                 GameObject bille = Instantiate(billePrefab, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
-                bille.transform.SetParent(this.transform);
+                bille.transform.SetParent(container);
 
             }
         }
@@ -110,5 +100,41 @@ public class GameManager : MonoBehaviour
         Material gridMaterial = grid.GetComponent<MeshRenderer>().material;
         gridMaterial.mainTextureScale = new Vector2(gridSize.x, gridSize.y);
 
+        if (gridBorders)
+        {
+            LineRenderer lr = grid.GetComponent<LineRenderer>();
+
+            lr.SetPosition(0, new Vector3(-1, -1));
+            lr.SetPosition(1, new Vector3(-1, gridSize.y));
+            lr.SetPosition(2, new Vector3(gridSize.x, gridSize.y));
+            lr.SetPosition(3, new Vector3(gridSize.x, -1));               
+
+            lr.startWidth = 0.1f;
+            lr.endWidth = 0.1f;
+            lr.useWorldSpace = true;
+        }
+
+    }
+
+    public void InitializeGame()
+    {
+
+        GenererMotif();
+        PositionnerBackgroundEtGrille();
+
+    }
+
+    public void Replay()
+    {
+        EventManager.TriggerEvent("Replay");
+
+        foreach (Transform child in container.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        coins = initialCoins;
+
+        InitializeGame();
     }
 }

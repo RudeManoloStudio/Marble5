@@ -6,48 +6,81 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    [SerializeField] private Text ScoreText;
-    private int score = 0;
+    [SerializeField] private Transform scorePanel;
+    private Text scoreText;
+    private int score;
 
-    [SerializeField] private Text CoinsText;
+    [SerializeField] private Transform coinsPanel;
+    private Text coinsText;
     private int coins;
+    private int initialCoins;
 
     [SerializeField] private Transform gameOverPanel;
+    [SerializeField] private Text yourScoreText;
+    //private Text yourScoreText;
     
     void Start () 
     {
 
-        gameOverPanel.gameObject.SetActive(false);
-
         EventManager.AddListener("UpdateScore", _OnUpdateScore);
         EventManager.AddListener("PoseBille", _OnPoseBille);
         EventManager.AddListener("GameOver", _OnGameOver);
+        EventManager.AddListener("Replay", _OnReplay);
 
-        ScoreText.text = score.ToString();
+        scoreText = scorePanel.GetComponent<Text>();
+        coinsText = coinsPanel.GetComponent<Text>();
+        //yourScoreText = yourScorePanel;
+        //Debug.Log(yourScoreText);
 
-        coins = GameManager.Instance.Coins;
-        CoinsText.text = coins.ToString();
+        initialCoins = GameManager.Instance.Coins;
 
+        Setup();
+
+    }
+
+    private void Setup()
+    {
+        gameOverPanel.gameObject.SetActive(false);
+        scorePanel.gameObject.SetActive(true);
+        coinsPanel.gameObject.SetActive(true);
+
+        score = 0;
+        coins = initialCoins;
+
+        scoreText.text = score.ToString();
+        coinsText.text = coins.ToString();
+
+    }
+
+    private void _OnReplay()
+    {
+        Setup();
     }
 
     void _OnUpdateScore()
     {
         score++;
-        ScoreText.text = score.ToString();
+        scoreText.text = score.ToString();
 
         coins++;
-        CoinsText.text = coins.ToString();
+        coinsText.text = coins.ToString();
     }
 
     void _OnPoseBille()
     {
         coins--;
-        CoinsText.text = coins.ToString();
+        coinsText.text = coins.ToString();
     }
 
     void _OnGameOver()
     {
         gameOverPanel.gameObject.SetActive(true);
+        yourScoreText.text = "Your Score : " + score.ToString();
+        
+
+        scorePanel.gameObject.SetActive(false);
+        coinsPanel.gameObject.SetActive(false);
+
     }
 }
     

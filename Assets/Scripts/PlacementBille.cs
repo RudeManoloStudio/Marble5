@@ -7,18 +7,42 @@ public class PlacementBille : MonoBehaviour
 
     [SerializeField] LayerMask billesLayer;
     [SerializeField] private Material ligneMat; // Matériau de la ligne
+    [SerializeField] private Transform container;
+
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();
     private bool verificationEffectuee = false;
 
     private GameObject billePrefab;
+    private bool gameOver = false;
+
+    private Vector2Int gridSize;
+
 
     private void Start()
     {
         billePrefab = GameManager.Instance.BillePrefab;
+
+        gridSize = GameManager.Instance.GridSize;
+        
+        EventManager.AddListener("GameOver", _OnGameOver);
+        EventManager.AddListener("Replay", _OnReplay);
+    }
+
+    private void _OnGameOver()
+    {
+        gameOver = true;
+    }
+
+    private void _OnReplay()
+    {
+        liaisonsUtilisées.Clear();
+        gameOver = false;
     }
 
     void Update()
     {
+        if (gameOver) { return; }
+
         if (Input.GetMouseButtonDown(0) && !verificationEffectuee)
         {
             verificationEffectuee = true;
@@ -38,14 +62,22 @@ public class PlacementBille : MonoBehaviour
                         0.0f  // Fixe Z au bon niveau
                     );
 
+                    if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x - 1 || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y - 1)
+                    {
+                        EventManager.TriggerEvent("NoPoseBille");
+                        return;
+                    }
+
                     GameObject nouvelleBille = Instantiate(billePrefab, nouvellePosition, Quaternion.identity);
-                    nouvelleBille.transform.SetParent(this.transform);
+                    nouvelleBille.transform.SetParent(container);
                     Debug.Log("✅ Bille placée en : " + nouvellePosition);
 
-                    EventManager.TriggerEvent("PoseBille");
+                  
 
                     // 📌 Vérification des quintes dans toutes les directions
                     bool quinteTrouvee = VerifierToutesLesQuintes(nouvellePosition);
+
+                    EventManager.TriggerEvent("PoseBille");
 
                     if (quinteTrouvee)
                     {
@@ -53,12 +85,15 @@ public class PlacementBille : MonoBehaviour
                         //EventManager.TriggerEvent("QuinteFormee");
                     }
                 }
+                else
+                {
+                    EventManager.TriggerEvent("NoPoseBille");
+                }
             }
         }
 
         verificationEffectuee = false;
     }
-
 
     bool VerifierToutesLesQuintes(Vector3 position)
     {
@@ -157,10 +192,6 @@ public class PlacementBille : MonoBehaviour
         return quinteTrouvee;
     }
 
-
-
-
-
     bool PositionContientBille(Vector3 position)
     {
         // Vérifie s'il y a une bille dans un petit rayon autour de la position
@@ -204,8 +235,6 @@ public class PlacementBille : MonoBehaviour
         return true; // Toutes les conditions sont remplies, la quinte est valide
     }
 
-
-
     void TracerLigneQuinte(List<Vector3> positions)
     {
         Debug.Log("🟢 Entrée dans TracerLigneQuinte()");
@@ -229,6 +258,6 @@ public class PlacementBille : MonoBehaviour
         }
 
         Debug.Log("📌 Liaisons mises à jour !");
-        nouvelleLigne.transform.parent = transform;
+        nouvelleLigne.transform.SetParent(container);
     }
 }

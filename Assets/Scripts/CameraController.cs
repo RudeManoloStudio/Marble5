@@ -60,8 +60,15 @@ public class CameraController : MonoBehaviour
             {
                 Vector3 delta = Input.mousePosition - lastMousePosition;
                 Vector3 move = new Vector3(-delta.x, -delta.y, 0) * panSpeed / 4 * Time.deltaTime;
-                transform.Translate(move, Space.Self);
+                Vector3 newPosition = transform.position + move;
+
+                // Limiter le déplacement
+                newPosition.x = Mathf.Clamp(newPosition.x, minPosition.x, maxPosition.x);
+                newPosition.y = Mathf.Clamp(newPosition.y, minPosition.y, maxPosition.y);
+
+                transform.position = newPosition;
                 lastMousePosition = Input.mousePosition;
+
             }
         }
 

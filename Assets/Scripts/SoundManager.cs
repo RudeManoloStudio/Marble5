@@ -14,6 +14,7 @@ public class SoundManager : MonoBehaviour
 
         EventManager.AddListener("UpdateScore", _OnUpdateScore);
         EventManager.AddListener("PoseBille", _OnPoseBille);
+        EventManager.AddListener("NoPoseBille", _OnNoPoseBille);
 
     }
 
@@ -25,5 +26,10 @@ public class SoundManager : MonoBehaviour
     void _OnPoseBille()
     {
         audioSource.PlayOneShot(soundData.PoseBilleSound);
+    }
+
+    void _OnNoPoseBille()
+    {
+        audioSource.PlayOneShot(soundData.NoPoseBilleSound);
     }
 }

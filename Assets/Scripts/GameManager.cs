@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector2Int gridSize = new Vector2Int(21, 21); // Taille de la grille
     [SerializeField] private GameObject gridBackground;
     [SerializeField] private GameObject grid;
+    [SerializeField] private bool gridBorders = true;
     [SerializeField] private MotifData motif;
     [SerializeField] private GameObject billePrefab; // La bille à placer
     [SerializeField] private Transform container;
@@ -98,6 +99,20 @@ public class GameManager : MonoBehaviour
         grid.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);
         Material gridMaterial = grid.GetComponent<MeshRenderer>().material;
         gridMaterial.mainTextureScale = new Vector2(gridSize.x, gridSize.y);
+
+        if (gridBorders)
+        {
+            LineRenderer lr = grid.GetComponent<LineRenderer>();
+
+            lr.SetPosition(0, new Vector3(-1, -1));
+            lr.SetPosition(1, new Vector3(-1, gridSize.y));
+            lr.SetPosition(2, new Vector3(gridSize.x, gridSize.y));
+            lr.SetPosition(3, new Vector3(gridSize.x, -1));               
+
+            lr.startWidth = 0.1f;
+            lr.endWidth = 0.1f;
+            lr.useWorldSpace = true;
+        }
 
     }
 

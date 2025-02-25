@@ -15,10 +15,14 @@ public class PlacementBille : MonoBehaviour
     private GameObject billePrefab;
     private bool gameOver = false;
 
+    private Vector2Int gridSize;
+
 
     private void Start()
     {
         billePrefab = GameManager.Instance.BillePrefab;
+
+        gridSize = GameManager.Instance.GridSize;
         
         EventManager.AddListener("GameOver", _OnGameOver);
         EventManager.AddListener("Replay", _OnReplay);
@@ -31,6 +35,7 @@ public class PlacementBille : MonoBehaviour
 
     private void _OnReplay()
     {
+        liaisonsUtilisées.Clear();
         gameOver = false;
     }
 
@@ -57,20 +62,32 @@ public class PlacementBille : MonoBehaviour
                         0.0f  // Fixe Z au bon niveau
                     );
 
+                    if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x - 1 || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y - 1)
+                    {
+                        EventManager.TriggerEvent("NoPoseBille");
+                        return;
+                    }
+
                     GameObject nouvelleBille = Instantiate(billePrefab, nouvellePosition, Quaternion.identity);
                     nouvelleBille.transform.SetParent(container);
                     Debug.Log("✅ Bille placée en : " + nouvellePosition);
 
-                    EventManager.TriggerEvent("PoseBille");
+                  
 
                     // 📌 Vérification des quintes dans toutes les directions
                     bool quinteTrouvee = VerifierToutesLesQuintes(nouvellePosition);
+
+                    EventManager.TriggerEvent("PoseBille");
 
                     if (quinteTrouvee)
                     {
                         Debug.Log("🎯 Une quinte a été détectée !");
                         //EventManager.TriggerEvent("QuinteFormee");
                     }
+                }
+                else
+                {
+                    EventManager.TriggerEvent("NoPoseBille");
                 }
             }
         }
@@ -241,6 +258,6 @@ public class PlacementBille : MonoBehaviour
         }
 
         Debug.Log("📌 Liaisons mises à jour !");
-        nouvelleLigne.transform.parent = transform;
+        nouvelleLigne.transform.SetParent(container);
     }
 }

@@ -7,4 +7,5 @@ public class SoundData : ScriptableObject
 {
     public AudioClip UpdateScoreSound;
     public AudioClip PoseBilleSound;
+    public AudioClip NoPoseBilleSound;
 }

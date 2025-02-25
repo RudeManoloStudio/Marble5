@@ -15,12 +15,13 @@ public class GameManager : MonoBehaviour
     [Header("Paramètres Jeu")]
     [SerializeField] private int coins = 5;  // crédits au départ
     [SerializeField] private bool infinisCoins = false; // crédits infinis pour debug
+    private int initialCoins;
 
     public static GameManager Instance { get; private set; }
 
     public int Coins
     {
-        get { return coins; }
+        get { return initialCoins; }
         set { coins = value; }
     }
 
@@ -32,11 +33,6 @@ public class GameManager : MonoBehaviour
     public GameObject BillePrefab
     {
         get { return billePrefab; }
-    }
-
-    public Transform Container
-    {
-        get { return container; }
     }
 
     private void Awake()
@@ -56,6 +52,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
+        EventManager.AddListener("UpdateScore", _OnUpdateScore);
+        EventManager.AddListener("PoseBille", _OnPoseBille);
+
+        initialCoins = coins;
 
         InitializeGame();
 
@@ -106,20 +107,19 @@ public class GameManager : MonoBehaviour
         GenererMotif();
         PositionnerBackgroundEtGrille();
 
-        EventManager.AddListener("UpdateScore", _OnUpdateScore);
-        EventManager.AddListener("PoseBille", _OnPoseBille);
     }
 
     public void Replay()
     {
         EventManager.TriggerEvent("Replay");
 
-        /*
-         * while (container.childCount != 0)
+        foreach (Transform child in container.transform)
         {
-            Destroy(container.transform.GetChild(0).gameObject);
-        }*/
+            Destroy(child.gameObject);
+        }
 
-        //InitializeGame();
+        coins = initialCoins;
+
+        InitializeGame();
     }
 }

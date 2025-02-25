@@ -7,23 +7,31 @@ public class PlacementBille : MonoBehaviour
 
     [SerializeField] LayerMask billesLayer;
     [SerializeField] private Material ligneMat; // Matériau de la ligne
+    [SerializeField] private Transform container;
+
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();
     private bool verificationEffectuee = false;
 
     private GameObject billePrefab;
     private bool gameOver = false;
-    private Transform container;
+
 
     private void Start()
     {
         billePrefab = GameManager.Instance.BillePrefab;
-        container = GameManager.Instance.Container;
+        
         EventManager.AddListener("GameOver", _OnGameOver);
+        EventManager.AddListener("Replay", _OnReplay);
     }
 
     private void _OnGameOver()
     {
         gameOver = true;
+    }
+
+    private void _OnReplay()
+    {
+        gameOver = false;
     }
 
     void Update()

@@ -6,46 +6,57 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    //[SerializeField] private Text ScoreText;
     [SerializeField] private Transform scorePanel;
     private Text scoreText;
-    private int score = 0;
+    private int score;
 
-    //[SerializeField] private Text CoinsText;
     [SerializeField] private Transform coinsPanel;
     private Text coinsText;
     private int coins;
+    private int initialCoins;
 
     [SerializeField] private Transform gameOverPanel;
     
     void Start () 
     {
 
-        gameOverPanel.gameObject.SetActive(false);
-
         EventManager.AddListener("UpdateScore", _OnUpdateScore);
         EventManager.AddListener("PoseBille", _OnPoseBille);
         EventManager.AddListener("GameOver", _OnGameOver);
+        EventManager.AddListener("Replay", _OnReplay);
 
-        //ScoreText.text = score.ToString();
         scoreText = scorePanel.GetComponent<Text>();
-        scoreText.text = score.ToString();
-
-        coins = GameManager.Instance.Coins;
-        //CoinsText.text = coins.ToString();
         coinsText = coinsPanel.GetComponent<Text>();
+
+        initialCoins = GameManager.Instance.Coins;
+
+        Setup();
+
+    }
+
+    private void Setup()
+    {
+        gameOverPanel.gameObject.SetActive(false);
+
+        score = 0;
+        coins = initialCoins;
+
+        scoreText.text = score.ToString();
         coinsText.text = coins.ToString();
 
+    }
+
+    private void _OnReplay()
+    {
+        Setup();
     }
 
     void _OnUpdateScore()
     {
         score++;
-        //ScoreText.text = score.ToString();
         scoreText.text = score.ToString();
 
         coins++;
-        //CoinsText.text = coins.ToString();
         coinsText.text = coins.ToString();
     }
 

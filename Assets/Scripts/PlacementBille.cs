@@ -12,10 +12,12 @@ public class PlacementBille : MonoBehaviour
 
     private GameObject billePrefab;
     private bool gameOver = false;
+    private Transform container;
 
     private void Start()
     {
         billePrefab = GameManager.Instance.BillePrefab;
+        container = GameManager.Instance.Container;
         EventManager.AddListener("GameOver", _OnGameOver);
     }
 
@@ -48,7 +50,7 @@ public class PlacementBille : MonoBehaviour
                     );
 
                     GameObject nouvelleBille = Instantiate(billePrefab, nouvellePosition, Quaternion.identity);
-                    nouvelleBille.transform.SetParent(this.transform);
+                    nouvelleBille.transform.SetParent(container);
                     Debug.Log("✅ Bille placée en : " + nouvellePosition);
 
                     EventManager.TriggerEvent("PoseBille");
@@ -67,7 +69,6 @@ public class PlacementBille : MonoBehaviour
 
         verificationEffectuee = false;
     }
-
 
     bool VerifierToutesLesQuintes(Vector3 position)
     {
@@ -166,10 +167,6 @@ public class PlacementBille : MonoBehaviour
         return quinteTrouvee;
     }
 
-
-
-
-
     bool PositionContientBille(Vector3 position)
     {
         // Vérifie s'il y a une bille dans un petit rayon autour de la position
@@ -212,8 +209,6 @@ public class PlacementBille : MonoBehaviour
 
         return true; // Toutes les conditions sont remplies, la quinte est valide
     }
-
-
 
     void TracerLigneQuinte(List<Vector3> positions)
     {

@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
     [Header("Paramètres Grille")]
     [SerializeField] private Vector2Int gridSize = new Vector2Int(21, 21); // Taille de la grille
     [SerializeField] private GameObject gridBackground;
     [SerializeField] private GameObject grid;
     [SerializeField] private MotifData motif;
     [SerializeField] private GameObject billePrefab; // La bille à placer
-    [SerializeField] private GameObject marqueurPrefab; // Préfab du marqueur pour les emplacements vides
+    [SerializeField] private Transform container;
 
     [Space(5)]
     [Header("Paramètres Jeu")]
@@ -33,6 +34,11 @@ public class GameManager : MonoBehaviour
         get { return billePrefab; }
     }
 
+    public Transform Container
+    {
+        get { return container; }
+    }
+
     private void Awake()
     {
         // Vérifie si une instance existe déjà
@@ -50,12 +56,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        GenererGrille();
-        GenererMotif();
-        PositionnerBackgroundEtGrille();
 
-        EventManager.AddListener("UpdateScore", _OnUpdateScore);
-        EventManager.AddListener("PoseBille", _OnPoseBille);
+        InitializeGame();
 
     }
 
@@ -73,20 +75,6 @@ public class GameManager : MonoBehaviour
             EventManager.TriggerEvent("GameOver");
         }
     }
-    
-    private void GenererGrille()
-    {
-        /*
-        for (int x = 0; x < gridSize.x; x++)
-        {
-            for (int y = 0; y < gridSize.y; y++)
-            {
-                Vector3 position = new Vector3(x, y, 0.5f);
-                GameObject marqueur = Instantiate(marqueurPrefab, position, Quaternion.identity);
-                marqueur.transform.SetParent(this.transform);
-            }
-        }*/
-    }
 
     private void GenererMotif()
     {
@@ -95,7 +83,7 @@ public class GameManager : MonoBehaviour
             foreach (Vector2Int position in motif.BillesMotif)
             {
                 GameObject bille = Instantiate(billePrefab, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
-                bille.transform.SetParent(this.transform);
+                bille.transform.SetParent(container);
 
             }
         }
@@ -112,8 +100,26 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void InitializeGame()
+    {
+
+        GenererMotif();
+        PositionnerBackgroundEtGrille();
+
+        EventManager.AddListener("UpdateScore", _OnUpdateScore);
+        EventManager.AddListener("PoseBille", _OnPoseBille);
+    }
+
     public void Replay()
     {
-        Debug.Log("replay!");
+        EventManager.TriggerEvent("Replay");
+
+        /*
+         * while (container.childCount != 0)
+        {
+            Destroy(container.transform.GetChild(0).gameObject);
+        }*/
+
+        //InitializeGame();
     }
 }

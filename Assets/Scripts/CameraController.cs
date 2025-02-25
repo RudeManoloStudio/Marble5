@@ -8,33 +8,37 @@ public class CameraController : MonoBehaviour
     [SerializeField] private bool enableDragPan = true;
     [SerializeField] private bool enableBorderPan = true;
     [SerializeField] [Range(0.1f, 5f)] private float zoomSpeed = 2.5f; // Vitesse de zoom de la caméra
-
-
     [SerializeField] private float minZoom = 6.0f; // Zoom minimum
     [SerializeField] private float maxZoom = 10.0f; // Zoom maximum
 
     private bool isPanning = false;
     private Vector3 lastMousePosition;
-
     private Vector2 minPosition; // Limite minimale de déplacement
     private Vector2 maxPosition; // Limite maximale de déplacement
-
     private Camera mainCamera;
+    private int sizeX;
+    private int sizeY;
 
     void Start()
     {
         mainCamera = GetComponent<Camera>();
 
-        int x = GameManager.Instance.GridSize.x;
-        int y = GameManager.Instance.GridSize.y;
+        sizeX = GameManager.Instance.GridSize.x;
+        sizeY = GameManager.Instance.GridSize.y;
 
         minPosition = new Vector2(0, 0);
-        maxPosition = new Vector2(x - 1, y - 1);
+        maxPosition = new Vector2(sizeX - 1, sizeY - 1);
+
+        Setup();
+
+        EventManager.AddListener("Replay", _OnReplay);
+    }
+
+    private void Setup()
+    {
 
         mainCamera.orthographicSize = 6;
-
-        mainCamera.transform.SetPositionAndRotation(new Vector3(x / 2, y / 2, -10), Quaternion.identity);
-
+        mainCamera.transform.SetPositionAndRotation(new Vector3(sizeX / 2, sizeY / 2, -10), Quaternion.identity);
     }
 
     void Update()
@@ -81,7 +85,7 @@ public class CameraController : MonoBehaviour
             {
                 pos.x -= panSpeed * Time.deltaTime;
             }
-            //Vector3 newPosition = transform.position + new Vector3(moveHorizontal, moveVertical);
+
             // Restreindre le déplacement dans les limites définies
             pos.x = Mathf.Clamp(pos.x, minPosition.x, maxPosition.x);
             pos.y = Mathf.Clamp(pos.y, minPosition.y, maxPosition.y);
@@ -92,52 +96,9 @@ public class CameraController : MonoBehaviour
         float zoom = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
         mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize - zoom, minZoom, maxZoom);
     }
-    /*
-    [SerializeField] private float moveSpeed = 5.0f; // Vitesse de déplacement de la caméra
 
-    [Range(0.1f, 5f)]
-    [SerializeField] private float zoomSpeed = 2.5f; // Vitesse de zoom de la caméra
-
-    [SerializeField] private float minZoom = 4.0f; // Zoom minimum
-    [SerializeField] private float maxZoom = 10.0f; // Zoom maximum
-
-    private Vector2 minPosition; // Limite minimale de déplacement
-    private Vector2 maxPosition; // Limite maximale de déplacement
-
-    private Camera mainCamera;
-
-    void Start()
+    private void _OnReplay()
     {
-        mainCamera = GetComponent<Camera>();
-
-        int x = GameManager.Instance.GridSize.x;
-        int y = GameManager.Instance.GridSize.y;
-
-        minPosition = new Vector2(0, 0);
-        maxPosition = new Vector2(x - 1, y - 1);
-
-        mainCamera.orthographicSize = 6;
-
-        mainCamera.transform.SetPositionAndRotation(new Vector3(x / 2, y / 2, -10), Quaternion.identity);
-
+        Setup();
     }
-
-    void Update()
-    {
-        // Déplacement de la caméra
-        float moveHorizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
-        float moveVertical = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
-        Vector3 newPosition = transform.position + new Vector3(moveHorizontal, moveVertical);
-
-        // Restreindre le déplacement dans les limites définies
-        newPosition.x = Mathf.Clamp(newPosition.x, minPosition.x, maxPosition.x);
-        newPosition.y = Mathf.Clamp(newPosition.y, minPosition.y, maxPosition.y);
-
-        transform.position = newPosition;
-
-        // Zoom de la caméra
-        float zoom = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-        mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize - zoom, minZoom, maxZoom);
-    }
-    */
 }

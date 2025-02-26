@@ -1136,7 +1136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d42dc1d9fa849548aeb236f4060b200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 21, y: 21}
+  gridSize: {x: 20, y: 20}
   gridBackground: {fileID: 1579883019}
   grid: {fileID: 1142380607}
   gridBorders: 1

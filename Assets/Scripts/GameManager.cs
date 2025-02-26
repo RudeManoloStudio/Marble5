@@ -93,21 +93,33 @@ public class GameManager : MonoBehaviour
 
     private void PositionnerBackgroundEtGrille()
     {
-        gridBackground.transform.position = new Vector3(gridSize.x / 2, gridSize.y / 2, 0.5f);
+        float h_offset = (gridSize.x % 2 == 0) ? h_offset = 0.5f : h_offset = 0f;
+        float v_offset = (gridSize.y % 2 == 0) ? v_offset = 0.5f : v_offset = 0f;
 
-        grid.transform.position = new Vector3(gridSize.x / 2, gridSize.y / 2, 0.4f);
+        gridBackground.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
+
+        grid.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
         grid.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);
         Material gridMaterial = grid.GetComponent<MeshRenderer>().material;
         gridMaterial.mainTextureScale = new Vector2(gridSize.x, gridSize.y);
 
         if (gridBorders)
         {
+
+            int lr_h_offset = (gridSize.x % 2 == 0) ? lr_h_offset = 1 : lr_h_offset = 0;
+            int lr_v_offset = (gridSize.y % 2 == 0) ? lr_v_offset = 1 : lr_v_offset = 0;
+
             LineRenderer lr = grid.GetComponent<LineRenderer>();
 
-            lr.SetPosition(0, new Vector3(-1, -1));
-            lr.SetPosition(1, new Vector3(-1, gridSize.y));
-            lr.SetPosition(2, new Vector3(gridSize.x, gridSize.y));
-            lr.SetPosition(3, new Vector3(gridSize.x, -1));               
+            lr.SetPosition(0, new Vector3(-1 + lr_h_offset, -1 + lr_v_offset));
+            lr.SetPosition(1, new Vector3(-1 + lr_h_offset, gridSize.y + lr_v_offset));
+            lr.SetPosition(2, new Vector3(gridSize.x + lr_h_offset, gridSize.y + lr_v_offset));
+            lr.SetPosition(3, new Vector3(gridSize.x + lr_h_offset, -1 + lr_v_offset));
+
+            /*lr.SetPosition(0, new Vector3(0, 0));
+            lr.SetPosition(1, new Vector3(0, gridSize.y + 1));
+            lr.SetPosition(2, new Vector3(gridSize.x +1 , gridSize.y + 1));
+            lr.SetPosition(3, new Vector3(gridSize.x + 1, 0));*/
 
             lr.startWidth = 0.1f;
             lr.endWidth = 0.1f;

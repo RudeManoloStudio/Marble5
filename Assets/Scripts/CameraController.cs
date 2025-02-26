@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour
     {
 
         mainCamera.orthographicSize = 6;
-        mainCamera.transform.SetPositionAndRotation(new Vector3(sizeX / 2, sizeY / 2, -10), Quaternion.identity);
+        mainCamera.transform.SetPositionAndRotation(new Vector3(sizeX / 2 + 0.5f, sizeY / 2 + 0.5f, -10), Quaternion.identity);
     }
 
     void Update()

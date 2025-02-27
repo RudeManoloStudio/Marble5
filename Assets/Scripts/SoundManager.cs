@@ -12,13 +12,13 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
 
-        EventManager.AddListener("UpdateScore", _OnUpdateScore);
+        EventManager.AddListener("UpdateScoreAndCoins", _OnUpdateScoreAndCoins);
         EventManager.AddListener("PoseBille", _OnPoseBille);
         EventManager.AddListener("NoPoseBille", _OnNoPoseBille);
 
     }
 
-    void _OnUpdateScore()
+    void _OnUpdateScoreAndCoins(object noUse)
     {
         audioSource.PlayOneShot(soundData.UpdateScoreSound);
     }

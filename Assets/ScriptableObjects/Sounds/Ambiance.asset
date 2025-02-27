@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 951bef8707ee0bb4bbe0d9b08a0a9ba0, type: 3}
-  m_Name: Ambience
+  m_Name: Ambiance
   m_EditorClassIdentifier: 
   UpdateScoreSound: {fileID: 8300000, guid: fc56391ffb4770144b440a858c7e3486, type: 3}
   PoseBilleSound: {fileID: 8300000, guid: e703ad6c166cdce4ab4c4f8557d32757, type: 3}

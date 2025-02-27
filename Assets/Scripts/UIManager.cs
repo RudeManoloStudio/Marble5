@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     void Start () 
     {
 
-        EventManager.AddListener("UpdateScore", _OnUpdateScore);
+        EventManager.AddListener("UpdateScoreAndCoins", _OnUpdateScoreAndCoins);
         EventManager.AddListener("PoseBille", _OnPoseBille);
         EventManager.AddListener("GameOver", _OnGameOver);
         EventManager.AddListener("Replay", _OnReplay);
@@ -57,13 +57,19 @@ public class UIManager : MonoBehaviour
         Setup();
     }
 
-    void _OnUpdateScore()
+    void _OnUpdateScoreAndCoins(object scoreAndCoinsToAdd)
     {
-        score++;
+
+        int[] values = (int[])scoreAndCoinsToAdd;
+
+        //coins++;
+        coins = coins + values[0];
+        coinsText.text = coins.ToString();
+
+        //score++;
+        score = score + values[1];
         scoreText.text = score.ToString();
 
-        coins++;
-        coinsText.text = coins.ToString();
     }
 
     void _OnPoseBille()

@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [Header("Paramètres Jeu")]
     [SerializeField] private int coins = 5;  // crédits au départ
     [SerializeField] private bool infinisCoins = false; // crédits infinis pour debug
+    [SerializeField] private ScoreData scoreData;
     private int initialCoins;
 
     public static GameManager Instance { get; private set; }
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 
-        EventManager.AddListener("UpdateScore", _OnUpdateScore);
+        //EventManager.AddListener("UpdateScore", _OnUpdateScore);
         EventManager.AddListener("PoseBille", _OnPoseBille);
 
         initialCoins = coins;
@@ -63,9 +64,22 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /*
     private void _OnUpdateScore()
     {
         coins++;
+    }
+    */
+
+    public void UpdateScoreAndCoins(int quintes)
+    {
+        coins = coins + quintes;
+
+        int[] updateScoreAndCoinsParams = new int[2];
+        updateScoreAndCoinsParams[0] = quintes;
+        updateScoreAndCoinsParams[1] = scoreData.Score[quintes - 1];
+
+        EventManager.TriggerEvent("UpdateScoreAndCoins", updateScoreAndCoinsParams);
     }
 
     private void _OnPoseBille()
@@ -115,11 +129,6 @@ public class GameManager : MonoBehaviour
             lr.SetPosition(1, new Vector3(-1 + lr_h_offset, gridSize.y + lr_v_offset));
             lr.SetPosition(2, new Vector3(gridSize.x + lr_h_offset, gridSize.y + lr_v_offset));
             lr.SetPosition(3, new Vector3(gridSize.x + lr_h_offset, -1 + lr_v_offset));
-
-            /*lr.SetPosition(0, new Vector3(0, 0));
-            lr.SetPosition(1, new Vector3(0, gridSize.y + 1));
-            lr.SetPosition(2, new Vector3(gridSize.x +1 , gridSize.y + 1));
-            lr.SetPosition(3, new Vector3(gridSize.x + 1, 0));*/
 
             lr.startWidth = 0.1f;
             lr.endWidth = 0.1f;

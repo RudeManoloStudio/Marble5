@@ -75,14 +75,15 @@ public class PlacementBille : MonoBehaviour
                   
 
                     // 📌 Vérification des quintes dans toutes les directions
-                    bool quinteTrouvee = VerifierToutesLesQuintes(nouvellePosition);
+                    int quinteTrouvees = VerifierToutesLesQuintes(nouvellePosition);
 
                     EventManager.TriggerEvent("PoseBille");
 
-                    if (quinteTrouvee)
+                    if (quinteTrouvees > 0)
                     {
                         //Debug.Log("🎯 Une quinte a été détectée !");
-                        //EventManager.TriggerEvent("QuinteFormee");
+                        //EventManager.TriggerEvent("UpdateScore");
+                        GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
                     }
                 }
                 else
@@ -95,11 +96,15 @@ public class PlacementBille : MonoBehaviour
         verificationEffectuee = false;
     }
 
-    bool VerifierToutesLesQuintes(Vector3 position)
+
+    //bool VerifierToutesLesQuintes(Vector3 position)
+    int VerifierToutesLesQuintes(Vector3 position)
     {
+
         int x = Mathf.FloorToInt(position.x);
         int y = Mathf.FloorToInt(position.y);
-        bool quinteTrouvee = false;
+        //bool quinteTrouvee = false;
+        int quintestrouvees = 0;
 
         //**************************************************
         // 1️⃣ Vérification des quintes horizontales
@@ -127,10 +132,11 @@ public class PlacementBille : MonoBehaviour
             Debug.Log($"🎯 Double quinte horizontale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteHorizontaleGauche); // 🔵 Tracé de la quinte gauche-droite
             TracerLigneQuinte(quinteHorizontaleDroite); // 🔵 Tracé de la quinte droite-gauche
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees = quintestrouvees + 2;
 
-            EventManager.TriggerEvent("UpdateScore"); // Score quinte gauche-droite
-            EventManager.TriggerEvent("UpdateScore"); // Score quinte droite-gauche
+            //EventManager.TriggerEvent("UpdateScore"); // Score quinte gauche-droite
+            //EventManager.TriggerEvent("UpdateScore"); // Score quinte droite-gauche
 
         }
 
@@ -147,9 +153,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte horizontale centrale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteCentraleHorizontale); // 🔵 Tracé de la quinte centrale horizontale
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); // Score quinte centrale horizontale
+            //EventManager.TriggerEvent("UpdateScore"); // Score quinte centrale horizontale
 
         }
 
@@ -166,9 +173,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 2 sur ({x}, {y})");
             TracerLigneQuinte(quinteHorizontalePos2); // 🔵 Tracé de la quinte horizontale position 2
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); // Score quinte position 2
+            //EventManager.TriggerEvent("UpdateScore"); // Score quinte position 2
 
         }
 
@@ -185,9 +193,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 4 sur ({x}, {y})");
             TracerLigneQuinte(quinteHorizontalePos4); // 🔵 Tracé de la quinte horizontale position 4
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); // Score quinte position 4
+            //EventManager.TriggerEvent("UpdateScore"); // Score quinte position 4
 
         }
 
@@ -204,9 +213,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 1 sur ({x}, {y})");
             TracerLigneQuinte(quinteHorizontalePos1); // 🔵 Tracé de la quinte horizontale position 1
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); // Score quinte position 1
+            //EventManager.TriggerEvent("UpdateScore"); // Score quinte position 1
 
         }
 
@@ -223,9 +233,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte trouvée avec bille en position 5 sur ({x}, {y})");
             TracerLigneQuinte(quinteHorizontalePos5); // 🔵 Tracé de la quinte horizontale position 5
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); // Score quinte position 5
+            //EventManager.TriggerEvent("UpdateScore"); // Score quinte position 5
 
         }
 
@@ -256,10 +267,11 @@ public class PlacementBille : MonoBehaviour
             Debug.Log($"🎯 Double quinte verticale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteBas); // 🔵 Tracé de la quinte bas
             TracerLigneQuinte(quinteHaut); // 🔵 Tracé de la quinte haut
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees = quintestrouvees + 2;
 
-            EventManager.TriggerEvent("UpdateScore"); //Score quinte bas
-            EventManager.TriggerEvent("UpdateScore"); //Score quinte haut
+            //EventManager.TriggerEvent("UpdateScore"); //Score quinte bas
+            //EventManager.TriggerEvent("UpdateScore"); //Score quinte haut
 
         }
 
@@ -276,9 +288,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte verticale centrale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteCentraleVerticale); // 🔵 Tracé de la quinte centrale
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); //Score quinte centrale
+            //EventManager.TriggerEvent("UpdateScore"); //Score quinte centrale
 
         }
 
@@ -295,9 +308,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 2 sur ({x}, {y})");
             TracerLigneQuinte(quinteVerticalePos2); // 🔵 Tracé de la quinte en position 2
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); //Score quinte position 2
+            //EventManager.TriggerEvent("UpdateScore"); //Score quinte position 2
 
         }
 
@@ -314,9 +328,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 4 sur ({x}, {y})");
             TracerLigneQuinte(quinteVerticalePos4); // 🔵 Tracé de la quinte en position 4
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); //Score quinte position 4
+            //EventManager.TriggerEvent("UpdateScore"); //Score quinte position 4
 
         }
 
@@ -333,9 +348,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 1 sur ({x}, {y})");
             TracerLigneQuinte(quinteVerticalePos1); // 🔵 Tracé de la quinte en position 1
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); //Score quinte position 1
+            //EventManager.TriggerEvent("UpdateScore"); //Score quinte position 1
 
         }
 
@@ -352,9 +368,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte trouvée avec bille en position 5 sur ({x}, {y})");
             TracerLigneQuinte(quinteVerticalePos5); // 🔵 Tracé de la quinte en position 5
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); //Score quinte position 5
+            //EventManager.TriggerEvent("UpdateScore"); //Score quinte position 5
 
         }
 
@@ -384,10 +401,11 @@ public class PlacementBille : MonoBehaviour
             Debug.Log($"🎯 Double quinte diagonale ↘ trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleHG); // 🔵 Tracé de la quinte haut-gauche
             TracerLigneQuinte(quinteDiagonaleBD); // 🔵 Tracé de la quinte bas-droite
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore"); // Score quinte haut-gauche
-            EventManager.TriggerEvent("UpdateScore"); // Score quinte bas-droite
+            //EventManager.TriggerEvent("UpdateScore"); // Score quinte haut-gauche
+            //EventManager.TriggerEvent("UpdateScore"); // Score quinte bas-droite
 
         }
 
@@ -404,9 +422,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↘ centrale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteCentraleDiagonale);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -423,9 +442,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 2 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonalePos2);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -442,9 +462,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 4 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonalePos4);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -461,9 +482,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 1 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonalePos1);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -480,9 +502,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 5 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonalePos5);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -511,10 +534,11 @@ public class PlacementBille : MonoBehaviour
             Debug.Log($"🎯 Double quinte diagonale ↙ trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleHautDroit);
             TracerLigneQuinte(quinteDiagonaleBasGauche);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -531,9 +555,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↙ centrale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteCentraleDiagonaleBG);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -550,9 +575,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 2 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleBGPos2);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -569,9 +595,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 4 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleBGPos4);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -588,9 +615,10 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 1 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleBGPos1);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
@@ -607,13 +635,14 @@ public class PlacementBille : MonoBehaviour
         {
             Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 5 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleBGPos5);
-            quinteTrouvee = true;
+            //quinteTrouvee = true;
+            quintestrouvees++;
 
-            EventManager.TriggerEvent("UpdateScore");
+            //EventManager.TriggerEvent("UpdateScore");
 
         }
 
-        return quinteTrouvee;
+        return quintestrouvees;
 
     }
 

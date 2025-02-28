@@ -60,14 +60,15 @@ public class UIManager : MonoBehaviour
     void _OnUpdateScoreAndCoins(object scoreAndCoinsToAdd)
     {
 
-        int[] values = (int[])scoreAndCoinsToAdd;
+        //int[] values = (int[])scoreAndCoinsToAdd;
+        Vector2Int values = (Vector2Int)scoreAndCoinsToAdd;
 
         //coins++;
-        coins = coins + values[0];
+        coins = coins + values.x;
         coinsText.text = coins.ToString();
 
         //score++;
-        score = score + values[1];
+        score = score + values.y;
         scoreText.text = score.ToString();
 
     }

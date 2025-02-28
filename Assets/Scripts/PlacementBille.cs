@@ -77,7 +77,7 @@ public class PlacementBille : MonoBehaviour
                     // 📌 Vérification des quintes dans toutes les directions
                     int quinteTrouvees = VerifierToutesLesQuintes(nouvellePosition);
 
-                    EventManager.TriggerEvent("PoseBille");
+
 
                     if (quinteTrouvees > 0)
                     {
@@ -85,6 +85,8 @@ public class PlacementBille : MonoBehaviour
                         //EventManager.TriggerEvent("UpdateScore");
                         GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
                     }
+
+                    EventManager.TriggerEvent("PoseBille");
                 }
                 else
                 {

@@ -55,7 +55,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 
-        //EventManager.AddListener("UpdateScore", _OnUpdateScore);
         EventManager.AddListener("PoseBille", _OnPoseBille);
 
         initialCoins = coins;
@@ -64,22 +63,15 @@ public class GameManager : MonoBehaviour
 
     }
 
-    /*
-    private void _OnUpdateScore()
-    {
-        coins++;
-    }
-    */
-
     public void UpdateScoreAndCoins(int quintes)
     {
         coins = coins + quintes;
 
-        int[] updateScoreAndCoinsParams = new int[2];
-        updateScoreAndCoinsParams[0] = quintes;
-        updateScoreAndCoinsParams[1] = scoreData.Score[quintes - 1];
+        Vector2Int values = new Vector2Int();
+        values.x = quintes;
+        values.y = scoreData.Score[quintes - 1];
 
-        EventManager.TriggerEvent("UpdateScoreAndCoins", updateScoreAndCoinsParams);
+        EventManager.TriggerEvent("UpdateScoreAndCoins", values);
     }
 
     private void _OnPoseBille()
@@ -137,7 +129,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void InitializeGame()
+    private void InitializeGame()
     {
 
         GenererMotif();

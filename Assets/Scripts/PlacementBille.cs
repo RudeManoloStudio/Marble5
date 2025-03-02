@@ -52,7 +52,7 @@ public class PlacementBille : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                //Debug.Log($"🎯 Raycast touche : {hit.collider.gameObject.name} à {hit.point}");
+                Debug.Log($"🎯 Raycast touche : {hit.collider.gameObject.name} à {hit.point}");
 
                 if (hit.collider.gameObject.tag != "Bille") // Vérifie si l'emplacement est libre
                 {
@@ -62,7 +62,8 @@ public class PlacementBille : MonoBehaviour
                         0.0f  // Fixe Z au bon niveau
                     );
 
-                    if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x - 1 || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y - 1)
+                    //if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x - 1 || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y - 1)
+                    if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y)
                     {
                         EventManager.TriggerEvent("NoPoseBille");
                         return;
@@ -92,6 +93,10 @@ public class PlacementBille : MonoBehaviour
                 {
                     EventManager.TriggerEvent("NoPoseBille");
                 }
+            }
+            else
+            {
+                EventManager.TriggerEvent("NoPoseBille");
             }
         }
 

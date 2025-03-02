@@ -4,10 +4,11 @@ public class GameManager : MonoBehaviour
 {
 
     [Header("Paramètres Grille")]
-    [SerializeField] private Vector2Int gridSize = new Vector2Int(21, 21); // Taille de la grille
+    [SerializeField] private Vector2Int gridSize = new Vector2Int(20, 20); // Taille de la grille
     [SerializeField] private GameObject gridBackground;
-    [SerializeField] private GameObject grid;
-    [SerializeField] private bool gridBorders = true;
+    //[SerializeField] private GameObject grid;
+    //[SerializeField] private bool gridBorders = true;
+    [SerializeField] private GameObject gridSG;
     [SerializeField] private MotifData motif;
     [SerializeField] private GameObject billePrefab; // La bille à placer
     [SerializeField] private Transform container;
@@ -104,6 +105,12 @@ public class GameManager : MonoBehaviour
 
         gridBackground.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
 
+        gridSG.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
+        gridSG.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);
+        Material gridSGMaterial = gridSG.GetComponent<MeshRenderer>().material;
+        gridSGMaterial.SetVector("_tiling", new Vector4(gridSize.x, gridSize.y));
+
+        /* grille sans shader
         grid.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
         grid.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);
         Material gridMaterial = grid.GetComponent<MeshRenderer>().material;
@@ -126,6 +133,7 @@ public class GameManager : MonoBehaviour
             lr.endWidth = 0.1f;
             lr.useWorldSpace = true;
         }
+        */
 
     }
 

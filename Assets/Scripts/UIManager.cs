@@ -7,11 +7,11 @@ public class UIManager : MonoBehaviour
 {
 
     [SerializeField] private Transform scorePanel;
-    private Text scoreText;
+    [SerializeField] private Text scoreText;
     private int score;
 
     [SerializeField] private Transform coinsPanel;
-    private Text coinsText;
+    [SerializeField] private Text coinsText;
     private int coins;
     private int initialCoins;
 
@@ -27,8 +27,8 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener("GameOver", _OnGameOver);
         EventManager.AddListener("Replay", _OnReplay);
 
-        scoreText = scorePanel.GetComponent<Text>();
-        coinsText = coinsPanel.GetComponent<Text>();
+        //scoreText = scorePanel.GetComponent<Text>();
+        //coinsText = coinsPanel.GetComponent<Text>();
         //yourScoreText = yourScorePanel;
         //Debug.Log(yourScoreText);
 

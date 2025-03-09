@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BacteriaController : MonoBehaviour
+public class MarbleController : MonoBehaviour
 {
 
     [SerializeField] private MeshRenderer mr;
@@ -15,7 +15,7 @@ public class BacteriaController : MonoBehaviour
     private void OnEnable()
     {
 
-        mr.material.SetFloat("_seed", Random.Range(0, 999));
+        mr.material.SetFloat("_scale", Random.Range(30, 100));
 
         int x = Random.Range(0, 360);
         int y = Random.Range(0, 360);
@@ -29,7 +29,7 @@ public class BacteriaController : MonoBehaviour
 
     private void LateUpdate()
     {
-           
+
         transform.Rotate(angularVelocity * Time.deltaTime * speed, Space.Self);
 
     }

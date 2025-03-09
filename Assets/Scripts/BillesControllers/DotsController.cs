@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BilleController : MonoBehaviour
+public class DotsController : MonoBehaviour
 {
 
 
@@ -17,7 +17,7 @@ public class BilleController : MonoBehaviour
     private void OnEnable()
     {
 
-        mr.material.SetFloat("_seed", Random.Range(int.MinValue, int.MaxValue));
+        mr.material.SetFloat("_size", Random.Range(0.09f, 0.9f));
 
         int x = Random.Range(0, 360);
         int y = Random.Range(0, 360);

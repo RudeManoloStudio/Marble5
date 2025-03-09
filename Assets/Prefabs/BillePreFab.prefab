@@ -119,3 +119,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mr: {fileID: 7650475969668895882}
+  minRotationSpeed: 0.09
+  maxRotationSpeed: 0.2

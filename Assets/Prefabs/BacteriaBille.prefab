@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5308805097434753297}
   - component: {fileID: 4197013201023374577}
   m_Layer: 3
-  m_Name: BillePreFab
+  m_Name: BacteriaBille
   m_TagString: Bille
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

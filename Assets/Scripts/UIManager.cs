@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviour
 
     }
 
-    void _OnPoseBille()
+    void _OnPoseBille(object data)
     {
         coins--;
         coinsText.text = coins.ToString();

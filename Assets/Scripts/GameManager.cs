@@ -11,7 +11,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject gridSG;
     [SerializeField] private MotifData motif;
     [SerializeField] private GameObject billePrefab; // La bille à placer
+    [SerializeField] private GameObject plombPrefab; // instance bille noire
     [SerializeField] private Transform container;
+    [SerializeField] private int difficulte; // difficulté du jeu
+    private int compteurBilles = 0;
+
 
     [Space(5)]
     [Header("Paramètres Jeu")]
@@ -36,6 +40,11 @@ public class GameManager : MonoBehaviour
     public GameObject BillePrefab
     {
         get { return billePrefab; }
+    }
+    
+    public GameObject PlombPrefab
+    {
+        get { return plombPrefab; }
     }
 
     private void Awake()
@@ -75,14 +84,23 @@ public class GameManager : MonoBehaviour
         EventManager.TriggerEvent("UpdateScoreAndCoins", values);
     }
 
-    private void _OnPoseBille()
+    private void _OnPoseBille(object billePosition)
     {
+        Vector3 bPosition = (Vector3)(billePosition);
         coins--;
 
         if (coins <= 0 && !infinisCoins)
         {
             EventManager.TriggerEvent("GameOver");
         }
+
+        compteurBilles++;
+        if (compteurBilles >= difficulte)
+        { 
+            EventManager.TriggerEvent("PosePlomb", bPosition);
+            compteurBilles = 0;
+        }
+        
     }
 
     private void GenererMotif()
@@ -104,6 +122,7 @@ public class GameManager : MonoBehaviour
         float v_offset = (gridSize.y % 2 == 0) ? v_offset = 0.5f : v_offset = 0f;
 
         gridBackground.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
+
 
         gridSG.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
         gridSG.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);

@@ -87,7 +87,7 @@ public class PlacementBille : MonoBehaviour
                         GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
                     }
 
-                    EventManager.TriggerEvent("PoseBille");
+                    EventManager.TriggerEvent("PoseBille",nouvellePosition);
                 }
                 else
                 {

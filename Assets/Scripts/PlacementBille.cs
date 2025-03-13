@@ -5,14 +5,15 @@ using System.Linq;
 public class PlacementBille : MonoBehaviour
 {
 
-    [SerializeField] LayerMask billesLayer;
-    [SerializeField] private Material ligneMat; // Matériau de la ligne
+    // [SerializeField] LayerMask billesLayer;
+    // abandon lr [SerializeField] private Material ligneMat; // Matériau de la ligne
     [SerializeField] private Transform container;
 
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();
     private bool verificationEffectuee = false;
 
     private GameObject billePrefab;
+    private GameObject quintePrefab;
     private bool gameOver = false;
 
     private Vector2Int gridSize;
@@ -21,6 +22,7 @@ public class PlacementBille : MonoBehaviour
     private void Start()
     {
         billePrefab = GameManager.Instance.BillePrefab;
+        quintePrefab = GameManager.Instance.QuintePrefab;
 
         gridSize = GameManager.Instance.GridSize;
         
@@ -52,7 +54,7 @@ public class PlacementBille : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log($"🎯 Raycast touche : {hit.collider.gameObject.name} à {hit.point}");
+                //Debug.Log($"🎯 Raycast touche : {hit.collider.gameObject.name} à {hit.point}");
 
                 if (hit.collider.gameObject.tag != "Bille") // Vérifie si l'emplacement est libre
                 {
@@ -71,7 +73,7 @@ public class PlacementBille : MonoBehaviour
 
                     GameObject nouvelleBille = Instantiate(billePrefab, nouvellePosition, Quaternion.identity);
                     nouvelleBille.transform.SetParent(container);
-                    Debug.Log("✅ Bille placée en : " + nouvellePosition);
+                    //Debug.Log("✅ Bille placée en : " + nouvellePosition);
 
                   
 
@@ -136,7 +138,7 @@ public class PlacementBille : MonoBehaviour
         if (VerifierQuinte(quinteHorizontaleGauche[0], quinteHorizontaleGauche[1], quinteHorizontaleGauche[2], quinteHorizontaleGauche[3], quinteHorizontaleGauche[4])
             && VerifierQuinte(quinteHorizontaleDroite[0], quinteHorizontaleDroite[1], quinteHorizontaleDroite[2], quinteHorizontaleDroite[3], quinteHorizontaleDroite[4]))
         {
-            Debug.Log($"🎯 Double quinte horizontale trouvée à partir de ({x}, {y})");
+            //Debug.Log($"🎯 Double quinte horizontale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteHorizontaleGauche); // 🔵 Tracé de la quinte gauche-droite
             TracerLigneQuinte(quinteHorizontaleDroite); // 🔵 Tracé de la quinte droite-gauche
             //quinteTrouvee = true;
@@ -158,7 +160,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteCentraleHorizontale[0], quinteCentraleHorizontale[1], quinteCentraleHorizontale[2], quinteCentraleHorizontale[3], quinteCentraleHorizontale[4]))
         {
-            Debug.Log($"🎯 Quinte horizontale centrale trouvée à partir de ({x}, {y})");
+            //Debug.Log($"🎯 Quinte horizontale centrale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteCentraleHorizontale); // 🔵 Tracé de la quinte centrale horizontale
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -178,7 +180,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteHorizontalePos2[0], quinteHorizontalePos2[1], quinteHorizontalePos2[2], quinteHorizontalePos2[3], quinteHorizontalePos2[4]))
         {
-            Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 2 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 2 sur ({x}, {y})");
             TracerLigneQuinte(quinteHorizontalePos2); // 🔵 Tracé de la quinte horizontale position 2
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -198,7 +200,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteHorizontalePos4[0], quinteHorizontalePos4[1], quinteHorizontalePos4[2], quinteHorizontalePos4[3], quinteHorizontalePos4[4]))
         {
-            Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 4 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 4 sur ({x}, {y})");
             TracerLigneQuinte(quinteHorizontalePos4); // 🔵 Tracé de la quinte horizontale position 4
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -218,7 +220,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteHorizontalePos1[0], quinteHorizontalePos1[1], quinteHorizontalePos1[2], quinteHorizontalePos1[3], quinteHorizontalePos1[4]))
         {
-            Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 1 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 1 sur ({x}, {y})");
             TracerLigneQuinte(quinteHorizontalePos1); // 🔵 Tracé de la quinte horizontale position 1
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -238,7 +240,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteHorizontalePos5[0], quinteHorizontalePos5[1], quinteHorizontalePos5[2], quinteHorizontalePos5[3], quinteHorizontalePos5[4]))
         {
-            Debug.Log($"🎯 Quinte trouvée avec bille en position 5 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte trouvée avec bille en position 5 sur ({x}, {y})");
             TracerLigneQuinte(quinteHorizontalePos5); // 🔵 Tracé de la quinte horizontale position 5
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -271,7 +273,7 @@ public class PlacementBille : MonoBehaviour
         if (VerifierQuinte(quinteBas[0], quinteBas[1], quinteBas[2], quinteBas[3], quinteBas[4])
             && VerifierQuinte(quinteHaut[0], quinteHaut[1], quinteHaut[2], quinteHaut[3], quinteHaut[4]))
         {
-            Debug.Log($"🎯 Double quinte verticale trouvée à partir de ({x}, {y})");
+            //Debug.Log($"🎯 Double quinte verticale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteBas); // 🔵 Tracé de la quinte bas
             TracerLigneQuinte(quinteHaut); // 🔵 Tracé de la quinte haut
             //quinteTrouvee = true;
@@ -293,7 +295,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteCentraleVerticale[0], quinteCentraleVerticale[1], quinteCentraleVerticale[2], quinteCentraleVerticale[3], quinteCentraleVerticale[4]))
         {
-            Debug.Log($"🎯 Quinte verticale centrale trouvée à partir de ({x}, {y})");
+            //Debug.Log($"🎯 Quinte verticale centrale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteCentraleVerticale); // 🔵 Tracé de la quinte centrale
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -313,7 +315,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteVerticalePos2[0], quinteVerticalePos2[1], quinteVerticalePos2[2], quinteVerticalePos2[3], quinteVerticalePos2[4]))
         {
-            Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 2 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 2 sur ({x}, {y})");
             TracerLigneQuinte(quinteVerticalePos2); // 🔵 Tracé de la quinte en position 2
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -333,7 +335,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteVerticalePos4[0], quinteVerticalePos4[1], quinteVerticalePos4[2], quinteVerticalePos4[3], quinteVerticalePos4[4]))
         {
-            Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 4 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 4 sur ({x}, {y})");
             TracerLigneQuinte(quinteVerticalePos4); // 🔵 Tracé de la quinte en position 4
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -353,7 +355,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteVerticalePos1[0], quinteVerticalePos1[1], quinteVerticalePos1[2], quinteVerticalePos1[3], quinteVerticalePos1[4]))
         {
-            Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 1 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 1 sur ({x}, {y})");
             TracerLigneQuinte(quinteVerticalePos1); // 🔵 Tracé de la quinte en position 1
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -373,7 +375,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteVerticalePos5[0], quinteVerticalePos5[1], quinteVerticalePos5[2], quinteVerticalePos5[3], quinteVerticalePos5[4]))
         {
-            Debug.Log($"🎯 Quinte trouvée avec bille en position 5 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte trouvée avec bille en position 5 sur ({x}, {y})");
             TracerLigneQuinte(quinteVerticalePos5); // 🔵 Tracé de la quinte en position 5
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -405,7 +407,7 @@ public class PlacementBille : MonoBehaviour
         if (VerifierQuinte(quinteDiagonaleHG[0], quinteDiagonaleHG[1], quinteDiagonaleHG[2], quinteDiagonaleHG[3], quinteDiagonaleHG[4])
             && VerifierQuinte(quinteDiagonaleBD[0], quinteDiagonaleBD[1], quinteDiagonaleBD[2], quinteDiagonaleBD[3], quinteDiagonaleBD[4]))
         {
-            Debug.Log($"🎯 Double quinte diagonale ↘ trouvée à partir de ({x}, {y})");
+            //Debug.Log($"🎯 Double quinte diagonale ↘ trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleHG); // 🔵 Tracé de la quinte haut-gauche
             TracerLigneQuinte(quinteDiagonaleBD); // 🔵 Tracé de la quinte bas-droite
             //quinteTrouvee = true;
@@ -427,7 +429,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteCentraleDiagonale[0], quinteCentraleDiagonale[1], quinteCentraleDiagonale[2], quinteCentraleDiagonale[3], quinteCentraleDiagonale[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↘ centrale trouvée à partir de ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↘ centrale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteCentraleDiagonale);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -447,7 +449,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteDiagonalePos2[0], quinteDiagonalePos2[1], quinteDiagonalePos2[2], quinteDiagonalePos2[3], quinteDiagonalePos2[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 2 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 2 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonalePos2);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -467,7 +469,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteDiagonalePos4[0], quinteDiagonalePos4[1], quinteDiagonalePos4[2], quinteDiagonalePos4[3], quinteDiagonalePos4[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 4 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 4 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonalePos4);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -487,7 +489,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteDiagonalePos1[0], quinteDiagonalePos1[1], quinteDiagonalePos1[2], quinteDiagonalePos1[3], quinteDiagonalePos1[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 1 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 1 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonalePos1);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -507,7 +509,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteDiagonalePos5[0], quinteDiagonalePos5[1], quinteDiagonalePos5[2], quinteDiagonalePos5[3], quinteDiagonalePos5[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 5 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 5 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonalePos5);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -538,7 +540,7 @@ public class PlacementBille : MonoBehaviour
         if (VerifierQuinte(quinteDiagonaleHautDroit[0], quinteDiagonaleHautDroit[1], quinteDiagonaleHautDroit[2], quinteDiagonaleHautDroit[3], quinteDiagonaleHautDroit[4])
             && VerifierQuinte(quinteDiagonaleBasGauche[0], quinteDiagonaleBasGauche[1], quinteDiagonaleBasGauche[2], quinteDiagonaleBasGauche[3], quinteDiagonaleBasGauche[4]))
         {
-            Debug.Log($"🎯 Double quinte diagonale ↙ trouvée à partir de ({x}, {y})");
+            //Debug.Log($"🎯 Double quinte diagonale ↙ trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleHautDroit);
             TracerLigneQuinte(quinteDiagonaleBasGauche);
             //quinteTrouvee = true;
@@ -560,7 +562,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteCentraleDiagonaleBG[0], quinteCentraleDiagonaleBG[1], quinteCentraleDiagonaleBG[2], quinteCentraleDiagonaleBG[3], quinteCentraleDiagonaleBG[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↙ centrale trouvée à partir de ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↙ centrale trouvée à partir de ({x}, {y})");
             TracerLigneQuinte(quinteCentraleDiagonaleBG);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -580,7 +582,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteDiagonaleBGPos2[0], quinteDiagonaleBGPos2[1], quinteDiagonaleBGPos2[2], quinteDiagonaleBGPos2[3], quinteDiagonaleBGPos2[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 2 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 2 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleBGPos2);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -600,7 +602,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteDiagonaleBGPos4[0], quinteDiagonaleBGPos4[1], quinteDiagonaleBGPos4[2], quinteDiagonaleBGPos4[3], quinteDiagonaleBGPos4[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 4 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 4 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleBGPos4);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -620,7 +622,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteDiagonaleBGPos1[0], quinteDiagonaleBGPos1[1], quinteDiagonaleBGPos1[2], quinteDiagonaleBGPos1[3], quinteDiagonaleBGPos1[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 1 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 1 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleBGPos1);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -640,7 +642,7 @@ public class PlacementBille : MonoBehaviour
 
         if (VerifierQuinte(quinteDiagonaleBGPos5[0], quinteDiagonaleBGPos5[1], quinteDiagonaleBGPos5[2], quinteDiagonaleBGPos5[3], quinteDiagonaleBGPos5[4]))
         {
-            Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 5 sur ({x}, {y})");
+            //Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 5 sur ({x}, {y})");
             TracerLigneQuinte(quinteDiagonaleBGPos5);
             //quinteTrouvee = true;
             quintestrouvees++;
@@ -700,6 +702,7 @@ public class PlacementBille : MonoBehaviour
     {
         //Debug.Log("🟢 Entrée dans TracerLigneQuinte()");
 
+        /* abandon du lr
         GameObject nouvelleLigne = new GameObject("LigneQuinte");
 
         LineRenderer lr = nouvelleLigne.AddComponent<LineRenderer>();
@@ -711,14 +714,46 @@ public class PlacementBille : MonoBehaviour
         lr.useWorldSpace = true;
 
         lr.material = ligneMat;
+        fin abandon du lr */
+
+        GameObject quinte = Instantiate(quintePrefab, positions[2], Quaternion.identity);
+        quinte.transform.SetParent(container);
+
+        // calcul de l'orientation de la quinte
+        Vector3 direction = positions[1] - positions[0];
+
+        // Calculer la rotation nécessaire pour orienter le cylindre
+        Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
+        quinte.transform.rotation = rotation * Quaternion.Euler(90, 0, 0);
+
+        //pour ensuite etirer
+        float distance = Vector3.Distance(positions[0], positions[4]);
+        quinte.transform.localScale = new Vector3(quinte.transform.localScale.x, distance / 2, quinte.transform.localScale.z);
+
+        //stop rotation
+        for (int i = 0; i < positions.Count; i++)
+        {
+
+            Collider[] colliders = Physics.OverlapSphere(positions[i], 0.1f);
+
+            foreach (Collider col in colliders)
+            {
+                if (col.gameObject.CompareTag("Bille"))
+                {
+                    col.gameObject.GetComponent<MarbleController>().rotate = false;
+                }
+            }
+        }
 
         for (int i = 0; i < positions.Count - 1; i++)
         {
+
             var liaison = positions[i].x < positions[i + 1].x ? (positions[i], positions[i + 1]) : (positions[i + 1], positions[i]);
             liaisonsUtilisées.Add(liaison);
+
         }
 
         //Debug.Log("📌 Liaisons mises à jour !");
-        nouvelleLigne.transform.SetParent(container);
+        // abandon lr nouvelleLigne.transform.SetParent(container);
     }
 }

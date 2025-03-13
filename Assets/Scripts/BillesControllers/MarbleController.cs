@@ -11,6 +11,7 @@ public class MarbleController : MonoBehaviour
 
     private Vector3 angularVelocity;
     private float speed;
+    public bool rotate = true;
 
     private void OnEnable()
     {
@@ -30,7 +31,10 @@ public class MarbleController : MonoBehaviour
     private void LateUpdate()
     {
 
-        transform.Rotate(angularVelocity * Time.deltaTime * speed, Space.Self);
+        if (rotate)
+        {
+            transform.Rotate(angularVelocity * Time.deltaTime * speed, Space.Self);
+        }
 
     }
 }

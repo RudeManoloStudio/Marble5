@@ -1836,10 +1836,10 @@ GameObject:
   - component: {fileID: 1280661789}
   - component: {fileID: 1280661788}
   - component: {fileID: 1280661792}
+  - component: {fileID: 1280661794}
   - component: {fileID: 1280661791}
   - component: {fileID: 1280661793}
   - component: {fileID: 1280661790}
-  - component: {fileID: 1280661794}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1865,10 +1865,11 @@ MonoBehaviour:
   motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
   billePrefab: {fileID: 7620533384714353888, guid: be90c221bc964584e9792224de691881, type: 3}
   plombPrefab: {fileID: 7484250924146756646, guid: 6f66ea3411e12a6449a931345fa8c470, type: 3}
+  quintePrefab: {fileID: 6765585399786045169, guid: 6e3323081eaa0734182d59ccd8b9f88c, type: 3}
   container: {fileID: 1203496605}
-  difficulte: 2
+  difficulte: 5
   coins: 5
-  infinisCoins: 0
+  infinisCoins: 1
   scoreData: {fileID: 11400000, guid: 747e0e556cc72654d825c222e4c670d7, type: 2}
 --- !u!4 &1280661789
 Transform:
@@ -2007,10 +2008,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0be356e140d6e4bb55548e1be45c23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  billesLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  ligneMat: {fileID: 2100000, guid: d17a226a1c8f93d4c9f40bed04fae6a1, type: 2}
   container: {fileID: 1203496605}
 --- !u!114 &1280661793
 MonoBehaviour:

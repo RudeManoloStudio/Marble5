@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MotifData motif;
     [SerializeField] private GameObject billePrefab; // La bille à placer
     [SerializeField] private GameObject plombPrefab; // instance bille noire
+    [SerializeField] private GameObject quintePrefab; // objet qui relie les billes dans une quinte
     [SerializeField] private Transform container;
     [SerializeField] private int difficulte; // difficulté du jeu
     private int compteurBilles = 0;
@@ -45,6 +46,11 @@ public class GameManager : MonoBehaviour
     public GameObject PlombPrefab
     {
         get { return plombPrefab; }
+    }
+
+    public GameObject QuintePrefab
+    {
+        get { return quintePrefab; }
     }
 
     private void Awake()

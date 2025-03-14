@@ -1623,7 +1623,7 @@ MonoBehaviour:
   plombPrefab: {fileID: 7484250924146756646, guid: 6f66ea3411e12a6449a931345fa8c470, type: 3}
   quintePrefab: {fileID: 6765585399786045169, guid: 6e3323081eaa0734182d59ccd8b9f88c, type: 3}
   container: {fileID: 1203496605}
-  difficulte: 5
+  difficulte: 3
   coins: 5
   infinisCoins: 0
   scoreData: {fileID: 11400000, guid: 747e0e556cc72654d825c222e4c670d7, type: 2}

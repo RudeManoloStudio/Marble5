@@ -6,23 +6,24 @@ public class GameManager : MonoBehaviour
     [Header("Paramètres Grille")]
     [SerializeField] private Vector2Int gridSize = new Vector2Int(20, 20); // Taille de la grille
     [SerializeField] private GameObject gridBackground;
-    //[SerializeField] private GameObject grid;
-    //[SerializeField] private bool gridBorders = true;
     [SerializeField] private GameObject gridSG;
     [SerializeField] private MotifData motif;
+
+    [Space(5)]
+    [Header("Paramètres Billes")]
     [SerializeField] private GameObject billePrefab; // La bille à placer
     [SerializeField] private GameObject plombPrefab; // instance bille noire
     [SerializeField] private GameObject quintePrefab; // objet qui relie les billes dans une quinte
     [SerializeField] private Transform container;
-    [SerializeField] private int difficulte; // difficulté du jeu
-    private int compteurBilles = 0;
-
 
     [Space(5)]
     [Header("Paramètres Jeu")]
+    [SerializeField] private int difficulte; // difficulté du jeu
     [SerializeField] private int coins = 5;  // crédits au départ
     [SerializeField] private bool infinisCoins = false; // crédits infinis pour debug
     [SerializeField] private ScoreData scoreData;
+
+    private int compteurBilles = 0;
     private int initialCoins;
 
     public static GameManager Instance { get; private set; }
@@ -51,6 +52,11 @@ public class GameManager : MonoBehaviour
     public GameObject QuintePrefab
     {
         get { return quintePrefab; }
+    }
+
+    public Transform Container
+    {
+        get { return container; }
     }
 
     private void Awake()
@@ -128,37 +134,12 @@ public class GameManager : MonoBehaviour
         float v_offset = (gridSize.y % 2 == 0) ? v_offset = 0.5f : v_offset = 0f;
 
         gridBackground.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
-
+        gridBackground.transform.localScale = new Vector3(GridSize.x / 10 + 2, 1, GridSize.y / 10 + 2);
 
         gridSG.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
         gridSG.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);
         Material gridSGMaterial = gridSG.GetComponent<MeshRenderer>().material;
         gridSGMaterial.SetVector("_tiling", new Vector4(gridSize.x, gridSize.y));
-
-        /* grille sans shader
-        grid.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
-        grid.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);
-        Material gridMaterial = grid.GetComponent<MeshRenderer>().material;
-        gridMaterial.mainTextureScale = new Vector2(gridSize.x, gridSize.y);
-
-        if (gridBorders)
-        {
-
-            int lr_h_offset = (gridSize.x % 2 == 0) ? lr_h_offset = 1 : lr_h_offset = 0;
-            int lr_v_offset = (gridSize.y % 2 == 0) ? lr_v_offset = 1 : lr_v_offset = 0;
-
-            LineRenderer lr = grid.GetComponent<LineRenderer>();
-
-            lr.SetPosition(0, new Vector3(-1 + lr_h_offset, -1 + lr_v_offset));
-            lr.SetPosition(1, new Vector3(-1 + lr_h_offset, gridSize.y + lr_v_offset));
-            lr.SetPosition(2, new Vector3(gridSize.x + lr_h_offset, gridSize.y + lr_v_offset));
-            lr.SetPosition(3, new Vector3(gridSize.x + lr_h_offset, -1 + lr_v_offset));
-
-            lr.startWidth = 0.1f;
-            lr.endWidth = 0.1f;
-            lr.useWorldSpace = true;
-        }
-        */
 
     }
 

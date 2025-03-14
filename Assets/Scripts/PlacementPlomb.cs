@@ -5,15 +5,18 @@ using UnityEngine.UIElements;
 
 public class PlacementPlomb : MonoBehaviour
 {
-    private GameObject plomb;
-    [SerializeField] private Transform containerPlomb;
 
-    // Start is called before the first frame update
+    private GameObject plomb;
+    private Transform container;
+
     void Start()
     {
-       plomb=GameManager.Instance.PlombPrefab;
+
+        plomb = GameManager.Instance.PlombPrefab;
+        container = GameManager.Instance.Container;
 
         EventManager.AddListener("PosePlomb", _OnPosePlomb);
+
     }
 
     void _OnPosePlomb(object data)
@@ -22,8 +25,7 @@ public class PlacementPlomb : MonoBehaviour
 
         // Vérification position droite
         Vector3 positionATester = positionDerniereBille + Vector3.right;
-
-                        
+                  
         // Vérifie s'il y a une bille dans un petit rayon autour de la position
         Collider[] colliders = Physics.OverlapSphere(positionATester, 0.1f);
 
@@ -36,7 +38,11 @@ public class PlacementPlomb : MonoBehaviour
         }
 
         GameObject nouveauPlomb = Instantiate(plomb, positionATester, Quaternion.identity);
-        nouveauPlomb.transform.SetParent(containerPlomb);
+        nouveauPlomb.transform.SetParent(container);
+
+        BilleController bc = nouveauPlomb.GetComponent<BilleController>();
+        bc.DoRotate(false);
+
         Debug.Log("Plomb placée en : " + positionATester);
     }
 

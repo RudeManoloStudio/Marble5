@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Marble
-  m_Shader: {fileID: -6465566751694194690, guid: 858d107d403d3004caa5eb2de508ec27, type: 3}
+  m_Name: Quinte
+  m_Shader: {fileID: -6465566751694194690, guid: 0d82ee5ea2eefcb49b3d116a6c9a8d87, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -125,7 +125,7 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _scale: 60
+    - _scale: 500
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

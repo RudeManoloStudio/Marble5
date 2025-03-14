@@ -5,13 +5,13 @@ using UnityEngine;
 public class BilleController : MonoBehaviour
 {
 
-    [SerializeField] private MeshRenderer mr;
+    [SerializeField] protected MeshRenderer mr;
     [SerializeField] private float minRotationSpeed = 0.09f;
     [SerializeField] private float maxRotationSpeed = 0.2f;
 
     private Vector3 angularVelocity;
     private float speed;
-    public bool rotate = true;
+    protected bool rotate = true;
 
     private void OnEnable()
     {
@@ -28,8 +28,13 @@ public class BilleController : MonoBehaviour
 
     }
 
-    private virtual void SetShaderParameters()
+    public virtual void SetShaderParameters()
     {}
+
+    public void DoRotate(bool flagRotate)
+    {
+        rotate = flagRotate;
+    }
 
     private void LateUpdate()
     {

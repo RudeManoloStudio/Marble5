@@ -5,10 +5,6 @@ using System.Linq;
 public class PlacementBille : MonoBehaviour
 {
 
-    // [SerializeField] LayerMask billesLayer;
-    // abandon lr [SerializeField] private Material ligneMat; // Matériau de la ligne
-    [SerializeField] private Transform container;
-
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();
     private bool verificationEffectuee = false;
 
@@ -17,17 +13,21 @@ public class PlacementBille : MonoBehaviour
     private bool gameOver = false;
 
     private Vector2Int gridSize;
+    private Transform container;
 
 
     private void Start()
     {
-        billePrefab = GameManager.Instance.BillePrefab;
-        quintePrefab = GameManager.Instance.QuintePrefab;
 
         gridSize = GameManager.Instance.GridSize;
+
+        billePrefab = GameManager.Instance.BillePrefab;
+        quintePrefab = GameManager.Instance.QuintePrefab;
+        container = GameManager.Instance.Container;
         
         EventManager.AddListener("GameOver", _OnGameOver);
         EventManager.AddListener("Replay", _OnReplay);
+
     }
 
     private void _OnGameOver()
@@ -740,7 +740,8 @@ public class PlacementBille : MonoBehaviour
             {
                 if (col.gameObject.CompareTag("Bille"))
                 {
-                    col.gameObject.GetComponent<MarbleController>().rotate = false;
+                    BilleController bc = col.gameObject.GetComponent<BilleController>();
+                    bc.DoRotate(false); // = false;
                 }
             }
         }

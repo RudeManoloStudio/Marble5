@@ -56,7 +56,7 @@ public class PlacementBille : MonoBehaviour
             {
                 //Debug.Log($"🎯 Raycast touche : {hit.collider.gameObject.name} à {hit.point}");
 
-                if (hit.collider.gameObject.tag != "Bille") // Vérifie si l'emplacement est libre
+                if (hit.collider.gameObject.tag != "Bille" && hit.collider.gameObject.tag != "Plomb") // Vérifie si l'emplacement est libre
                 {
                     Vector3 nouvellePosition = new Vector3(
                         Mathf.FloorToInt(hit.point.x + 0.5f),

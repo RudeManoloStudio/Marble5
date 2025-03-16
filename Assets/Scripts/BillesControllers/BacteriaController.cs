@@ -7,7 +7,7 @@ public class BacteriaController : BilleController
 
     public override void SetShaderParameters()
     {
-        mr.material.SetFloat("_size", Random.Range(0.09f, 0.9f));
+        mr.material.SetFloat("_seed", Random.Range(0, 200));
     }
 }
 

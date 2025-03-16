@@ -7,7 +7,7 @@ public class MarbleController : BilleController
 
     public override void SetShaderParameters()
     {
-        mr.material.SetFloat("_size", Random.Range(0.09f, 0.9f));
+        mr.material.SetFloat("_scale", Random.Range(50, 150));
     }
 }
 

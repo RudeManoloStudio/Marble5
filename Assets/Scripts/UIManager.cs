@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Transform gameOverPanel;
     [SerializeField] private Text yourScoreText;
-    //private Text yourScoreText;
+    
     
     void Start () 
     {
@@ -27,11 +27,6 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener("GameOver", _OnGameOver);
         EventManager.AddListener("Replay", _OnReplay);
 
-        //scoreText = scorePanel.GetComponent<Text>();
-        //coinsText = coinsPanel.GetComponent<Text>();
-        //yourScoreText = yourScorePanel;
-        //Debug.Log(yourScoreText);
-
         initialCoins = GameManager.Instance.Coins;
 
         Setup();
@@ -40,6 +35,7 @@ public class UIManager : MonoBehaviour
 
     private void Setup()
     {
+
         gameOverPanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(true);
         coinsPanel.gameObject.SetActive(true);

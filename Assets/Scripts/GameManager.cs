@@ -123,6 +123,7 @@ public class GameManager : MonoBehaviour
             {
                 GameObject bille = Instantiate(billePrefab, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
                 bille.transform.SetParent(container);
+                bille.tag = "Bille";
 
             }
         }

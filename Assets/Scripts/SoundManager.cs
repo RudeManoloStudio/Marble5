@@ -23,7 +23,7 @@ public class SoundManager : MonoBehaviour
         audioSource.PlayOneShot(soundData.UpdateScoreSound);
     }
 
-    void _OnPoseBille()
+    void _OnPoseBille(object noUse)
     {
         audioSource.PlayOneShot(soundData.PoseBilleSound);
     }

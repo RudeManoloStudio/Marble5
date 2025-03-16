@@ -86,6 +86,7 @@ public class PlacementPlomb : MonoBehaviour
         // On instancie le plomb à la position choisie
         GameObject nouveauPlomb = Instantiate(plomb, positionChoisie, Quaternion.identity);
         nouveauPlomb.transform.SetParent(container);
+        nouveauPlomb.tag = "Plomb";
 
         // Gestion du composant de la bille (rotation éventuelle, etc.)
         BilleController bc = nouveauPlomb.GetComponent<BilleController>();

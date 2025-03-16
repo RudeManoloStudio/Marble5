@@ -73,6 +73,7 @@ public class PlacementBille : MonoBehaviour
 
                     GameObject nouvelleBille = Instantiate(billePrefab, nouvellePosition, Quaternion.identity);
                     nouvelleBille.transform.SetParent(container);
+                    nouvelleBille.tag = "Bille";
                     //Debug.Log("✅ Bille placée en : " + nouvellePosition);
 
                   

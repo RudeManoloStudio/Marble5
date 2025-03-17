@@ -18,7 +18,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform gameOverPanel;
     [SerializeField] private Text yourScoreText;
 
-    [SerializeField] private HighscoreManager highscoreManager;
+
+    private HighscoreManager highscoreManager;
     [SerializeField] private Text highscoreText;
 
 
@@ -32,7 +33,10 @@ public class UIManager : MonoBehaviour
 
         initialCoins = GameManager.Instance.Coins;
 
-        highscoreManager = GetComponent<HighscoreManager>();
+        //highscoreManager = GetComponent<HighscoreManager>();
+        string filePath = Application.persistentDataPath + "/highscores.json";
+        highscoreManager = new HighscoreManager(filePath);
+        //UpdateHighscoreText();
 
         Setup();
 
@@ -82,10 +86,11 @@ public class UIManager : MonoBehaviour
 
     void _OnGameOver()
     {
-        //highscoreManager.LoadHighscores();
         highscoreManager.AddHighscore(score);
-        highscoreText.text = highscoreManager.UpdateHighscoreText();
-        //highscoreManager.SaveHighscores();
+        UpdateHighscoreText();
+
+        //highscoreManager.AddHighscore(score);
+        //highscoreText.text = highscoreManager.UpdateHighscoreText();
 
         gameOverPanel.gameObject.SetActive(true);
         yourScoreText.text = "Your Score : " + score.ToString();
@@ -93,6 +98,11 @@ public class UIManager : MonoBehaviour
         scorePanel.gameObject.SetActive(false);
         coinsPanel.gameObject.SetActive(false);
 
+    }
+
+    private void UpdateHighscoreText()
+    {
+        highscoreText.text = "Highscores:\n" + string.Join("\n", highscoreManager.GetHighscores());
     }
 }
     

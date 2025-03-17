@@ -3,26 +3,37 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class HighscoreManager : MonoBehaviour
+[Serializable]
+public class HighscoreData
+{
+    public List<int> highscores;
+
+    public HighscoreData()
+    {
+        highscores = new List<int>();
+    }
+}
+
+public class HighscoreManager
 {
     private string filePath;
-    private List<int> highscores;
+    private HighscoreData highscoreData;
 
-    void Start()
+    public HighscoreManager(string filePath)
     {
-        filePath = Application.persistentDataPath + "/highscores.json";
+        this.filePath = filePath;
         LoadHighscores();
     }
 
     public void AddHighscore(int score)
     {
-        highscores.Add(score);
-        highscores.Sort();
-        highscores.Reverse();
+        highscoreData.highscores.Add(score);
+        highscoreData.highscores.Sort();
+        highscoreData.highscores.Reverse();
 
-        if (highscores.Count > 5)
+        if (highscoreData.highscores.Count > 5)
         {
-            highscores.RemoveAt(10);
+            highscoreData.highscores.RemoveAt(5);
         }
 
         SaveHighscores();
@@ -30,7 +41,7 @@ public class HighscoreManager : MonoBehaviour
 
     public List<int> GetHighscores()
     {
-        return highscores;
+        return highscoreData.highscores;
     }
 
     private void LoadHighscores()
@@ -38,25 +49,17 @@ public class HighscoreManager : MonoBehaviour
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
-            highscores = JsonUtility.FromJson<List<int>>(json);
+            highscoreData = JsonUtility.FromJson<HighscoreData>(json);
         }
         else
         {
-            highscores = new List<int>();
+            highscoreData = new HighscoreData();
         }
     }
 
     private void SaveHighscores()
     {
-        string json = JsonUtility.ToJson(highscores);
+        string json = JsonUtility.ToJson(highscoreData);
         File.WriteAllText(filePath, json);
-    }
-
-    public String UpdateHighscoreText()
-    {
-        String text;
-        text = "Highscores:\n" + string.Join("\n", highscores);
-
-        return text;
     }
 }

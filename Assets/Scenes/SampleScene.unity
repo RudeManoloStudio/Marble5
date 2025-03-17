@@ -1596,7 +1596,6 @@ GameObject:
   - component: {fileID: 1280661791}
   - component: {fileID: 1280661793}
   - component: {fileID: 1280661790}
-  - component: {fileID: 1280661795}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1783,7 +1782,6 @@ MonoBehaviour:
   coinsText: {fileID: 1697237073}
   gameOverPanel: {fileID: 2115081861}
   yourScoreText: {fileID: 1387527607}
-  highscoreManager: {fileID: 1280661795}
   highscoreText: {fileID: 1840621627}
 --- !u!114 &1280661794
 MonoBehaviour:
@@ -1795,18 +1793,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 698f6eaa236509e4fb3dd37538132664, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1280661795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1280661787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5dbdea32f0f9cb41a0768beca353de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1339421587
@@ -2299,7 +2285,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HighScore
+  m_Text: HighScores
 --- !u!222 &1840621628
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -17,8 +17,12 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Transform gameOverPanel;
     [SerializeField] private Text yourScoreText;
-    
-    
+
+
+    private HighscoreManager highscoreManager;
+    [SerializeField] private Text highscoreText;
+
+
     void Start () 
     {
 
@@ -28,6 +32,9 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener("Replay", _OnReplay);
 
         initialCoins = GameManager.Instance.Coins;
+
+        string filePath = Application.persistentDataPath + "/highscores.json";
+        highscoreManager = new HighscoreManager(filePath);
 
         Setup();
 
@@ -56,14 +63,11 @@ public class UIManager : MonoBehaviour
     void _OnUpdateScoreAndCoins(object scoreAndCoinsToAdd)
     {
 
-        //int[] values = (int[])scoreAndCoinsToAdd;
         Vector2Int values = (Vector2Int)scoreAndCoinsToAdd;
 
-        //coins++;
         coins = coins + values.x;
         coinsText.text = coins.ToString();
 
-        //score++;
         score = score + values.y;
         scoreText.text = score.ToString();
 
@@ -77,13 +81,20 @@ public class UIManager : MonoBehaviour
 
     void _OnGameOver()
     {
+
+        highscoreManager.AddHighscore(score);
+        UpdateHighscoreText();
+
         gameOverPanel.gameObject.SetActive(true);
         yourScoreText.text = "Your Score : " + score.ToString();
         
-
         scorePanel.gameObject.SetActive(false);
         coinsPanel.gameObject.SetActive(false);
+    }
 
+    private void UpdateHighscoreText()
+    {
+        highscoreText.text = "Highscores:\n" + string.Join("\n", highscoreManager.GetHighscores());
     }
 }
     

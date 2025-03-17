@@ -162,6 +162,7 @@ public class GameManager : MonoBehaviour
         }
 
         coins = initialCoins;
+        compteurBilles = 0;
 
         InitializeGame();
     }

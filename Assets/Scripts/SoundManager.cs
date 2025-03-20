@@ -8,6 +8,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private SoundData soundData;
     [SerializeField] AudioSource audioSource;
 
+    private bool soundOn = true;
+
 
     void Start()
     {
@@ -20,16 +22,28 @@ public class SoundManager : MonoBehaviour
 
     void _OnUpdateScoreAndCoins(object noUse)
     {
-        audioSource.PlayOneShot(soundData.UpdateScoreSound);
+        if (soundOn) audioSource.PlayOneShot(soundData.UpdateScoreSound);
     }
 
     void _OnPoseBille(object noUse)
     {
-        audioSource.PlayOneShot(soundData.PoseBilleSound);
+        if (soundOn) audioSource.PlayOneShot(soundData.PoseBilleSound);
     }
 
     void _OnNoPoseBille()
     {
-        audioSource.PlayOneShot(soundData.NoPoseBilleSound);
+        if (soundOn) audioSource.PlayOneShot(soundData.NoPoseBilleSound);
+    }
+
+    public void ToggleFXSound()
+    {
+        if (soundOn)
+        {
+            soundOn = false;
+        }
+        else
+        {
+            soundOn = true;
+        }
     }
 }

@@ -6,21 +6,27 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    [SerializeField] private Transform scorePanel;
+    [SerializeField] private Transform headerPanel;
+    [SerializeField] private Text highScoreText;
     [SerializeField] private Text scoreText;
     private int score;
+    private int highScore;
 
-    [SerializeField] private Transform coinsPanel;
-    [SerializeField] private Text coinsText;
-    private int coins;
-    private int initialCoins;
+    //[SerializeField] private Transform coinsPanel;
+    //[SerializeField] private Text coinsText;
+    //private int coins;
+    //private int initialCoins;
 
     [SerializeField] private Transform gameOverPanel;
     [SerializeField] private Text yourScoreText;
 
 
     private HighscoreManager highscoreManager;
-    [SerializeField] private Text highscoreText;
+    //[SerializeField] private Text highscoreText;
+
+    [SerializeField] private Button toggleFX;
+    [SerializeField] private Sprite fxOn;
+    [SerializeField] private Sprite fxOff;
 
 
     void Start () 
@@ -31,10 +37,11 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener("GameOver", _OnGameOver);
         EventManager.AddListener("Replay", _OnReplay);
 
-        initialCoins = GameManager.Instance.Coins;
+        //initialCoins = GameManager.Instance.Coins;
 
         string filePath = Application.persistentDataPath + "/highscores.json";
         highscoreManager = new HighscoreManager(filePath);
+        highScore = highscoreManager.GetHighscores()[0];
 
         Setup();
 
@@ -44,14 +51,17 @@ public class UIManager : MonoBehaviour
     {
 
         gameOverPanel.gameObject.SetActive(false);
-        scorePanel.gameObject.SetActive(true);
-        coinsPanel.gameObject.SetActive(true);
+        headerPanel.gameObject.SetActive(true);
+        //coinsPanel.gameObject.SetActive(true);
 
         score = 0;
-        coins = initialCoins;
+        //coins = initialCoins;
 
+        highScoreText.text = highScore.ToString();
         scoreText.text = score.ToString();
-        coinsText.text = coins.ToString();
+        //coinsText.text = coins.ToString();
+
+        toggleFX.image.sprite = fxOn;
 
     }
 
@@ -65,8 +75,8 @@ public class UIManager : MonoBehaviour
 
         Vector2Int values = (Vector2Int)scoreAndCoinsToAdd;
 
-        coins = coins + values.x;
-        coinsText.text = coins.ToString();
+        //coins = coins + values.x;
+        //coinsText.text = coins.ToString();
 
         score = score + values.y;
         scoreText.text = score.ToString();
@@ -75,8 +85,8 @@ public class UIManager : MonoBehaviour
 
     void _OnPoseBille(object data)
     {
-        coins--;
-        coinsText.text = coins.ToString();
+        //coins--;
+        //coinsText.text = coins.ToString();
     }
 
     void _OnGameOver()
@@ -88,13 +98,25 @@ public class UIManager : MonoBehaviour
         gameOverPanel.gameObject.SetActive(true);
         yourScoreText.text = "Your Score : " + score.ToString();
         
-        scorePanel.gameObject.SetActive(false);
-        coinsPanel.gameObject.SetActive(false);
+        headerPanel.gameObject.SetActive(false);
+        //coinsPanel.gameObject.SetActive(false);
     }
 
     private void UpdateHighscoreText()
     {
-        highscoreText.text = "Highscores:\n" + string.Join("\n", highscoreManager.GetHighscores());
+        //highscoreText.text = "Highscores:\n" + string.Join("\n", highscoreManager.GetHighscores());
+    }
+
+    public void ToggleFXImage()
+    {
+        if (toggleFX.image.sprite = fxOn)
+        {
+            toggleFX.image.sprite = fxOff;
+        }
+        else
+        {
+            toggleFX.image.sprite = fxOn;
+        }
     }
 }
     

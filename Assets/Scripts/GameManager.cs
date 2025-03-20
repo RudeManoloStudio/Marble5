@@ -3,17 +3,19 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    [Header("Paramètres Grille")]
-    [SerializeField] private Vector2Int gridSize = new Vector2Int(20, 20); // Taille de la grille
+    [SerializeField] private LevelData levelData;
+
+    //[Header("Paramètres Grille")]
+    //[SerializeField] private Vector2Int gridSize = new Vector2Int(20, 20); // Taille de la grille
     [SerializeField] private GameObject gridBackground;
     [SerializeField] private GameObject gridSG;
-    [SerializeField] private MotifData motif;
+    //[SerializeField] private MotifData motif;
 
-    [Space(5)]
-    [Header("Paramètres Billes")]
-    [SerializeField] private GameObject billePrefab; // La bille à placer
-    [SerializeField] private GameObject plombPrefab; // instance bille noire
-    [SerializeField] private GameObject quintePrefab; // objet qui relie les billes dans une quinte
+    //[Space(5)]
+    //[Header("Paramètres Billes")]
+    //[SerializeField] private GameObject billePrefab; // La bille à placer
+    //[SerializeField] private GameObject plombPrefab; // instance bille noire
+    //[SerializeField] private GameObject quintePrefab; // objet qui relie les billes dans une quinte
     [SerializeField] private Transform container;
 
     [Space(5)]
@@ -22,6 +24,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int coins = 5;  // crédits au départ
     [SerializeField] private bool infinisCoins = false; // crédits infinis pour debug
     [SerializeField] private ScoreData scoreData;
+
+    private Vector2Int gridSize;
+    private MotifData motif;
+    private GameObject bille;
+    private GameObject plomb;
+    private GameObject quinte;
+    private Material backgroundMaterial;
 
     private int compteurBilles = 0;
     private int initialCoins;
@@ -39,19 +48,19 @@ public class GameManager : MonoBehaviour
         get { return gridSize; }
     }
 
-    public GameObject BillePrefab
+    public GameObject Bille
     {
-        get { return billePrefab; }
+        get { return bille; }
     }
     
-    public GameObject PlombPrefab
+    public GameObject Plomb
     {
-        get { return plombPrefab; }
+        get { return plomb; }
     }
 
-    public GameObject QuintePrefab
+    public GameObject Quinte
     {
-        get { return quintePrefab; }
+        get { return quinte; }
     }
 
     public Transform Container
@@ -72,6 +81,13 @@ public class GameManager : MonoBehaviour
             // Si une instance existe déjà, détruire cet objet
             Destroy(gameObject);
         }
+
+        gridSize = levelData.layers[0].GridSize;
+        motif = levelData.layers[0].Motif;
+        bille = levelData.layers[0].Bille;
+        plomb = levelData.layers[0].Plomb;
+        quinte = levelData.layers[0].Quinte;
+        backgroundMaterial = levelData.layers[0].BackgroundMaterial;
     }
 
     private void Start()
@@ -121,9 +137,9 @@ public class GameManager : MonoBehaviour
         {
             foreach (Vector2Int position in motif.BillesMotif)
             {
-                GameObject bille = Instantiate(billePrefab, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
-                bille.transform.SetParent(container);
-                bille.tag = "Bille";
+                GameObject newBille = Instantiate(bille, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
+                newBille.transform.SetParent(container);
+                newBille.tag = "Bille";
 
             }
         }
@@ -131,11 +147,13 @@ public class GameManager : MonoBehaviour
 
     private void PositionnerBackgroundEtGrille()
     {
+
         float h_offset = (gridSize.x % 2 == 0) ? h_offset = 0.5f : h_offset = 0f;
         float v_offset = (gridSize.y % 2 == 0) ? v_offset = 0.5f : v_offset = 0f;
 
         gridBackground.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
         gridBackground.transform.localScale = new Vector3(GridSize.x / 10 + 2, 1, GridSize.y / 10 + 2);
+        gridBackground.GetComponent<Renderer>().material = backgroundMaterial;
 
         gridSG.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
         gridSG.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);

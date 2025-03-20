@@ -10,15 +10,18 @@ public class LevelData : ScriptableObject
 	[System.Serializable]
 	public class Layer
 	{
-		public int Star1score;
-		public int Star2Score;
-		public int Star3Score;
+
+		public Vector2Int GridSize;
+
+		public int FirstStarScore;
+		public int SecondStarScore;
+		public int ThirdStarScore;
 
 		public GameObject Bille;
 		public GameObject Plomb;
 		public GameObject Quinte;
 
-		public Material Background;
+		public Material BackgroundMaterial;
 
 		public MotifData Motif;
 

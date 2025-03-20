@@ -11,7 +11,7 @@ public class PlacementPlomb : MonoBehaviour
 
     void Start()
     {
-        plomb = GameManager.Instance.PlombPrefab;
+        plomb = GameManager.Instance.Plomb;
         container = GameManager.Instance.Container;
 
         EventManager.AddListener("PosePlomb", _OnPosePlomb);

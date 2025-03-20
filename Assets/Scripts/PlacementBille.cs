@@ -8,8 +8,8 @@ public class PlacementBille : MonoBehaviour
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();
     private bool verificationEffectuee = false;
 
-    private GameObject billePrefab;
-    private GameObject quintePrefab;
+    private GameObject bille;
+    private GameObject quinte;
     private bool gameOver = false;
 
     private Vector2Int gridSize;
@@ -21,8 +21,8 @@ public class PlacementBille : MonoBehaviour
 
         gridSize = GameManager.Instance.GridSize;
 
-        billePrefab = GameManager.Instance.BillePrefab;
-        quintePrefab = GameManager.Instance.QuintePrefab;
+        bille = GameManager.Instance.Bille;
+        quinte = GameManager.Instance.Quinte;
         container = GameManager.Instance.Container;
         
         EventManager.AddListener("GameOver", _OnGameOver);
@@ -71,7 +71,7 @@ public class PlacementBille : MonoBehaviour
                         return;
                     }
 
-                    GameObject nouvelleBille = Instantiate(billePrefab, nouvellePosition, Quaternion.identity);
+                    GameObject nouvelleBille = Instantiate(bille, nouvellePosition, Quaternion.identity);
                     nouvelleBille.transform.SetParent(container);
                     nouvelleBille.tag = "Bille";
                     //Debug.Log("✅ Bille placée en : " + nouvellePosition);
@@ -717,19 +717,19 @@ public class PlacementBille : MonoBehaviour
         lr.material = ligneMat;
         fin abandon du lr */
 
-        GameObject quinte = Instantiate(quintePrefab, positions[2], Quaternion.identity);
-        quinte.transform.SetParent(container);
+        GameObject newQuinte = Instantiate(quinte, positions[2], Quaternion.identity);
+        newQuinte.transform.SetParent(container);
 
         // calcul de l'orientation de la quinte
         Vector3 direction = positions[1] - positions[0];
 
         // Calculer la rotation nécessaire pour orienter le cylindre
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
-        quinte.transform.rotation = rotation * Quaternion.Euler(90, 0, 0);
+        newQuinte.transform.rotation = rotation * Quaternion.Euler(90, 0, 0);
 
         //pour ensuite etirer
         float distance = Vector3.Distance(positions[0], positions[4]);
-        quinte.transform.localScale = new Vector3(quinte.transform.localScale.x, distance / 2, quinte.transform.localScale.z);
+        newQuinte.transform.localScale = new Vector3(newQuinte.transform.localScale.x, distance / 2, newQuinte.transform.localScale.z);
 
         //stop rotation
         for (int i = 0; i < positions.Count; i++)

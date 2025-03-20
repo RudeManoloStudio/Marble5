@@ -796,7 +796,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a312536256a85ee409ea4fe4dd1012af, type: 2}
+  - {fileID: 2100000, guid: b7e0f6d72d992ef498076814a0d21f61, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1615,13 +1615,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d42dc1d9fa849548aeb236f4060b200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 30, y: 30}
+  levelData: {fileID: 11400000, guid: cd210858077e81e4b86dddd11f671bca, type: 2}
   gridBackground: {fileID: 675520536}
   gridSG: {fileID: 829544821}
-  motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
-  billePrefab: {fileID: 7484250924146756646, guid: 6f66ea3411e12a6449a931345fa8c470, type: 3}
-  plombPrefab: {fileID: 7620533384714353888, guid: be90c221bc964584e9792224de691881, type: 3}
-  quintePrefab: {fileID: 6765585399786045169, guid: 6e3323081eaa0734182d59ccd8b9f88c, type: 3}
   container: {fileID: 1203496605}
   difficulte: 3
   coins: 5

@@ -25,8 +25,8 @@ public class UIManager : MonoBehaviour
     //private int coins;
     //private int initialCoins;
 
-    [SerializeField] private Transform gameOverPanel;
-    [SerializeField] private Text yourScoreText;
+    //[SerializeField] private Transform gameOverPanel;
+    //[SerializeField] private Text yourScoreText;
 
 
     private HighscoreManager highscoreManager;
@@ -40,8 +40,8 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
 
-        gameOverPanel.gameObject.SetActive(false);
-        headerPanel.gameObject.SetActive(true);
+        //gameOverPanel.gameObject.SetActive(false);
+        headerPanel.gameObject.SetActive(false);
         quitPanel.gameObject.SetActive(false);
 
     }
@@ -52,11 +52,17 @@ public class UIManager : MonoBehaviour
 
         for (int x = 0; x < levels ; x++)
         {
-            GameObject lp = Instantiate(levelPrefab);
-            lp.transform.SetParent(levelPanel);
+
+            GameObject lp = Instantiate(levelPrefab, levelPanel);
+                        
+            lp.GetComponent<LevelSelector>().SetLevelID(x);
+
         }
+    }
 
-
+    public void SetLevel(int level)
+    {
+        Debug.Log(level);
     }
 
     void StartLevel() 
@@ -82,7 +88,7 @@ public class UIManager : MonoBehaviour
     private void SetupLevel()
     {
 
-        gameOverPanel.gameObject.SetActive(false);
+        //gameOverPanel.gameObject.SetActive(false);
         headerPanel.gameObject.SetActive(true);
         quitPanel.gameObject.SetActive(false);
         //coinsPanel.gameObject.SetActive(true);
@@ -128,8 +134,8 @@ public class UIManager : MonoBehaviour
         highscoreManager.AddHighscore(score);
         UpdateHighscoreText();
 
-        gameOverPanel.gameObject.SetActive(true);
-        yourScoreText.text = "Your Score : " + score.ToString();
+        //gameOverPanel.gameObject.SetActive(true);
+        //yourScoreText.text = "Your Score : " + score.ToString();
         
         headerPanel.gameObject.SetActive(false);
         //coinsPanel.gameObject.SetActive(false);

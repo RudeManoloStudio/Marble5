@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         backgroundMaterial = levelData.layers[0].BackgroundMaterial;
         difficulte = levelData.layers[0].Difficulte;
     }
-
+    /*
     private void Start()
     {
 
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
 
         InitializeGame();
 
-    }
+    }*/
 
     public void UpdateScoreAndCoins(int quintes)
     {

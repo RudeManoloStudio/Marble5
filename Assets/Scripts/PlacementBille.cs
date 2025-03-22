@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine.EventSystems;
+//using System.Linq;
 
 public class PlacementBille : MonoBehaviour
 {
@@ -51,6 +52,8 @@ public class PlacementBille : MonoBehaviour
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+
+            if (EventSystem.current.IsPointerOverGameObject()) return;
 
             if (Physics.Raycast(ray, out hit))
             {

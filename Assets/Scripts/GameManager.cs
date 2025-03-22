@@ -4,6 +4,7 @@ public class GameManager : MonoBehaviour
 {
 
     [SerializeField] private LevelData levelData;
+    [SerializeField] private UIManager uiManager;
 
     //[Header("Paramètres Grille")]
     //[SerializeField] private Vector2Int gridSize = new Vector2Int(20, 20); // Taille de la grille
@@ -18,9 +19,9 @@ public class GameManager : MonoBehaviour
     //[SerializeField] private GameObject quintePrefab; // objet qui relie les billes dans une quinte
     [SerializeField] private Transform container;
 
-    [Space(5)]
-    [Header("Paramètres Jeu")]
-    [SerializeField] private int difficulte; // difficulté du jeu
+    //[Space(5)]
+    //[Header("Paramètres Jeu")]
+    //[SerializeField] private int difficulte; // difficulté du jeu
     [SerializeField] private int coins = 5;  // crédits au départ
     [SerializeField] private bool infinisCoins = false; // crédits infinis pour debug
     [SerializeField] private ScoreData scoreData;
@@ -31,18 +32,24 @@ public class GameManager : MonoBehaviour
     private GameObject plomb;
     private GameObject quinte;
     private Material backgroundMaterial;
+    private int difficulte;
 
     private int compteurBilles = 0;
     private int initialCoins;
 
     public static GameManager Instance { get; private set; }
 
+    /*
     public int Coins
     {
         get { return initialCoins; }
         set { coins = value; }
     }
-
+    */
+    public SoundData Sounds
+    {
+        get { return levelData.layers[0].Sounds; }
+    }
     public Vector2Int GridSize
     {
         get { return gridSize; }
@@ -82,12 +89,15 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        uiManager.SetMainPanel(levelData.layers.Length);
+
         gridSize = levelData.layers[0].GridSize;
         motif = levelData.layers[0].Motif;
         bille = levelData.layers[0].Bille;
         plomb = levelData.layers[0].Plomb;
         quinte = levelData.layers[0].Quinte;
         backgroundMaterial = levelData.layers[0].BackgroundMaterial;
+        difficulte = levelData.layers[0].Difficulte;
     }
 
     private void Start()

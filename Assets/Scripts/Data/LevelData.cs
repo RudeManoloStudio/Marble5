@@ -27,5 +27,9 @@ public class LevelData : ScriptableObject
 
 		public SoundData Sounds;
 
+		public int Handicap;
+
+		public int Difficulte;
+
 	}
 }

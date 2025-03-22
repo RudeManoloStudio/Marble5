@@ -9,6 +9,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform headerPanel;
     [SerializeField] private Text highScoreText;
     [SerializeField] private Text scoreText;
+    [SerializeField] private Transform quitPanel;
+    [SerializeField] private Transform mainPanel;
+    [SerializeField] private Transform levelPanel;
+    [SerializeField] private GameObject levelPrefab;
+
+
+
+
     private int score;
     private int highScore;
 
@@ -24,12 +32,34 @@ public class UIManager : MonoBehaviour
     private HighscoreManager highscoreManager;
     //[SerializeField] private Text highscoreText;
 
-    [SerializeField] private Button toggleFX;
-    [SerializeField] private Sprite fxOn;
-    [SerializeField] private Sprite fxOff;
+    //[SerializeField] private Button toggleFX;
+    //[SerializeField] private Sprite fxOn;
+    //[SerializeField] private Sprite fxOff;
+    //[SerializeField] private Button QuitButton;
+
+    private void Start()
+    {
+
+        gameOverPanel.gameObject.SetActive(false);
+        headerPanel.gameObject.SetActive(true);
+        quitPanel.gameObject.SetActive(false);
+
+    }
+    public void SetMainPanel(int levels)
+    {
+
+        mainPanel.gameObject.SetActive(true);
+
+        for (int x = 0; x < levels ; x++)
+        {
+            GameObject lp = Instantiate(levelPrefab);
+            lp.transform.SetParent(levelPanel);
+        }
 
 
-    void Start () 
+    }
+
+    void StartLevel() 
     {
 
         EventManager.AddListener("UpdateScoreAndCoins", _OnUpdateScoreAndCoins);
@@ -43,15 +73,18 @@ public class UIManager : MonoBehaviour
         highscoreManager = new HighscoreManager(filePath);
         highScore = highscoreManager.GetHighscores()[0];
 
-        Setup();
+        SetupLevel();
 
     }
 
-    private void Setup()
+
+
+    private void SetupLevel()
     {
 
         gameOverPanel.gameObject.SetActive(false);
         headerPanel.gameObject.SetActive(true);
+        quitPanel.gameObject.SetActive(false);
         //coinsPanel.gameObject.SetActive(true);
 
         score = 0;
@@ -61,13 +94,13 @@ public class UIManager : MonoBehaviour
         scoreText.text = score.ToString();
         //coinsText.text = coins.ToString();
 
-        toggleFX.image.sprite = fxOn;
+        //toggleFX.image.sprite = fxOn;
 
     }
 
     private void _OnReplay()
     {
-        Setup();
+        SetupLevel();
     }
 
     void _OnUpdateScoreAndCoins(object scoreAndCoinsToAdd)
@@ -107,6 +140,21 @@ public class UIManager : MonoBehaviour
         //highscoreText.text = "Highscores:\n" + string.Join("\n", highscoreManager.GetHighscores());
     }
 
+    public void ShowQuitPanel(bool show)
+    {
+        if (show)
+        {
+            quitPanel.gameObject.SetActive(true);
+        }
+        else
+        {
+            quitPanel.gameObject.SetActive(false);
+        }
+    }
+
+
+
+    /*
     public void ToggleFXImage()
     {
         if (toggleFX.image.sprite = fxOn)
@@ -117,6 +165,7 @@ public class UIManager : MonoBehaviour
         {
             toggleFX.image.sprite = fxOn;
         }
-    }
+    }*/
+
 }
     

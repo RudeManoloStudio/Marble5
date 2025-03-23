@@ -134,6 +134,9 @@ public class GameManager : MonoBehaviour
         // preparation du main menu
         uiManager.SetMainPanel(levelData.layers.Length);
         display.HideBackground();
+
+
+
     }
 
 
@@ -172,6 +175,7 @@ public class GameManager : MonoBehaviour
         // FX
         fxManager.Setup(levelData.layers[level].Sounds);
 
+        coins = initialCoins;
 
         
 

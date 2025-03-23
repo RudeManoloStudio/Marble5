@@ -23,19 +23,26 @@ public class CameraController : MonoBehaviour
     {
         mainCamera = GetComponent<Camera>();
 
-        sizeX = GameManager.Instance.GridSize.x;
-        sizeY = GameManager.Instance.GridSize.y;
+        //sizeX = GameManager.Instance.GridSize.x;
+        //sizeY = GameManager.Instance.GridSize.y;
 
-        minPosition = new Vector2(0, 0);
-        maxPosition = new Vector2(sizeX - 1, sizeY - 1);
+        //minPosition = new Vector2(0, 0);
+        //maxPosition = new Vector2(sizeX - 1, sizeY - 1);
 
-        Setup();
+        //Setup();
 
         EventManager.AddListener("Replay", _OnReplay);
     }
 
-    private void Setup()
+    //private void Setup()
+    public void Setup(Vector2Int gridSize)
     {
+
+        sizeX = gridSize.x;
+        sizeY = gridSize.y;
+
+        minPosition = new Vector2(0, 0);
+        maxPosition = new Vector2(sizeX - 1, sizeY - 1);
 
         mainCamera.orthographicSize = 6;
         mainCamera.transform.SetPositionAndRotation(new Vector3(sizeX / 2 + 0.5f, sizeY / 2 + 0.5f, -10), Quaternion.identity);
@@ -106,6 +113,7 @@ public class CameraController : MonoBehaviour
 
     private void _OnReplay()
     {
-        Setup();
+        Vector2Int initialSize = new Vector2Int(sizeX, sizeY);
+        Setup(initialSize);
     }
 }

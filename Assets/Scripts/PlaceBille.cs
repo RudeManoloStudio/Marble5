@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
-//using System.Linq;
 
-public class PlacementBille : MonoBehaviour
+public class PlaceBille : MonoBehaviour
 {
 
+    [SerializeField] private Transform container;
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();
     private bool verificationEffectuee = false;
 
@@ -14,21 +14,37 @@ public class PlacementBille : MonoBehaviour
     private bool gameOver = false;
 
     private Vector2Int gridSize;
-    private Transform container;
+    //private Transform container;
 
 
     private void Start()
     {
 
-        gridSize = GameManager.Instance.GridSize;
+        //gridSize = GameManager.Instance.GridSize;
 
-        bille = GameManager.Instance.Bille;
-        quinte = GameManager.Instance.Quinte;
-        container = GameManager.Instance.Container;
+        //bille = GameManager.Instance.Bille;
+        //quinte = GameManager.Instance.Quinte;
+        //container = GameManager.Instance.Container;
         
         EventManager.AddListener("GameOver", _OnGameOver);
-        EventManager.AddListener("Replay", _OnReplay);
+        //EventManager.AddListener("Replay", _OnReplay);
 
+    }
+
+    public void Setup(Vector2Int gridSize, GameObject bille, GameObject quinte)
+    {
+
+        this.gridSize = gridSize;
+        this.bille = bille;
+        this.quinte = quinte;
+    }
+
+    public void Replay()
+    {
+        
+            liaisonsUtilisées.Clear();
+            gameOver = false;
+        
     }
 
     private void _OnGameOver()
@@ -36,11 +52,13 @@ public class PlacementBille : MonoBehaviour
         gameOver = true;
     }
 
+    /*
     private void _OnReplay()
     {
         liaisonsUtilisées.Clear();
         gameOver = false;
     }
+    */
 
     void Update()
     {
@@ -89,7 +107,7 @@ public class PlacementBille : MonoBehaviour
                     if (quinteTrouvees > 0)
                     {
                         //Debug.Log("🎯 Une quinte a été détectée !");
-                        //EventManager.TriggerEvent("UpdateScore");
+                        
                         GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
                     }
 

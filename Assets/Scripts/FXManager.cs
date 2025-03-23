@@ -16,15 +16,18 @@ public class FXManager : MonoBehaviour
 
     void Start()
     {
-        soundData = GameManager.Instance.Sounds;
+        //soundData = GameManager.Instance.Sounds;
 
         audioSource = GetComponent<AudioSource>();
 
         EventManager.AddListener("UpdateScoreAndCoins", _OnUpdateScoreAndCoins);
         EventManager.AddListener("PoseBille", _OnPoseBille);
         EventManager.AddListener("NoPoseBille", _OnNoPoseBille);
+    }
 
-        //if (musicOn) audioSource.PlayOneShot(soundData.Playlist[0]);
+    public void Setup(SoundData soundData)
+    {
+        this.soundData = soundData;
     }
 
     void _OnUpdateScoreAndCoins(object noUse)
@@ -53,18 +56,4 @@ public class FXManager : MonoBehaviour
             fxOn = true;
         }
     }
-
-    /*
-    public void ToggleMusicSound()
-    {
-        if (musicOn)
-        {
-            musicOn = false;
-        }
-        else
-        {
-            musicOn = true;
-        }
-    }
-    */
 }

@@ -24,16 +24,16 @@ MonoBehaviour:
     Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
     Sounds: {fileID: 11400000, guid: 483a7048415fece489914e9366e35753, type: 2}
     Handicap: 0
-    Difficulte: 3
+    Difficulte: 4
   - GridSize: {x: 30, y: 30}
     FirstStarScore: 50
     SecondStarScore: 75
     ThirdStarScore: 100
-    Bille: {fileID: 7620533384714353888, guid: be90c221bc964584e9792224de691881, type: 3}
-    Plomb: {fileID: 7484250924146756646, guid: 6f66ea3411e12a6449a931345fa8c470, type: 3}
+    Bille: {fileID: 7484250924146756646, guid: 6f66ea3411e12a6449a931345fa8c470, type: 3}
+    Plomb: {fileID: 7620533384714353888, guid: be90c221bc964584e9792224de691881, type: 3}
     Quinte: {fileID: 6765585399786045169, guid: 6e3323081eaa0734182d59ccd8b9f88c, type: 3}
     BackgroundMaterial: {fileID: 2100000, guid: a312536256a85ee409ea4fe4dd1012af, type: 2}
     Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
     Sounds: {fileID: 11400000, guid: 483a7048415fece489914e9366e35753, type: 2}
     Handicap: 9
-    Difficulte: 3
+    Difficulte: 4

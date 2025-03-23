@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform mainPanel;
     [SerializeField] private Transform levelPanel;
     [SerializeField] private GameObject levelPrefab;
+    [SerializeField] private Transform gameOverPanel;
 
 
 
@@ -40,7 +41,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
 
-        //gameOverPanel.gameObject.SetActive(false);
+        gameOverPanel.gameObject.SetActive(false);
         headerPanel.gameObject.SetActive(false);
         quitPanel.gameObject.SetActive(false);
 
@@ -49,6 +50,10 @@ public class UIManager : MonoBehaviour
     {
 
         mainPanel.gameObject.SetActive(true);
+        gameOverPanel.gameObject.SetActive(false);
+        headerPanel.gameObject.SetActive(false);
+
+        ClearMenu();
 
         for (int x = 0; x < levels ; x++)
         {
@@ -57,12 +62,44 @@ public class UIManager : MonoBehaviour
                         
             lp.GetComponent<LevelSelector>().SetLevelID(x);
 
+            Button button = lp.GetComponent<Button>();
+            AddLevelButton(button, x);
+
         }
     }
 
-    public void SetLevel(int level)
+    private void AddLevelButton(Button b, int x)
     {
-        Debug.Log(level);
+        b.onClick.AddListener(() => GameManager.Instance.PrepareLevel(x));
+    }
+
+    private void ClearMenu()
+    {
+        foreach (Transform child in levelPanel)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void SetGameMode()
+    {
+        mainPanel.gameObject.SetActive(false);
+        gameOverPanel.gameObject.SetActive(false);
+        headerPanel.gameObject.SetActive(true);
+    }
+
+    public void GameOver()
+    {
+
+        //highscoreManager.AddHighscore(score);
+        //UpdateHighscoreText();
+
+        //gameOverPanel.gameObject.SetActive(true);
+        //yourScoreText.text = "Your Score : " + score.ToString();
+
+        headerPanel.gameObject.SetActive(false);
+        gameOverPanel.gameObject.SetActive(true);
+        //coinsPanel.gameObject.SetActive(false);
     }
 
     void StartLevel() 
@@ -70,7 +107,7 @@ public class UIManager : MonoBehaviour
 
         EventManager.AddListener("UpdateScoreAndCoins", _OnUpdateScoreAndCoins);
         EventManager.AddListener("PoseBille", _OnPoseBille);
-        EventManager.AddListener("GameOver", _OnGameOver);
+        //EventManager.AddListener("GameOver", _OnGameOver);
         EventManager.AddListener("Replay", _OnReplay);
 
         //initialCoins = GameManager.Instance.Coins;
@@ -128,6 +165,7 @@ public class UIManager : MonoBehaviour
         //coinsText.text = coins.ToString();
     }
 
+    /*
     void _OnGameOver()
     {
 
@@ -140,12 +178,24 @@ public class UIManager : MonoBehaviour
         headerPanel.gameObject.SetActive(false);
         //coinsPanel.gameObject.SetActive(false);
     }
+    */
 
     private void UpdateHighscoreText()
     {
         //highscoreText.text = "Highscores:\n" + string.Join("\n", highscoreManager.GetHighscores());
     }
 
+    public void ShowQuitPanel()
+    {
+        quitPanel.gameObject.SetActive(true);
+    }
+
+    public void HideQuitPanel()
+    {
+        quitPanel.gameObject.SetActive(false);
+    }
+
+    /*
     public void ShowQuitPanel(bool show)
     {
         if (show)
@@ -157,7 +207,7 @@ public class UIManager : MonoBehaviour
             quitPanel.gameObject.SetActive(false);
         }
     }
-
+    /*
 
 
     /*

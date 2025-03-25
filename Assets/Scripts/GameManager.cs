@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
     private int initialCoins;
     private int difficulte;
     private int level;
+    private int score;
+    private UserDataManager userDataManager;
 
     public static GameManager Instance { get; private set; }
 
@@ -121,12 +123,18 @@ public class GameManager : MonoBehaviour
         placePlomb = GetComponent<PlacePlomb>();
 
         //ici on va coder le chargement des préférences user        
+        string filePath = Application.persistentDataPath + "/userdata.json";
+        userDataManager = new UserDataManager(filePath);
+        //userda = highscoreManager.GetHighscores()[0];
+
+
         MainMenu();
 
 
         EventManager.AddListener("PoseBille", _OnPoseBille);
 
         initialCoins = coins;
+        score = 0;
     }
 
     public void MainMenu()
@@ -213,6 +221,7 @@ public class GameManager : MonoBehaviour
 
         coins = initialCoins;
         compteurBilles = 0;
+        score = 0;
 
         //InitializeGame();
     }
@@ -239,6 +248,8 @@ public class GameManager : MonoBehaviour
         values.y = scoreData.Score[quintes - 1];
 
         EventManager.TriggerEvent("UpdateScoreAndCoins", values);
+
+        score += scoreData.Score[quintes - 1];
     }
 
     private void _OnPoseBille(object billePosition)
@@ -249,6 +260,7 @@ public class GameManager : MonoBehaviour
         if (coins <= 0 && !infinisCoins)
         {
             uiManager.GameOver();
+            userDataManager.AddHighscore(0, score);
         }
 
         /*

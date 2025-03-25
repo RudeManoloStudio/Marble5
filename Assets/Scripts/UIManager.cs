@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
     //[SerializeField] private Text yourScoreText;
 
 
-    private HighscoreManager highscoreManager;
+    //private HighscoreManager highscoreManager;
     //[SerializeField] private Text highscoreText;
 
     //[SerializeField] private Button toggleFX;
@@ -112,11 +112,11 @@ public class UIManager : MonoBehaviour
 
         //initialCoins = GameManager.Instance.Coins;
 
-        string filePath = Application.persistentDataPath + "/highscores.json";
-        highscoreManager = new HighscoreManager(filePath);
-        highScore = highscoreManager.GetHighscores()[0];
+        //string filePath = Application.persistentDataPath + "/highscores.json";
+        //highscoreManager = new HighscoreManager(filePath);
+        //highScore = highscoreManager.GetHighscores()[0];
 
-        SetupLevel();
+        //SetupLevel();
 
     }
 

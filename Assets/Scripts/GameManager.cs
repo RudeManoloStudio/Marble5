@@ -9,36 +9,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private DisplayController display;
     [SerializeField] private MusicManager musicManager;
     [SerializeField] private FXManager fxManager;
-
-
-    //[Header("Param�tres Grille")]
-    //[SerializeField] private Vector2Int gridSize = new Vector2Int(20, 20); // Taille de la grille
-    //[SerializeField] private GameObject gridBackground;
-    //[SerializeField] private GameObject gridSG;
-    //[SerializeField] private MotifData motif;
-
-    //[Space(5)]
-    //[Header("Param�tres Billes")]
-    //[SerializeField] private GameObject billePrefab; // La bille � placer
-    //[SerializeField] private GameObject plombPrefab; // instance bille noire
-    //[SerializeField] private GameObject quintePrefab; // objet qui relie les billes dans une quinte
-    //[SerializeField] private Transform container;
-
-    //[Space(5)]
-    //[Header("Param�tres Jeu")]
-    //[SerializeField] private int difficulte; // difficult� du jeu
     [SerializeField] private int coins = 5;  // cr�dits au d�part
     [SerializeField] private bool infinisCoins = false; // cr�dits infinis pour debug
     [SerializeField] private ScoreData scoreData;
 
     private Vector2Int gridSize;
-    //private MotifData motif;
-    //private GameObject bille;
-    //private GameObject plomb;
-    //private GameObject quinte;
-    //private Material backgroundMaterial;
-    //private int difficulte;
-
     private PlaceBille placeBille;
     private PlacePlomb placePlomb;
     private int compteurBilles = 0;
@@ -51,57 +26,6 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, int> scores;
 
     public static GameManager Instance { get; private set; }
-
-    /*
-    public int Coins
-    {
-        get { return initialCoins; }
-        set { coins = value; }
-    }
-    */
-
-    /*
-    public SoundData Sounds
-    {
-        get { return levelData.layers[0].Sounds; }
-    }
-    */
-
-    /*
-    public Vector2Int GridSize
-    {
-        get { return gridSize; }
-    }
-    */
-
-    /*
-    public GameObject Bille
-    {
-        get { return bille; }
-    }
-    */
-
-    /*
-    public GameObject Plomb
-    {
-        get { return plomb; }
-    }
-    */
-
-    /*
-    public GameObject Quinte
-    {
-        get { return quinte; }
-    }
-    */
-
-    /*
-    public Transform Container
-    {
-        get { return container; }
-    }
-    */
-
 
     private void Awake()
     {
@@ -117,7 +41,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 
     private void Start()
     {
@@ -187,7 +110,7 @@ public class GameManager : MonoBehaviour
 
             list.Add(levelStruct);
         }
-        Debug.Log("gm : " + list.Count);
+
         uiManager.SetMainPanel(list);
         display.HideBackground();
     }
@@ -197,18 +120,13 @@ public class GameManager : MonoBehaviour
     public void PrepareLevel(int level)
     {
 
-        // pour l'instant x = 0
-        //levelToPrepare = 0;
-
         this.level = level;
 
-        // pour l'instant on cache le main UI sans v�rifier si le niveau est accessible
-        // et on affiche le header UI
         uiManager.SetGameMode();
 
-        if (scores.ContainsKey(0))
+        if (scores.ContainsKey(level))
         {
-            uiManager.SetHighScoreText(scores[0]);
+            uiManager.SetHighScoreText(scores[level]);
         }
         else
         {
@@ -241,60 +159,12 @@ public class GameManager : MonoBehaviour
         coins = initialCoins;
         compteurBilles = 0;
         score = 0;
-
-
-
-        //motif = levelData.layers[0].Motif;
-        //bille = levelData.layers[0].Bille;
-        //plomb = levelData.layers[0].Plomb;
-        //quinte = levelData.layers[0].Quinte;
-        //backgroundMaterial = levelData.layers[0].BackgroundMaterial;
-        //difficulte = levelData.layers[0].Difficulte;
-
-
     }
 
     public void Replay()
     {
         PrepareLevel(level);
-        //uiManager.SetGameMode();
-
-        // positionnement de la camera
-        //Camera.main.GetComponent<CameraController>().Setup(gridSize);
-
-        //display.ClearBoard();
-        //if (levelData.layers[level] != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif); }
-
-
-
-        //EventManager.TriggerEvent("Replay");
-
-
-        //foreach (Transform child in container.transform)
-        //{
-        //Destroy(child.gameObject);
-        //}
-
-
-        //coins = initialCoins;
-        //compteurBilles = 0;
-        //score = 0;
-
-        //InitializeGame();
     }
-
-    /*
-    private void Start()
-    {
-
-        EventManager.AddListener("PoseBille", _OnPoseBille);
-
-        initialCoins = coins;
-
-        InitializeGame();
-
-    }
-    */
 
     public void UpdateScoreAndCoins(int quintes)
     {
@@ -313,20 +183,28 @@ public class GameManager : MonoBehaviour
 
     private void _OnPoseBille(object billePosition)
     {
+
         Vector3 bPosition = (Vector3)(billePosition);
         coins--;
 
         if (coins <= 0 && !infinisCoins)
         {
+            
+            if (scores.ContainsKey(level))
+            {
+                if (score >= scores[level])
+                {
+                    scores[level] = score;
+                }
+            }
+            else
+            {
+                scores.Add(level, score);
+            }
+            
             uiManager.GameOver();
+        
         }
-
-        /*
-        if (coins <= 0 && !infinisCoins)
-        {
-            EventManager.TriggerEvent("GameOver");
-        }
-        */
 
         compteurBilles++;
         if (compteurBilles >= difficulte)
@@ -334,79 +212,7 @@ public class GameManager : MonoBehaviour
             placePlomb.PlacePlombAt(bPosition);
             compteurBilles = 0;
         }
-
-        /*
-        if (compteurBilles >= difficulte)
-        { 
-            EventManager.TriggerEvent("PosePlomb", bPosition);
-            compteurBilles = 0;
-        }*/
-
     }
-
-    /*
-    private void GenererMotif()
-    {
-        if (motif != null)
-        {
-            foreach (Vector2Int position in motif.BillesMotif)
-            {
-                GameObject newBille = Instantiate(bille, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
-                newBille.transform.SetParent(container);
-                newBille.tag = "Bille";
-
-            }
-        }
-    }
-    */
-
-    /*
-    private void PositionnerBackgroundEtGrille()
-    {
-
-        float h_offset = (gridSize.x % 2 == 0) ? h_offset = 0.5f : h_offset = 0f;
-        float v_offset = (gridSize.y % 2 == 0) ? v_offset = 0.5f : v_offset = 0f;
-
-        gridBackground.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
-        gridBackground.transform.localScale = new Vector3(gridSize.x / 10 + 2, 1, gridSize.y / 10 + 2);
-        gridBackground.GetComponent<Renderer>().material = backgroundMaterial;
-
-        gridSG.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
-        gridSG.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);
-        Material gridSGMaterial = gridSG.GetComponent<MeshRenderer>().material;
-        gridSGMaterial.SetVector("_tiling", new Vector4(gridSize.x, gridSize.y));
-
-    }
-    */
-
-    /*
-    private void InitializeGame()
-    {
-
-        //GenererMotif();
-        //PositionnerBackgroundEtGrille();
-
-    }
-    */
-
-    /*
-    public void Replay()
-    {
-        EventManager.TriggerEvent("Replay");
-
-        
-        //foreach (Transform child in container.transform)
-        //{
-            //Destroy(child.gameObject);
-        //}
-        
-
-        coins = initialCoins;
-        compteurBilles = 0;
-
-        InitializeGame();
-    }
-    */
 
     public void Quit()
     {

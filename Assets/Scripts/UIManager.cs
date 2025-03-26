@@ -86,6 +86,7 @@ public class UIManager : MonoBehaviour
         mainPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
         headerPanel.gameObject.SetActive(true);
+        scoreText.text = "0";
     }
 
     public void GameOver()
@@ -100,6 +101,16 @@ public class UIManager : MonoBehaviour
         headerPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(true);
         //coinsPanel.gameObject.SetActive(false);
+    }
+
+    public void UpdateScore(int score)
+    {
+        scoreText.text = score.ToString();
+    }
+
+    public void SetHighScoreText(int highScore)
+    {
+        highScoreText.text = highScore.ToString();
     }
 
     void StartLevel() 

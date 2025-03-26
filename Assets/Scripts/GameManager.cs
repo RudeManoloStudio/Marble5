@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -45,7 +46,9 @@ public class GameManager : MonoBehaviour
     private int difficulte;
     private int level;
     private int score;
-    private UserDataManager userDataManager;
+
+    // ceci sera supprimé quand on pourra sauvegarder sur disque
+    private Dictionary<int, int> scores;
 
     public static GameManager Instance { get; private set; }
 
@@ -122,14 +125,10 @@ public class GameManager : MonoBehaviour
         placeBille = GetComponent<PlaceBille>();
         placePlomb = GetComponent<PlacePlomb>();
 
-        //ici on va coder le chargement des préférences user        
-        string filePath = Application.persistentDataPath + "/userdata.json";
-        userDataManager = new UserDataManager(filePath);
-        //userda = highscoreManager.GetHighscores()[0];
-
+        //ici on va coder le chargement des préférences user
+        scores = new Dictionary<int, int>();
 
         MainMenu();
-
 
         EventManager.AddListener("PoseBille", _OnPoseBille);
 
@@ -142,9 +141,6 @@ public class GameManager : MonoBehaviour
         // preparation du main menu
         uiManager.SetMainPanel(levelData.layers.Length);
         display.HideBackground();
-
-
-
     }
 
 
@@ -160,6 +156,17 @@ public class GameManager : MonoBehaviour
         // pour l'instant on cache le main UI sans vérifier si le niveau est accessible
         // et on affiche le header UI
         uiManager.SetGameMode();
+
+        if (scores.ContainsKey(0))
+        {
+            uiManager.SetHighScoreText(scores[0]);
+        }
+        else
+        {
+            uiManager.SetHighScoreText(0);
+        }
+
+        
 
         gridSize = levelData.layers[level].GridSize;
 
@@ -250,6 +257,8 @@ public class GameManager : MonoBehaviour
         EventManager.TriggerEvent("UpdateScoreAndCoins", values);
 
         score += scoreData.Score[quintes - 1];
+
+        uiManager.UpdateScore(score);
     }
 
     private void _OnPoseBille(object billePosition)
@@ -259,8 +268,11 @@ public class GameManager : MonoBehaviour
 
         if (coins <= 0 && !infinisCoins)
         {
+            
+
+
+
             uiManager.GameOver();
-            userDataManager.AddHighscore(0, score);
         }
 
         /*

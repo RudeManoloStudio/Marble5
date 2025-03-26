@@ -9,17 +9,21 @@ public class LevelSelector : MonoBehaviour
     [SerializeField] private Image star2;
     [SerializeField] private Image star3;
 
-
-    public void SetLevelID(int level)
+    public void SetLevelParameters(LevelStruct level)
     {
 
-        text.text = level.ToString();
+        text.text = level.ID.ToString();
 
-        star1.color = new Color(star1.color.r, star1.color.g, star1.color.b, 1f);
-        star2.color = new Color(star2.color.r, star2.color.g, star2.color.b, 0.25f);
-        star3.color = new Color(star3.color.r, star3.color.g, star3.color.b, 0.25f);
+        if (level.stars == 0 && !level.available)
+        {
+            //superposer le cadenas
+        }
+        else
+        {
+            if (level.stars == 1) star1.color = new Color(star1.color.r, star1.color.g, star1.color.b, 1f);
+            if (level.stars == 2) star2.color = new Color(star2.color.r, star2.color.g, star2.color.b, 1f);
+            if (level.stars == 3) star3.color = new Color(star2.color.r, star2.color.g, star2.color.b, 1f);
+        }
 
     }
-
-
 }

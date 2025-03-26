@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,24 +11,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] private FXManager fxManager;
 
 
-    //[Header("Paramètres Grille")]
+    //[Header("Paramï¿½tres Grille")]
     //[SerializeField] private Vector2Int gridSize = new Vector2Int(20, 20); // Taille de la grille
     //[SerializeField] private GameObject gridBackground;
     //[SerializeField] private GameObject gridSG;
     //[SerializeField] private MotifData motif;
 
     //[Space(5)]
-    //[Header("Paramètres Billes")]
-    //[SerializeField] private GameObject billePrefab; // La bille à placer
+    //[Header("Paramï¿½tres Billes")]
+    //[SerializeField] private GameObject billePrefab; // La bille ï¿½ placer
     //[SerializeField] private GameObject plombPrefab; // instance bille noire
     //[SerializeField] private GameObject quintePrefab; // objet qui relie les billes dans une quinte
     //[SerializeField] private Transform container;
 
     //[Space(5)]
-    //[Header("Paramètres Jeu")]
-    //[SerializeField] private int difficulte; // difficulté du jeu
-    [SerializeField] private int coins = 5;  // crédits au départ
-    [SerializeField] private bool infinisCoins = false; // crédits infinis pour debug
+    //[Header("Paramï¿½tres Jeu")]
+    //[SerializeField] private int difficulte; // difficultï¿½ du jeu
+    [SerializeField] private int coins = 5;  // crï¿½dits au dï¿½part
+    [SerializeField] private bool infinisCoins = false; // crï¿½dits infinis pour debug
     [SerializeField] private ScoreData scoreData;
 
     private Vector2Int gridSize;
@@ -44,10 +44,10 @@ public class GameManager : MonoBehaviour
     private int compteurBilles = 0;
     private int initialCoins;
     private int difficulte;
-    private int level;
     private int score;
+    private int level;
 
-    // ceci sera supprimé quand on pourra sauvegarder sur disque
+    // ceci sera supprimï¿½ quand on pourra sauvegarder sur disque
     private Dictionary<int, int> scores;
 
     public static GameManager Instance { get; private set; }
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
     {
         get { return gridSize; }
     }
-    */    
+    */
 
     /*
     public GameObject Bille
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         get { return bille; }
     }
     */
-    
+
     /*
     public GameObject Plomb
     {
@@ -102,22 +102,22 @@ public class GameManager : MonoBehaviour
     }
     */
 
-    
+
     private void Awake()
     {
-        // Vérifie si une instance existe déjà
+        // Vï¿½rifie si une instance existe dï¿½jï¿½
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Permet de conserver l'objet entre les scènes
+            DontDestroyOnLoad(gameObject); // Permet de conserver l'objet entre les scï¿½nes
         }
         else
         {
-            // Si une instance existe déjà, détruire cet objet
+            // Si une instance existe dï¿½jï¿½, dï¿½truire cet objet
             Destroy(gameObject);
         }
     }
-    
+
 
     private void Start()
     {
@@ -125,10 +125,11 @@ public class GameManager : MonoBehaviour
         placeBille = GetComponent<PlaceBille>();
         placePlomb = GetComponent<PlacePlomb>();
 
-        //ici on va coder le chargement des préférences user
+        // ici on va coder le chargement des prï¿½fï¿½rences user
+        // pour l'instant pas de sauvegarde
         scores = new Dictionary<int, int>();
 
-        MainMenu();
+        PrepareMainMenu();
 
         EventManager.AddListener("PoseBille", _OnPoseBille);
 
@@ -136,24 +137,72 @@ public class GameManager : MonoBehaviour
         score = 0;
     }
 
-    public void MainMenu()
+    public void PrepareMainMenu()
     {
         // preparation du main menu
-        uiManager.SetMainPanel(levelData.layers.Length);
+        // on envoie au uiManager les Ã©lÃ©ments nÃ©cessaires dans une liste
+        // pour chaque level : int ID & int Ã©toiles obtenues
+
+        List<LevelStruct> list = new List<LevelStruct>();
+
+        for (int x = 0; x < levelData.layers.Length; x++)
+        {
+
+            LevelStruct levelStruct = new LevelStruct();
+
+            levelStruct.ID = x;
+            levelStruct.stars = 0;
+            if (x == 0)
+            {
+                levelStruct.available = true;
+            }
+            else
+            {
+                levelStruct.available = false;
+            }
+
+            int stars = 0;
+            if (scores.ContainsKey(x))
+            {
+                int value = scores[x];
+                if (value >= levelData.layers[x].FirstStarScore)
+                {
+                    stars++;
+                }
+                if (value >= levelData.layers[x].SecondStarScore)
+                {
+                    stars++;
+                }
+                if (value >= levelData.layers[x].ThirdStarScore)
+                {
+                    stars++;
+                }
+            }
+
+            if (stars > 0)
+            {
+                levelStruct.available = true;
+                levelStruct.stars = stars;
+            }
+
+            list.Add(levelStruct);
+        }
+        Debug.Log("gm : " + list.Count);
+        uiManager.SetMainPanel(list);
         display.HideBackground();
     }
 
 
 
-    public void PrepareLevel(int levelToPrepare)
+    public void PrepareLevel(int level)
     {
-        
+
         // pour l'instant x = 0
-        levelToPrepare = 0;
+        //levelToPrepare = 0;
 
-        this.level = levelToPrepare;
+        this.level = level;
 
-        // pour l'instant on cache le main UI sans vérifier si le niveau est accessible
+        // pour l'instant on cache le main UI sans vï¿½rifier si le niveau est accessible
         // et on affiche le header UI
         uiManager.SetGameMode();
 
@@ -166,14 +215,13 @@ public class GameManager : MonoBehaviour
             uiManager.SetHighScoreText(0);
         }
 
-        
-
         gridSize = levelData.layers[level].GridSize;
 
         // positionnement de la camera
         Camera.main.GetComponent<CameraController>().Setup(gridSize);
 
         // bille + plomb + background + grid
+        display.ClearBoard();
         display.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
         display.ShowBackground();
         display.PrepareBackgroundAndGrid(gridSize, levelData.layers[level].BackgroundMaterial);
@@ -191,8 +239,10 @@ public class GameManager : MonoBehaviour
         fxManager.Setup(levelData.layers[level].Sounds);
 
         coins = initialCoins;
+        compteurBilles = 0;
+        score = 0;
 
-        
+
 
         //motif = levelData.layers[0].Motif;
         //bille = levelData.layers[0].Bille;
@@ -206,14 +256,14 @@ public class GameManager : MonoBehaviour
 
     public void Replay()
     {
-
-        uiManager.SetGameMode();
+        PrepareLevel(level);
+        //uiManager.SetGameMode();
 
         // positionnement de la camera
-        Camera.main.GetComponent<CameraController>().Setup(gridSize);
+        //Camera.main.GetComponent<CameraController>().Setup(gridSize);
 
-        display.ClearBoard();
-        if (levelData.layers[level] != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif); }
+        //display.ClearBoard();
+        //if (levelData.layers[level] != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif); }
 
 
 
@@ -226,9 +276,9 @@ public class GameManager : MonoBehaviour
         //}
 
 
-        coins = initialCoins;
-        compteurBilles = 0;
-        score = 0;
+        //coins = initialCoins;
+        //compteurBilles = 0;
+        //score = 0;
 
         //InitializeGame();
     }
@@ -268,10 +318,6 @@ public class GameManager : MonoBehaviour
 
         if (coins <= 0 && !infinisCoins)
         {
-            
-
-
-
             uiManager.GameOver();
         }
 
@@ -295,7 +341,7 @@ public class GameManager : MonoBehaviour
             EventManager.TriggerEvent("PosePlomb", bPosition);
             compteurBilles = 0;
         }*/
-        
+
     }
 
     /*
@@ -368,3 +414,9 @@ public class GameManager : MonoBehaviour
     }
 }
 
+public struct LevelStruct
+{
+    public int ID;
+    public bool available;
+    public int stars;
+}

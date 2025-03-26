@@ -46,7 +46,7 @@ public class UIManager : MonoBehaviour
         quitPanel.gameObject.SetActive(false);
 
     }
-    public void SetMainPanel(int levels)
+    public void SetMainPanel(List<LevelStruct> list)
     {
 
         mainPanel.gameObject.SetActive(true);
@@ -55,14 +55,25 @@ public class UIManager : MonoBehaviour
 
         ClearMenu();
 
-        for (int x = 0; x < levels ; x++)
+        Debug.Log("ui : " + list.Count);
+
+        // préparer le premier level, toujours available
+        GameObject lp = Instantiate(levelPrefab, levelPanel);
+
+        lp.GetComponent<LevelSelector>().SetLevelParameters(list[0]);
+
+        Button button = lp.GetComponent<Button>();
+        AddLevelButton(button, 0);
+
+        // puis les levels suivants
+        for (int x = 1; x < list.Count; x++)
         {
 
-            GameObject lp = Instantiate(levelPrefab, levelPanel);
-                        
-            lp.GetComponent<LevelSelector>().SetLevelID(x);
+            lp = Instantiate(levelPrefab, levelPanel);
 
-            Button button = lp.GetComponent<Button>();
+            lp.GetComponent<LevelSelector>().SetLevelParameters(list[x]);
+
+            button = lp.GetComponent<Button>();
             AddLevelButton(button, x);
 
         }
@@ -113,7 +124,7 @@ public class UIManager : MonoBehaviour
         highScoreText.text = highScore.ToString();
     }
 
-    void StartLevel() 
+    void StartLevel()
     {
 
         EventManager.AddListener("UpdateScoreAndCoins", _OnUpdateScoreAndCoins);
@@ -235,4 +246,3 @@ public class UIManager : MonoBehaviour
     }*/
 
 }
-    

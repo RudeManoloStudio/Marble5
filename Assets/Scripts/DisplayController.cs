@@ -61,16 +61,35 @@ public class DisplayController : MonoBehaviour
 
     }
 
-    public void PrepareMotif(Vector2Int gridSize, MotifData motif)
+    public void PrepareMotif(Vector2Int gridSize, MotifData motif, int handicap)
     {
         if (motif != null)
         {
-            foreach (Vector2Int position in motif.BillesMotif)
+
+            handicap = handicap > motif.BillesMotif.Length ? motif.BillesMotif.Length : handicap;
+
+            List<Vector2Int> billesConservees = new List<Vector2Int>(motif.BillesMotif);
+            List<Vector2Int> billesTransformees = new List<Vector2Int>();
+
+            for (int i = 0; i < handicap; i++)
+            {
+                int randomBille = Random.Range(0, billesConservees.Count);
+                billesTransformees.Add(billesConservees[randomBille]);
+                billesConservees.RemoveAt(randomBille);
+            }
+
+            foreach (Vector2Int position in billesConservees)
             {
                 GameObject newBille = Instantiate(bille, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
                 newBille.transform.SetParent(container);
                 newBille.tag = "Bille";
+            }
 
+            foreach (Vector2Int position in billesTransformees)
+            {
+                GameObject newPlomb = Instantiate(plomb, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
+                newPlomb.transform.SetParent(container);
+                newPlomb.tag = "Plomb";
             }
         }
     }

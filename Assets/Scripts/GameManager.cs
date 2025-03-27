@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private int difficulte;
     private int score;
     private int level;
+    private int handicap;
 
     // ceci sera supprim� quand on pourra sauvegarder sur disque
     private Dictionary<int, int> scores;
@@ -156,6 +157,7 @@ public class GameManager : MonoBehaviour
         }
 
         gridSize = levelData.layers[level].GridSize;
+        handicap = levelData.layers[level].Handicap;
 
         // positionnement de la camera
         Camera.main.GetComponent<CameraController>().Setup(gridSize);
@@ -165,7 +167,7 @@ public class GameManager : MonoBehaviour
         display.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
         display.ShowBackground();
         display.PrepareBackgroundAndGrid(gridSize, levelData.layers[level].BackgroundMaterial);
-        if (levelData.layers[level] != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif); }
+        if (levelData.layers[level].Motif != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif, handicap); }
 
         placeBille.Setup(gridSize, levelData.layers[level].Bille, levelData.layers[level].Quinte);
         placePlomb.Setup(gridSize, levelData.layers[level].Plomb);

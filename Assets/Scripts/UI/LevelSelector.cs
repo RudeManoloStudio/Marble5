@@ -15,7 +15,7 @@ public class LevelSelector : MonoBehaviour
 
         text.text = level.ID.ToString();
 
-        if (level.stars == 0)
+        if (!level.available)
         {
             //superposer le cadenas
             vault.gameObject.SetActive(true);
@@ -28,9 +28,9 @@ public class LevelSelector : MonoBehaviour
             if (level.stars == 3) star3.color = new Color(star2.color.r, star2.color.g, star2.color.b, 1f);
         }
 
-        if (level.ID == 0)
-        {
-            vault.gameObject.SetActive(false);
-        }
+        //if (level.ID == 0)
+        //{
+        //    vault.gameObject.SetActive(false);
+        //}
     }
 }

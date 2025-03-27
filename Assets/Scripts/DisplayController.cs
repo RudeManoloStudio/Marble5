@@ -27,9 +27,10 @@ public class DisplayController : MonoBehaviour
         }
     }
 
-    public void HideBackground()
+    public void ResetBoard()
     {
         background.gameObject.SetActive(false);
+        ClearBoard();
     }
 
     public void ShowBackground()

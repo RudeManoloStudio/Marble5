@@ -64,9 +64,11 @@ public class GameManager : MonoBehaviour
     {
         // preparation du main menu
         // on envoie au uiManager les éléments nécessaires dans une liste
-        // pour chaque level : int ID & int étoiles obtenues
+        // pour chaque level : int ID & int étoiles obtenues & available
 
         List<LevelStruct> list = new List<LevelStruct>();
+
+        bool nextLevelAvailable = false;
 
         for (int x = 0; x < levelData.layers.Length; x++)
         {
@@ -75,13 +77,22 @@ public class GameManager : MonoBehaviour
 
             levelStruct.ID = x;
             levelStruct.stars = 0;
+
             if (x == 0)
             {
                 levelStruct.available = true;
             }
             else
             {
-                levelStruct.available = false;
+                if (nextLevelAvailable)
+                {
+                    levelStruct.available = true;
+                    nextLevelAvailable = false;
+                }
+                else
+                {
+                    levelStruct.available = false;
+                }
             }
 
             int stars = 0;
@@ -106,13 +117,15 @@ public class GameManager : MonoBehaviour
             {
                 levelStruct.available = true;
                 levelStruct.stars = stars;
+
+                nextLevelAvailable = true;
             }
 
             list.Add(levelStruct);
         }
 
         uiManager.SetMainPanel(list);
-        display.HideBackground();
+        display.ResetBoard();
     }
 
 

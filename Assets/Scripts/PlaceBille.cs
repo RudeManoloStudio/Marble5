@@ -37,8 +37,14 @@ public class PlaceBille : MonoBehaviour
         this.gridSize = gridSize;
         this.bille = bille;
         this.quinte = quinte;
+
+        ResetLiaisons();
     }
 
+    public void ResetLiaisons()
+    {
+        liaisonsUtilisées.Clear();
+    }
     public void Replay()
     {
         

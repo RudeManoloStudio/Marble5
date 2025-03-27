@@ -17,7 +17,7 @@ public class ToggleButtonImage : MonoBehaviour
         }
     }
 
-    void ToggleImage()
+    public void ToggleImage()
     {
         if (isFirstImage)
         {

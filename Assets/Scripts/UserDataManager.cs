@@ -26,7 +26,7 @@ public class UserDataManager
         LoadUserData();
     }
 
-    public void AddHighscore(int level, int score)
+    public void SavePreferences()
     {
         SaveUserData();
     }
@@ -34,12 +34,14 @@ public class UserDataManager
     public void ToggleFX()
     {
         userData.fxOn = true ? userData.fxOn = false : userData.fxOn = true;
+        
         SaveUserData();
     }
 
-    public void ToggleMusic()
+    public void ToggleMusic(bool state)
     {
-        userData.musicOn = true ? userData.musicOn = false : userData.musicOn = true;
+        //userData.musicOn = true ? userData.musicOn = false : userData.musicOn = true;
+        userData.musicOn = state;
         SaveUserData();
     }
 
@@ -59,6 +61,7 @@ public class UserDataManager
         else
         {
             userData = new UserData();
+            SaveUserData();
         }
     }
 

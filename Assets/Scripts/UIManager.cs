@@ -15,9 +15,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject levelPrefab;
     [SerializeField] private Transform gameOverPanel;
 
-    private int score;
-    private int highScore;
-
     private void Start()
     {
 
@@ -35,17 +32,6 @@ public class UIManager : MonoBehaviour
 
         ClearMenu();
 
-        Debug.Log("ui : " + list.Count);
-
-        // préparer le premier level, toujours available
-        //GameObject lp = Instantiate(levelPrefab, levelPanel);
-
-        //lp.GetComponent<LevelSelector>().SetLevelParameters(list[0]);
-
-        //Button button = lp.GetComponent<Button>();
-        //AddLevelButton(button, 0);
-
-        // puis les levels suivants
         for (int x = 0; x < list.Count; x++)
         {
 

@@ -9,36 +9,34 @@ public class GameManager : MonoBehaviour
     [SerializeField] private DisplayController display;
     [SerializeField] private MusicManager musicManager;
     [SerializeField] private FXManager fxManager;
-    [SerializeField] private int coins = 5;  // cr�dits au d�part
-    [SerializeField] private bool infinisCoins = false; // cr�dits infinis pour debug
+    [SerializeField] private int initialCoins = 5;
+    [SerializeField] private bool infinisCoins = false;
     [SerializeField] private ScoreData scoreData;
 
     private Vector2Int gridSize;
     private PlaceBille placeBille;
     private PlacePlomb placePlomb;
-    private int compteurBilles = 0;
-    private int initialCoins;
+    private int compteurBilles;
     private int difficulte;
     private int score;
     private int level;
     private int handicap;
-
-    // ceci sera supprim� quand on pourra sauvegarder sur disque
+    private UserDataManager userDataManager;
+    private UserData userData;
     private Dictionary<int, int> scores;
+    private int coins;
 
     public static GameManager Instance { get; private set; }
 
     private void Awake()
     {
-        // V�rifie si une instance existe d�j�
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Permet de conserver l'objet entre les sc�nes
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            // Si une instance existe d�j�, d�truire cet objet
             Destroy(gameObject);
         }
     }
@@ -49,10 +47,12 @@ public class GameManager : MonoBehaviour
         placeBille = GetComponent<PlaceBille>();
         placePlomb = GetComponent<PlacePlomb>();
 
-        // ici on va coder le chargement des pr�f�rences user
-        // pour l'instant pas de sauvegarde
-        scores = new Dictionary<int, int>();
+        string filePath = Application.persistentDataPath + "/UserPreferences.json";
+        userDataManager = new UserDataManager(filePath);
+        userData = userDataManager.GetUserData();
+        
 
+        scores = new Dictionary<int, int>();
         // Chargement du dictionnaire depuis le fichier
         if (DictionaryStorage.LoadDictionaryFromFile<int, int>("dictionnaire.json") == null)
         {
@@ -65,9 +65,6 @@ public class GameManager : MonoBehaviour
         PrepareMainMenu();
 
         EventManager.AddListener("PoseBille", _OnPoseBille);
-
-        initialCoins = coins;
-        score = 0;
     }
 
     public void PrepareMainMenu()
@@ -176,9 +173,13 @@ public class GameManager : MonoBehaviour
 
         // Musique
         musicManager.PlayPlaylist(levelData.layers[level].Sounds);
+        if (!userData.musicOn)
+        {
+            musicManager.Toggle();            
+        }
 
         // FX
-        fxManager.Setup(levelData.layers[level].Sounds);
+        if (userData.fxOn) fxManager.Setup(levelData.layers[level].Sounds);
 
         coins = initialCoins;
         compteurBilles = 0;
@@ -243,6 +244,15 @@ public class GameManager : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void ToggleMusic()
+    {
+        userData.musicOn = userData.musicOn == true ? false : true;
+        userDataManager.ToggleMusic(userData.musicOn);
+
+        musicManager.Toggle();
+
     }
 }
 

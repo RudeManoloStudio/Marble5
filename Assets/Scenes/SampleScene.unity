@@ -1633,6 +1633,7 @@ MonoBehaviour:
   levelPanel: {fileID: 1052892059}
   levelPrefab: {fileID: 5009942812198175072, guid: e40e8c659d7dbbb4e8394475bff4c583, type: 3}
   gameOverPanel: {fileID: 1899072621}
+  musicIcon: {fileID: 1104009725}
 --- !u!4 &820335635
 Transform:
   m_ObjectHideFlags: 0
@@ -2548,9 +2549,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8005025}
-        m_TargetAssemblyTypeName: MusicManager, Assembly-CSharp
-        m_MethodName: TogglePlayPause
+      - m_Target: {fileID: 1280661788}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ToggleMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

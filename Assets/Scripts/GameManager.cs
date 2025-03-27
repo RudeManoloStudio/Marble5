@@ -52,6 +52,15 @@ public class GameManager : MonoBehaviour
         // pour l'instant pas de sauvegarde
         scores = new Dictionary<int, int>();
 
+        // Chargement du dictionnaire depuis le fichier
+        if (DictionaryStorage.LoadDictionaryFromFile<int, int>("dictionnaire.json") == null)
+        {
+            // Sauvegarde du dictionnaire
+            DictionaryStorage.SaveDictionaryToFile(scores, "dictionnaire.json");
+        }
+
+        scores = DictionaryStorage.LoadDictionaryFromFile<int, int>("dictionnaire.json");
+
         PrepareMainMenu();
 
         EventManager.AddListener("PoseBille", _OnPoseBille);
@@ -214,7 +223,9 @@ public class GameManager : MonoBehaviour
             {
                 scores.Add(level, score);
             }
-            
+
+            // Sauvegarde du dictionnaire
+            DictionaryStorage.SaveDictionaryToFile(scores, "dictionnaire.json");
             uiManager.GameOver();
         
         }

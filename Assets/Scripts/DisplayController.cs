@@ -90,6 +90,7 @@ public class DisplayController : MonoBehaviour
                 GameObject newPlomb = Instantiate(plomb, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
                 newPlomb.transform.SetParent(container);
                 newPlomb.tag = "Plomb";
+                newPlomb.GetComponent<BilleController>().DoRotate(false);
             }
         }
     }

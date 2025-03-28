@@ -166,16 +166,17 @@ public class GameManager : MonoBehaviour
         display.PrepareBackgroundAndGrid(gridSize, levelData.layers[level].BackgroundMaterial);
         if (levelData.layers[level].Motif != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif, handicap); }
 
+
         placeBille.Setup(gridSize, levelData.layers[level].Bille, levelData.layers[level].Quinte);
         placePlomb.Setup(gridSize, levelData.layers[level].Plomb);
 
         difficulte = levelData.layers[level].Difficulte;
 
         // Musique
-        musicManager.PlayPlaylist(levelData.layers[level].Sounds);
-        if (!userData.musicOn)
+        musicManager.PreparePlaylist(levelData.layers[level].Sounds);
+        if (userData.musicOn)
         {
-            musicManager.Toggle();            
+            musicManager.PlayTrack();
         }
 
         // FX

@@ -13,7 +13,7 @@ public class MusicManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlayPlaylist(SoundData soundData)
+    public void PreparePlaylist(SoundData soundData)
     {
 
         this.soundData = soundData;
@@ -22,14 +22,13 @@ public class MusicManager : MonoBehaviour
         {
             currentTrackIndex = Random.Range(0, soundData.Playlist.Count - 1);
 
-            PlayTrack(currentTrackIndex);
         }
     }
 
-    public void PlayTrack(int index)
+    public void PlayTrack()
     {
 
-        audioSource.clip = soundData.Playlist[index];
+        audioSource.clip = soundData.Playlist[currentTrackIndex];
         audioSource.Play();
     }
 

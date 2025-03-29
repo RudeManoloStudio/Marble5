@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -5,8 +6,8 @@ public class MusicManager : MonoBehaviour
 {
 
     private AudioSource audioSource;
-    private int currentTrackIndex = 0;
-    private SoundData soundData;
+    //private int currentTrackIndex = 0;
+    //private SoundData soundData;
     //private bool musicOn;
 
     void Start()
@@ -14,15 +15,15 @@ public class MusicManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PreparePlaylist(SoundData soundData, bool musicOn)
+    public void PreparePlaylist(List<AudioClip> playlist, bool musicOn)
     {
 
-        this.soundData = soundData;
+        //this.soundData = soundData;
 
-        if (soundData.Playlist.Count > 0)
+        if (playlist.Count > 0)
         {
-            currentTrackIndex = Random.Range(0, soundData.Playlist.Count - 1);
-            audioSource.clip = soundData.Playlist[currentTrackIndex];
+            //currentTrackIndex = Random.Range(0, soundData.Playlist.Count - 1);
+            audioSource.clip = playlist[0];
             if (musicOn) PlayTrack();
         }
     }

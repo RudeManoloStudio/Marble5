@@ -17,3 +17,5 @@ MonoBehaviour:
   NoPoseBilleSound: {fileID: 8300000, guid: a9148b91c9eb06a4e83f5887e8917438, type: 3}
   Playlist:
   - {fileID: 8300000, guid: eef9caff38d59de4592ce664f5c5210b, type: 3}
+  - {fileID: 8300000, guid: 298f88662b63bbc4bb26e0e0d64cfc6f, type: 3}
+  - {fileID: 8300000, guid: dc8b101022354004bb3bb950af66c9af, type: 3}

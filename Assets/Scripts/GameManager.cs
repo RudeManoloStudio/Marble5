@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private DisplayController display;
     [SerializeField] private MusicManager musicManager;
     [SerializeField] private FXManager fxManager;
+    [SerializeField] private SoundData soundData;
     [SerializeField] private int initialCoins = 5;
     [SerializeField] private bool infinisCoins = false;
     [SerializeField] private ScoreData scoreData;
@@ -51,6 +52,9 @@ public class GameManager : MonoBehaviour
 
         // Musique
         musicOn = userData.musicOn;
+
+        // FX
+        if (userData.fxOn) fxManager.Setup(soundData);
     }
 
     private void Start()
@@ -59,8 +63,7 @@ public class GameManager : MonoBehaviour
         placeBille = GetComponent<PlaceBille>();
         placePlomb = GetComponent<PlacePlomb>();
 
-
-        musicManager.PreparePlaylist(levelData.layers[level].Sounds, musicOn);
+        musicManager.PreparePlaylist(soundData.Playlist, musicOn);
 
         scores = new Dictionary<int, int>();
         // Chargement du dictionnaire depuis le fichier
@@ -181,9 +184,6 @@ public class GameManager : MonoBehaviour
         placePlomb.Setup(gridSize, levelData.layers[level].Plomb);
 
         difficulte = levelData.layers[level].Difficulte;
-
-        // FX
-        if (userData.fxOn) fxManager.Setup(levelData.layers[level].Sounds);
 
         coins = initialCoins;
         compteurBilles = 0;

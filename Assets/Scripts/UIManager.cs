@@ -6,9 +6,12 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    [SerializeField] private Transform headerPanel;
+    //[SerializeField] private Transform headerPanel;
+    [SerializeField] private Transform highScorePanel;
     [SerializeField] private Text highScoreText;
+    [SerializeField] private Transform scorePanel;
     [SerializeField] private Text scoreText;
+    [SerializeField] private Transform optionsPanel;
     [SerializeField] private Transform quitPanel;
     [SerializeField] private Transform mainPanel;
     [SerializeField] private Transform levelPanel;
@@ -18,17 +21,24 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
 
-        gameOverPanel.gameObject.SetActive(false);
-        headerPanel.gameObject.SetActive(false);
-        quitPanel.gameObject.SetActive(false);
+        //gameOverPanel.gameObject.SetActive(false);
+        //headerPanel.gameObject.SetActive(false);
+        //highScorePanel.gameObject.SetActive(false);
+        //scorePanel.gameObject.SetActive(false);
+        //quitPanel.gameObject.SetActive(false);
 
     }
     public void SetMainPanel(List<LevelStruct> list)
     {
 
         mainPanel.gameObject.SetActive(true);
+        optionsPanel.gameObject.SetActive(true);
+
         gameOverPanel.gameObject.SetActive(false);
-        headerPanel.gameObject.SetActive(false);
+        highScorePanel.gameObject.SetActive(false);
+        scorePanel.gameObject.SetActive(false);
+        quitPanel.gameObject.SetActive(false);
+        //headerPanel.gameObject.SetActive(false);
 
         ClearMenu();
 
@@ -60,18 +70,27 @@ public class UIManager : MonoBehaviour
 
     public void SetGameMode()
     {
+        highScorePanel.gameObject.SetActive(true);
+        scorePanel.gameObject.SetActive(true);
+        optionsPanel.gameObject.SetActive(true);
 
         mainPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
-        headerPanel.gameObject.SetActive(true);
+        //headerPanel.gameObject.SetActive(true);
         scoreText.text = "0";
     }
 
     public void GameOver()
     {
 
-        headerPanel.gameObject.SetActive(false);
+        //headerPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(true);
+
+        mainPanel.gameObject.SetActive(false);
+        highScorePanel.gameObject.SetActive(false);
+        scorePanel.gameObject.SetActive(false);
+        optionsPanel.gameObject.SetActive(false);
+
     }
 
     public void UpdateScore(int score)

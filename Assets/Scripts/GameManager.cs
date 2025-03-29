@@ -25,8 +25,13 @@ public class GameManager : MonoBehaviour
     private UserData userData;
     private Dictionary<int, int> scores;
     private int coins;
-
+    private bool musicOn;
     public static GameManager Instance { get; private set; }
+
+    public bool MusicOn
+    {
+        get { return musicOn; }
+    }
 
     private void Awake()
     {
@@ -39,6 +44,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        string filePath = Application.persistentDataPath + "/UserPreferences.json";
+        userDataManager = new UserDataManager(filePath);
+        userData = userDataManager.GetUserData();
+
+        // Musique
+        musicOn = userData.musicOn;
     }
 
     private void Start()
@@ -47,10 +59,8 @@ public class GameManager : MonoBehaviour
         placeBille = GetComponent<PlaceBille>();
         placePlomb = GetComponent<PlacePlomb>();
 
-        string filePath = Application.persistentDataPath + "/UserPreferences.json";
-        userDataManager = new UserDataManager(filePath);
-        userData = userDataManager.GetUserData();
-        
+
+        musicManager.PreparePlaylist(levelData.layers[level].Sounds, musicOn);
 
         scores = new Dictionary<int, int>();
         // Chargement du dictionnaire depuis le fichier
@@ -163,7 +173,7 @@ public class GameManager : MonoBehaviour
         display.ClearBoard();
         display.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
         display.ShowBackground();
-        display.PrepareBackgroundAndGrid(gridSize, levelData.layers[level].BackgroundMaterial);
+        display.PrepareBackgroundAndGrid(gridSize, levelData.layers[level].BackgroundTexture);
         if (levelData.layers[level].Motif != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif, handicap); }
 
 
@@ -171,13 +181,6 @@ public class GameManager : MonoBehaviour
         placePlomb.Setup(gridSize, levelData.layers[level].Plomb);
 
         difficulte = levelData.layers[level].Difficulte;
-
-        // Musique
-        musicManager.PreparePlaylist(levelData.layers[level].Sounds);
-        if (userData.musicOn)
-        {
-            musicManager.PlayTrack();
-        }
 
         // FX
         if (userData.fxOn) fxManager.Setup(levelData.layers[level].Sounds);
@@ -249,8 +252,9 @@ public class GameManager : MonoBehaviour
 
     public void ToggleMusic()
     {
-        userData.musicOn = userData.musicOn == true ? false : true;
-        userDataManager.ToggleMusic(userData.musicOn);
+        //userData.musicOn = userData.musicOn == true ? false : true;
+        musicOn = musicOn == true ? false : true;
+        userDataManager.ToggleMusic(musicOn);
 
         musicManager.Toggle();
 

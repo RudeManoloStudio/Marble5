@@ -8,8 +8,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private bool enableDragPan = true;
     [SerializeField] private bool enableBorderPan = true;
     [SerializeField] [Range(0.1f, 5f)] private float zoomSpeed = 2.5f; // Vitesse de zoom de la caméra
-    [SerializeField] private float minZoom = 6.0f; // Zoom minimum
-    [SerializeField] private float maxZoom = 10.0f; // Zoom maximum
+    [SerializeField] private float minZoom = 10.0f; // Zoom minimum
+    [SerializeField] private float maxZoom = 20.0f; // Zoom maximum
 
     private bool isPanning = false;
     private Vector3 lastMousePosition;
@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour
         minPosition = new Vector2(0, 0);
         maxPosition = new Vector2(sizeX - 1, sizeY - 1);
 
-        mainCamera.orthographicSize = 6;
+        mainCamera.orthographicSize = 16f;
         mainCamera.transform.SetPositionAndRotation(new Vector3(sizeX / 2 + 0.5f, sizeY / 2 + 0.5f, -10), Quaternion.identity);
     }
 

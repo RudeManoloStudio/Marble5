@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951bef8707ee0bb4bbe0d9b08a0a9ba0, type: 3}
+  m_Name: Electronik
+  m_EditorClassIdentifier: 
+  UpdateScoreSound: {fileID: 8300000, guid: fc56391ffb4770144b440a858c7e3486, type: 3}
+  PoseBilleSound: {fileID: 8300000, guid: e703ad6c166cdce4ab4c4f8557d32757, type: 3}
+  NoPoseBilleSound: {fileID: 8300000, guid: a9148b91c9eb06a4e83f5887e8917438, type: 3}
+  Playlist:
+  - {fileID: 8300000, guid: eef9caff38d59de4592ce664f5c5210b, type: 3}

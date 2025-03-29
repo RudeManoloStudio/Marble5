@@ -5,7 +5,6 @@ using UnityEngine;
 public class DisplayController : MonoBehaviour
 {
 
-    //[SerializeField] private GameObject background;
     [SerializeField] private Transform background;
     [SerializeField] private GameObject grid;
     [SerializeField] private Transform container;
@@ -38,7 +37,7 @@ public class DisplayController : MonoBehaviour
         background.gameObject.SetActive(true);
     }
 
-    public void PrepareBackgroundAndGrid(Vector2Int gridSize, Material backgroundMaterial)
+    public void PrepareBackgroundAndGrid(Vector2Int gridSize, Texture2D backgroundTexture)
     {
 
         ClearBoard();
@@ -46,12 +45,12 @@ public class DisplayController : MonoBehaviour
         float h_offset = (gridSize.x % 2 == 0) ? h_offset = 0.5f : h_offset = 0f;
         float v_offset = (gridSize.y % 2 == 0) ? v_offset = 0.5f : v_offset = 0f;
 
-        background.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
-        background.localScale = new Vector3(gridSize.x / 10 + 2, 1, gridSize.y / 10 + 2);
-        background.GetComponent<Renderer>().material = backgroundMaterial;
+        Material material = background.gameObject.GetComponent<MeshRenderer>().material;
+        material.SetTexture("_MainTex", backgroundTexture);
 
-        //background.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
-        //background.transform.localScale = new Vector3(gridSize.x / 10 + 2, 1, gridSize.y / 10 + 2);
+        background.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
+        background.localScale = new Vector3(gridSize.x / 10 + 2, 1, (gridSize.x / 10 + 2) * 2);
+        //background.localScale = new Vector3(gridSize.x / 10 + 2, 1, gridSize.y / 10 + 2);
         //background.GetComponent<Renderer>().material = backgroundMaterial;
 
         grid.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);

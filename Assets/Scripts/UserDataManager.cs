@@ -40,7 +40,6 @@ public class UserDataManager
 
     public void ToggleMusic(bool state)
     {
-        //userData.musicOn = true ? userData.musicOn = false : userData.musicOn = true;
         userData.musicOn = state;
         SaveUserData();
     }

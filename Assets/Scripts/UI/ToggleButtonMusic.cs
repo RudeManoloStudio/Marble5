@@ -3,9 +3,10 @@ using UnityEngine.UI;
 
 public class ToggleButtonMusic : MonoBehaviour
 {
+
     [SerializeField] private Sprite onSprite;
     [SerializeField] private Sprite offSprite;
-    //private bool isFirstImage = true;
+
     private Button button;
 
     void Start()
@@ -20,11 +21,13 @@ public class ToggleButtonMusic : MonoBehaviour
         if (button != null)
         {
             button.onClick.AddListener(ToggleImage);
+            button.onClick.AddListener(TriggerMusic);
         }
     }
 
     public void ToggleImage()
     {
+
         if (button.image.sprite == onSprite)
         {
             button.image.sprite = offSprite;
@@ -34,15 +37,10 @@ public class ToggleButtonMusic : MonoBehaviour
             button.image.sprite = onSprite;
         }
 
-        /*if (isFirstImage)
-        {
-            button.image.sprite = secondImage;
-        }
-        else
-        {
-            button.image.sprite = firstImage;
-        }
-        isFirstImage = !isFirstImage;
-        */
+    }
+
+    private void TriggerMusic()
+    {
+        EventManager.TriggerEvent("ToggleMusic");
     }
 }

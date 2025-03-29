@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToggleButtonImage : MonoBehaviour
+public class ToggleButtonFx : MonoBehaviour
 {
     public Sprite firstImage;
     public Sprite secondImage;
@@ -14,6 +14,7 @@ public class ToggleButtonImage : MonoBehaviour
         if (button != null)
         {
             button.onClick.AddListener(ToggleImage);
+            button.onClick.AddListener(TriggerFx);
         }
     }
 
@@ -28,5 +29,10 @@ public class ToggleButtonImage : MonoBehaviour
             button.image.sprite = firstImage;
         }
         isFirstImage = !isFirstImage;
+    }
+
+    private void TriggerFx()
+    {
+        EventManager.TriggerEvent("ToggleFX");
     }
 }

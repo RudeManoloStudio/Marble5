@@ -31,10 +31,10 @@ public class UserDataManager
         SaveUserData();
     }
 
-    public void ToggleFX()
+    public void ToggleFX(bool state)
     {
-        userData.fxOn = true ? userData.fxOn = false : userData.fxOn = true;
-        
+        //userData.fxOn = true ? userData.fxOn = false : userData.fxOn = true;
+        userData.fxOn = state;
         SaveUserData();
     }
 

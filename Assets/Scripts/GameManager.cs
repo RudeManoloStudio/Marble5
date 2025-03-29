@@ -7,9 +7,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelData levelData;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private DisplayController display;
-    [SerializeField] private MusicManager musicManager;
-    [SerializeField] private FXManager fxManager;
-    [SerializeField] private SoundData soundData;
+    [SerializeField] private FXData fxData;
+    [SerializeField] private MusicData musicData;
     [SerializeField] private int initialCoins = 5;
     [SerializeField] private bool infinisCoins = false;
     [SerializeField] private ScoreData scoreData;
@@ -27,11 +26,27 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, int> scores;
     private int coins;
     private bool musicOn;
+    private bool fxOn;
     public static GameManager Instance { get; private set; }
 
     public bool MusicOn
     {
         get { return musicOn; }
+    }
+
+    public List<AudioClip> Playlist
+    {
+        get { return musicData.Playlist; }
+    }
+
+    public bool FxOn
+    {
+        get { return fxOn; }
+    }
+
+    public FXData FxData
+    {
+        get { return fxData; }
     }
 
     private void Awake()
@@ -46,6 +61,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        // preferences user
         string filePath = Application.persistentDataPath + "/UserPreferences.json";
         userDataManager = new UserDataManager(filePath);
         userData = userDataManager.GetUserData();
@@ -54,7 +70,12 @@ public class GameManager : MonoBehaviour
         musicOn = userData.musicOn;
 
         // FX
-        if (userData.fxOn) fxManager.Setup(soundData);
+        fxOn = userData.fxOn;
+        //if (userData.fxOn) fxManager.Setup(soundData);
+
+        EventManager.AddListener("ToggleMusic", _OnToggleMusic);
+        EventManager.AddListener("ToggleFX", _OnToggleFX);
+
     }
 
     private void Start()
@@ -63,7 +84,7 @@ public class GameManager : MonoBehaviour
         placeBille = GetComponent<PlaceBille>();
         placePlomb = GetComponent<PlacePlomb>();
 
-        musicManager.PreparePlaylist(soundData.Playlist, musicOn);
+        //musicManager.PreparePlaylist(soundData.Playlist, musicOn);
 
         scores = new Dictionary<int, int>();
         // Chargement du dictionnaire depuis le fichier
@@ -250,13 +271,19 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void ToggleMusic()
+    private void _OnToggleMusic()
     {
-        //userData.musicOn = userData.musicOn == true ? false : true;
+
         musicOn = musicOn == true ? false : true;
         userDataManager.ToggleMusic(musicOn);
 
-        musicManager.Toggle();
+    }
+
+    private void _OnToggleFX()
+    {
+
+        fxOn = fxOn == true ? false : true;
+        userDataManager.ToggleFX(fxOn);
 
     }
 }

@@ -9,51 +9,44 @@ public class FXManager : MonoBehaviour
     //[SerializeField] private SoundData soundData;
     private AudioSource audioSource;
 
-    private SoundData soundData;
+    private FXData fxData;
     private bool fxOn = true;
     //private bool musicOn = true;
 
 
     void Start()
     {
-        //soundData = GameManager.Instance.Sounds;
 
         audioSource = GetComponent<AudioSource>();
 
+        fxOn = GameManager.Instance.FxOn;
+        fxData = GameManager.Instance.FxData;
+
+        EventManager.AddListener("ToggleFX", _OnToggleFx);
         EventManager.AddListener("UpdateScoreAndCoins", _OnUpdateScoreAndCoins);
         EventManager.AddListener("PoseBille", _OnPoseBille);
         EventManager.AddListener("NoPoseBille", _OnNoPoseBille);
     }
 
-    public void Setup(SoundData soundData)
-    {
-        this.soundData = soundData;
-    }
-
     void _OnUpdateScoreAndCoins(object noUse)
     {
-        if (fxOn) audioSource.PlayOneShot(soundData.UpdateScoreSound);
+        if (fxOn) audioSource.PlayOneShot(fxData.UpdateScoreSound);
     }
 
     void _OnPoseBille(object noUse)
     {
-        if (fxOn) audioSource.PlayOneShot(soundData.PoseBilleSound);
+        if (fxOn) audioSource.PlayOneShot(fxData.PoseBilleSound);
     }
 
     void _OnNoPoseBille()
     {
-        if (fxOn) audioSource.PlayOneShot(soundData.NoPoseBilleSound);
+        if (fxOn) audioSource.PlayOneShot(fxData.NoPoseBilleSound);
     }
 
-    public void ToggleFXSound()
+    private void _OnToggleFx()
     {
-        if (fxOn)
-        {
-            fxOn = false;
-        }
-        else
-        {
-            fxOn = true;
-        }
+
+        fxOn = fxOn == true ? false : true;
+
     }
 }

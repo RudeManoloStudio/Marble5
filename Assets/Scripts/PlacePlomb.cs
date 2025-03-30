@@ -9,13 +9,42 @@ public class PlacePlomb : MonoBehaviour
     [SerializeField] private Transform container;
     private GameObject plomb;
 
-    void Start()
+    // Tableau des offsets autour d'une position (niveau 1) : 8 directions
+    private static readonly Vector3[] directions = new Vector3[]
     {
-        //plomb = GameManager.Instance.Plomb;
-        //container = GameManager.Instance.Container;
+        new Vector3(1,  0, 0),  // Droite
+        new Vector3(-1, 0, 0),  // Gauche
+        new Vector3(0,  1, 0),  // Avant (y+)
+        new Vector3(0, -1, 0),  // Arrière (y-)
+        new Vector3(1,  1, 0),  // Diagonale avant-droite
+        new Vector3(-1, 1, 0),  // Diagonale avant-gauche
+        new Vector3(1, -1, 0),  // Diagonale arrière-droite
+        new Vector3(-1, -1, 0)  // Diagonale arrière-gauche
+    };
 
-        //EventManager.AddListener("PosePlomb", _OnPosePlomb);
-    }
+    // Tableau des offsets pour le niveau 2 (14 directions)
+    private static readonly Vector3[] directionsLevel2 = new Vector3[]
+    {
+        new Vector3(2,  0, 0),
+        new Vector3(-2, 0, 0),
+        new Vector3(0,  2, 0),
+        new Vector3(0, -2, 0),
+
+        new Vector3(2,  1, 0),
+        new Vector3(2, -1, 0),
+        new Vector3(-2, 1, 0),
+        new Vector3(-2, -1, 0),
+
+        new Vector3(1,  2, 0),
+        new Vector3(1, -2, 0),
+        new Vector3(-1, 2, 0),
+        new Vector3(-1, -2, 0),
+
+        new Vector3(2,  2, 0),
+        new Vector3(2, -2, 0),
+        new Vector3(-2, 2, 0),
+        new Vector3(-2, -2, 0)
+    };
 
     public void Setup(Vector2Int gridSize, GameObject plomb)
     {
@@ -67,40 +96,7 @@ public class PlacePlomb : MonoBehaviour
         Debug.Log("Plomb placée en : " + positionChoisie);
     }
 
-    // Tableau des offsets autour d'une position (niveau 1) : 8 directions
-    private static readonly Vector3[] directions = new Vector3[]
-    {
-        new Vector3(1,  0, 0),  // Droite
-        new Vector3(-1, 0, 0),  // Gauche
-        new Vector3(0,  1, 0),  // Avant (y+)
-        new Vector3(0, -1, 0),  // Arrière (y-)
-        new Vector3(1,  1, 0),  // Diagonale avant-droite
-        new Vector3(-1, 1, 0),  // Diagonale avant-gauche
-        new Vector3(1, -1, 0),  // Diagonale arrière-droite
-        new Vector3(-1, -1, 0)  // Diagonale arrière-gauche
-    };
-
-    // Tableau des offsets pour le niveau 2 (14 directions)
-    private static readonly Vector3[] directionsLevel2 = new Vector3[]
-    {
-        new Vector3(0,  2, 0),
-        new Vector3(0, -2, 0),
-
-        new Vector3(2,  1, 0),
-        new Vector3(2, -1, 0),
-        new Vector3(-2, 1, 0),
-        new Vector3(-2, -1, 0),
-
-        new Vector3(1,  2, 0),
-        new Vector3(-1,  2, 0),
-        new Vector3(1, -2, 0),
-        new Vector3(-1, -2, 0),
-
-        new Vector3(2,  2, 0),
-        new Vector3(-2, 2, 0),
-        new Vector3(2, -2, 0),
-        new Vector3(-2, -2, 0)
-    };
+    
 
     // Cette fonction récupère la position de la bille et essaie de placer un plomb
     // autour de la bille, d'abord au niveau 1, sinon au niveau 2.

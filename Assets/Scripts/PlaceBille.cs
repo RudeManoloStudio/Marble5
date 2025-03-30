@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public class PlaceBille : MonoBehaviour
 {
@@ -14,7 +15,18 @@ public class PlaceBille : MonoBehaviour
     private bool pause = false;
 
     private Vector2Int gridSize;
-    //private Transform container;
+
+    private static readonly Vector3[] adjacentDirections = new Vector3[]
+   {
+        new Vector3(1, 0, 0),
+        new Vector3(-1, 0, 0),
+        new Vector3(0, 1, 0),
+        new Vector3(0, -1, 0),
+        new Vector3(1, 1, 0),
+        new Vector3(-1, 1, 0),
+        new Vector3(1, -1, 0),
+        new Vector3(-1, -1, 0)
+   };
 
 
     private void Start()
@@ -101,6 +113,8 @@ public class PlaceBille : MonoBehaviour
                         0.0f  // Fixe Z au bon niveau
                     );
 
+
+                    /* modifs New_UI
                     //if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x - 1 || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y - 1)
                     if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y)
                     {
@@ -128,11 +142,73 @@ public class PlaceBille : MonoBehaviour
                     }
 
                     EventManager.TriggerEvent("PoseBille",nouvellePosition);
+                }  */
+
+                    // Vérifier, en plus du raycast, qu'aucune bille/plomb n'occupe déjà cette position (ou très proche).
+                    float rayonDeCollision = 0.4f; // Ajuste selon la taille de ta bille
+                    Collider[] collisions = Physics.OverlapSphere(nouvellePosition, rayonDeCollision);
+                    bool estOccupe = collisions.Any(col => col.CompareTag("Bille") || col.CompareTag("Plomb"));
+
+                    if (estOccupe)
+                    {
+                        // Si quelque chose est déjà là, on empêche la pose
+                        EventManager.TriggerEvent("NoPoseBille");
+                    }
+                    else
+                    {
+                        // Vérifie les limites de la grille (si nécessaire)
+                        if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x ||
+                            nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y)
+                        {
+                            EventManager.TriggerEvent("NoPoseBille");
+                            verificationEffectuee = false;
+                            return;
+                        }
+
+                        // 2) Contrôler qu’au moins un voisin (8 positions) est une Bille ou un Plomb.
+                        bool auMoinsUnVoisin = false;
+                        foreach (Vector3 dir in adjacentDirections)
+                        {
+                            Vector3 voisin = nouvellePosition + dir;
+                            // Petit OverlapSphere pour détecter la présence
+                            Collider[] voisins = Physics.OverlapSphere(voisin, 0.4f);
+                            if (voisins.Any(col => col.CompareTag("Bille") || col.CompareTag("Plomb")))
+                            {
+                                auMoinsUnVoisin = true;
+                                break;
+                            }
+                        }
+
+                        // Si aucun voisin n’est une Bille/Plomb, on empêche la pose
+                        if (!auMoinsUnVoisin)
+                        {
+                            EventManager.TriggerEvent("NoPoseBille");
+                            verificationEffectuee = false;
+                            return;
+                        }
+
+                        // Tout est OK, on instancie la nouvelle bille
+                        GameObject nouvelleBille = Instantiate(bille, nouvellePosition, Quaternion.identity);
+                        nouvelleBille.transform.SetParent(container);
+                        nouvelleBille.tag = "Bille";
+
+                        // Vérification des quintes
+                        int quinteTrouvees = VerifierToutesLesQuintes(nouvellePosition);
+                        if (quinteTrouvees > 0)
+                        {
+                            GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
+                        }
+
+                        // On signale qu’une bille a été posée
+                        EventManager.TriggerEvent("PoseBille", nouvellePosition);
+                    }
                 }
-                else
-                {
-                    EventManager.TriggerEvent("NoPoseBille");
-                }
+            
+
+            else
+            {
+                EventManager.TriggerEvent("NoPoseBille");
+            }
             }
             else
             {

@@ -113,6 +113,11 @@ public class PlaceBille : MonoBehaviour
                         0.0f  // Fixe Z au bon niveau
                     );
 
+                    if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y || EventSystem.current.IsPointerOverGameObject())
+                    {
+                        EventManager.TriggerEvent("NoPoseBille");
+                        return;
+                    }
 
                     /* modifs New_UI
                     //if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x - 1 || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y - 1)

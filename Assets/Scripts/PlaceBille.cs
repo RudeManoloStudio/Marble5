@@ -11,7 +11,7 @@ public class PlaceBille : MonoBehaviour
 
     private GameObject bille;
     private GameObject quinte;
-    private bool gameOver = false;
+    private bool pause = false;
 
     private Vector2Int gridSize;
     //private Transform container;
@@ -26,9 +26,19 @@ public class PlaceBille : MonoBehaviour
         //quinte = GameManager.Instance.Quinte;
         //container = GameManager.Instance.Container;
         
-        EventManager.AddListener("GameOver", _OnGameOver);
+        EventManager.AddListener("GameOver", _OnPause);
         //EventManager.AddListener("Replay", _OnReplay);
 
+    }
+
+    public void Pause()
+    {
+        pause = true;
+    }
+
+    public void Unpause()
+    {
+        pause = false;
     }
 
     public void Setup(Vector2Int gridSize, GameObject bille, GameObject quinte)
@@ -49,13 +59,13 @@ public class PlaceBille : MonoBehaviour
     {
         
             liaisonsUtilisées.Clear();
-            gameOver = false;
+            pause = false;
         
     }
 
-    private void _OnGameOver()
+    private void _OnPause()
     {
-        gameOver = true;
+        pause = true;
     }
 
     /*
@@ -68,7 +78,7 @@ public class PlaceBille : MonoBehaviour
 
     void Update()
     {
-        if (gameOver) { return; }
+        if (pause) { return; }
 
         if (Input.GetMouseButtonDown(0) && !verificationEffectuee)
         {

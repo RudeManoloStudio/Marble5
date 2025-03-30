@@ -18,16 +18,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject levelPrefab;
     [SerializeField] private Transform gameOverPanel;
 
-    private void Start()
-    {
-
-        //gameOverPanel.gameObject.SetActive(false);
-        //headerPanel.gameObject.SetActive(false);
-        //highScorePanel.gameObject.SetActive(false);
-        //scorePanel.gameObject.SetActive(false);
-        //quitPanel.gameObject.SetActive(false);
-
-    }
     public void SetMainPanel(List<LevelStruct> list)
     {
 
@@ -101,5 +91,15 @@ public class UIManager : MonoBehaviour
     public void SetHighScoreText(int highScore)
     {
         highScoreText.text = highScore.ToString();
+    }
+
+    public void ConfirmQuit()
+    {
+        quitPanel.gameObject.SetActive(true);
+    }
+
+    public void CancelQuit()
+    {
+        quitPanel.gameObject.SetActive(false);
     }
 }

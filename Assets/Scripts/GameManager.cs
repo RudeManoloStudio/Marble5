@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int initialCoins = 5;
     [SerializeField] private bool infinisCoins = false;
     [SerializeField] private ScoreData scoreData;
+    [SerializeField] private Sprite initialBackground;
 
     private Vector2Int gridSize;
     private PlaceBille placeBille;
@@ -49,6 +50,11 @@ public class GameManager : MonoBehaviour
         get { return fxData; }
     }
 
+    public Sprite InitialBackground
+    {
+        get { return initialBackground; }
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -71,7 +77,6 @@ public class GameManager : MonoBehaviour
 
         // FX
         fxOn = userData.fxOn;
-        //if (userData.fxOn) fxManager.Setup(soundData);
 
         EventManager.AddListener("ToggleMusic", _OnToggleMusic);
         EventManager.AddListener("ToggleFX", _OnToggleFX);
@@ -83,8 +88,6 @@ public class GameManager : MonoBehaviour
 
         placeBille = GetComponent<PlaceBille>();
         placePlomb = GetComponent<PlacePlomb>();
-
-        //musicManager.PreparePlaylist(soundData.Playlist, musicOn);
 
         scores = new Dictionary<int, int>();
         // Chargement du dictionnaire depuis le fichier
@@ -169,14 +172,18 @@ public class GameManager : MonoBehaviour
         display.ResetBoard();
     }
 
-
-
     public void PrepareLevel(int level)
     {
-
         this.level = level;
+        PrepareLevelX();
+
+    }
+
+    private void PrepareLevelX()
+    {
 
         uiManager.SetGameMode();
+        placeBille.Unpause();
 
         if (scores.ContainsKey(level))
         {
@@ -196,7 +203,7 @@ public class GameManager : MonoBehaviour
         // bille + plomb + background + grid
         display.ClearBoard();
         display.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
-        display.ShowBackground();
+        //display.ShowBackground();
         display.PrepareBackgroundAndGrid(gridSize, levelData.layers[level].BackgroundTexture);
         if (levelData.layers[level].Motif != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif, handicap); }
 
@@ -213,7 +220,7 @@ public class GameManager : MonoBehaviour
 
     public void Replay()
     {
-        PrepareLevel(level);
+        PrepareLevelX();
     }
 
     public void UpdateScoreAndCoins(int quintes)
@@ -255,6 +262,7 @@ public class GameManager : MonoBehaviour
             // Sauvegarde du dictionnaire
             DictionaryStorage.SaveDictionaryToFile(scores, "dictionnaire.json");
             uiManager.GameOver();
+            placeBille.Pause();
         
         }
 

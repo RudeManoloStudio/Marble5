@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DisplayController : MonoBehaviour
 {
@@ -11,6 +12,14 @@ public class DisplayController : MonoBehaviour
 
     private GameObject bille;
     private GameObject plomb; // pour le handicap
+
+    private Sprite backgroundImage;
+
+    private void Start()
+    {
+        backgroundImage = GameManager.Instance.InitialBackground;
+        background.GetComponent<Image>().sprite = backgroundImage;
+    }
 
     public void SetBilleAndPlomb(GameObject bille, GameObject plomb)
     {
@@ -28,16 +37,11 @@ public class DisplayController : MonoBehaviour
 
     public void ResetBoard()
     {
-        background.gameObject.SetActive(false);
+        background.GetComponent<Image>().sprite = backgroundImage;
         ClearBoard();
     }
 
-    public void ShowBackground()
-    {
-        background.gameObject.SetActive(true);
-    }
-
-    public void PrepareBackgroundAndGrid(Vector2Int gridSize, Texture2D backgroundTexture)
+    public void PrepareBackgroundAndGrid(Vector2Int gridSize, Sprite backgroundTexture)
     {
 
         ClearBoard();
@@ -45,13 +49,14 @@ public class DisplayController : MonoBehaviour
         float h_offset = (gridSize.x % 2 == 0) ? h_offset = 0.5f : h_offset = 0f;
         float v_offset = (gridSize.y % 2 == 0) ? v_offset = 0.5f : v_offset = 0f;
 
-        Material material = background.gameObject.GetComponent<MeshRenderer>().material;
-        material.SetTexture("_MainTex", backgroundTexture);
+        //Material material = background.gameObject.GetComponent<MeshRenderer>().material;
+        //material.SetTexture("_MainTex", backgroundTexture);
 
-        background.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
-        background.localScale = new Vector3(gridSize.x / 10 + 2, 1, (gridSize.x / 10 + 2) * 2);
-        //background.localScale = new Vector3(gridSize.x / 10 + 2, 1, gridSize.y / 10 + 2);
-        //background.GetComponent<Renderer>().material = backgroundMaterial;
+        //background.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
+        //background.localScale = new Vector3(gridSize.x / 10 + 2, 1, (gridSize.x / 10 + 2) * 2);
+
+        //backgroundImage = backgroundTexture;
+        background.GetComponent<Image>().sprite = backgroundTexture;
 
         grid.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
         grid.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);

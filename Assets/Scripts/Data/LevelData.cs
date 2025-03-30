@@ -21,7 +21,7 @@ public class LevelData : ScriptableObject
 		public GameObject Plomb;
 		public GameObject Quinte;
 
-		public Texture2D BackgroundTexture;
+		public Sprite BackgroundTexture;
 
 		public MotifData Motif;
 

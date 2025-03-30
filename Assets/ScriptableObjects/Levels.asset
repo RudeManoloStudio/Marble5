@@ -18,7 +18,7 @@ MonoBehaviour:
     SecondStarScore: 75
     ThirdStarScore: 100
     Bille: {fileID: 7620533384714353888, guid: be90c221bc964584e9792224de691881, type: 3}
-    Plomb: {fileID: 8604321295258676697, guid: 27f102485a0d8804483819766c483c6f, type: 3}
+    Plomb: {fileID: 7484250924146756646, guid: 1fec922b66bd9ff48a385bac3e00c4bc, type: 3}
     Quinte: {fileID: 6765585399786045169, guid: 6e3323081eaa0734182d59ccd8b9f88c, type: 3}
     BackgroundTexture: {fileID: 21300000, guid: de5474e80ba99b14f83a9d2ffabb54f8, type: 3}
     Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
@@ -28,7 +28,7 @@ MonoBehaviour:
     FirstStarScore: 10
     SecondStarScore: 75
     ThirdStarScore: 100
-    Bille: {fileID: 7484250924146756646, guid: 6f66ea3411e12a6449a931345fa8c470, type: 3}
+    Bille: {fileID: 7484250924146756646, guid: 1fec922b66bd9ff48a385bac3e00c4bc, type: 3}
     Plomb: {fileID: 7620533384714353888, guid: be90c221bc964584e9792224de691881, type: 3}
     Quinte: {fileID: 6765585399786045169, guid: 6e3323081eaa0734182d59ccd8b9f88c, type: 3}
     BackgroundTexture: {fileID: 21300000, guid: bdc820ecd1d63f24c9323cbf15a50d2f, type: 3}

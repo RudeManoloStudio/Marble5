@@ -30,7 +30,7 @@ MonoBehaviour:
     ThirdStarScore: 100
     Bille: {fileID: 7484250924146756646, guid: 6f66ea3411e12a6449a931345fa8c470, type: 3}
     Plomb: {fileID: 7620533384714353888, guid: be90c221bc964584e9792224de691881, type: 3}
-    Quinte: {fileID: 6765585399786045169, guid: 6e3323081eaa0734182d59ccd8b9f88c, type: 3}
+    Quinte: {fileID: 3442517957595669570, guid: 34f5c4b4ec1839545b5d35a7ba567e32, type: 3}
     BackgroundTexture: {fileID: 21300000, guid: bdc820ecd1d63f24c9323cbf15a50d2f, type: 3}
     Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
     Handicap: 3
@@ -111,6 +111,17 @@ MonoBehaviour:
     BackgroundTexture: {fileID: 21300000, guid: 1121ed50f470e134f83d47d061897cb6, type: 3}
     Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
     Handicap: 9
+    Difficulte: 3
+  - GridSize: {x: 30, y: 30}
+    FirstStarScore: 50
+    SecondStarScore: 75
+    ThirdStarScore: 100
+    Bille: {fileID: 7484250924146756646, guid: 6f66ea3411e12a6449a931345fa8c470, type: 3}
+    Plomb: {fileID: 7620533384714353888, guid: be90c221bc964584e9792224de691881, type: 3}
+    Quinte: {fileID: 6765585399786045169, guid: 6e3323081eaa0734182d59ccd8b9f88c, type: 3}
+    BackgroundTexture: {fileID: 21300000, guid: 352bcdc6825e48848bf539df5bfed1a0, type: 3}
+    Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
+    Handicap: 12
     Difficulte: 3
   - GridSize: {x: 30, y: 30}
     FirstStarScore: 50

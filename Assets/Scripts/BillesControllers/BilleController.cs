@@ -24,11 +24,11 @@ public class BilleController : MonoBehaviour
 
         speed = Random.Range(minRotationSpeed, maxRotationSpeed);
 
-        SetShaderParameters();
+        SetSpecificParameters();
 
     }
 
-    public virtual void SetShaderParameters()
+    public virtual void SetSpecificParameters()
     {}
 
     public void DoRotate(bool flagRotate)

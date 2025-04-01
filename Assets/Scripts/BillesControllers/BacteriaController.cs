@@ -5,7 +5,7 @@ using UnityEngine;
 public class BacteriaController : BilleController
 {
 
-    public override void SetShaderParameters()
+    public override void SetSpecificParameters()
     {
         mr.material.SetFloat("_seed", Random.Range(0, 200));
     }

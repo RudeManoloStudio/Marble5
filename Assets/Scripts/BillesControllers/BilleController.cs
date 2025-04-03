@@ -16,9 +16,9 @@ public class BilleController : MonoBehaviour
     private void OnEnable()
     {
 
-        int x = Random.Range(0, 360);
-        int y = Random.Range(0, 360);
-        int z = Random.Range(0, 360);
+        int x = Random.Range(-180, 180);
+        int y = Random.Range(-180, 180);
+        int z = Random.Range(-180, 180);
 
         angularVelocity = new Vector3(x, y, z);
 

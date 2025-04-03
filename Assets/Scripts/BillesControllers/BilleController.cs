@@ -12,7 +12,7 @@ public class BilleController : MonoBehaviour
 
     private Vector3 angularVelocity;
     private float speed;
-    protected bool rotate = true;
+    private bool rotate = true;
 
     private void OnEnable()
     {
@@ -34,16 +34,9 @@ public class BilleController : MonoBehaviour
     public virtual void SetSpecificParameters()
     {}
 
-    /*
-    public void ActiveGravity()
+    public void DoRotate(bool rotate)
     {
-        rb.isKinematic = false;
-    }
-    */
-
-    public void DoRotate(bool flagRotate)
-    {
-        rotate = flagRotate;
+        this.rotate = rotate;
     }
 
     private void LateUpdate()

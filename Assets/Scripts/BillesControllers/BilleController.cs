@@ -6,6 +6,7 @@ public class BilleController : MonoBehaviour
 {
 
     [SerializeField] protected MeshRenderer mr;
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private float minRotationSpeed = 0.09f;
     [SerializeField] private float maxRotationSpeed = 0.2f;
 
@@ -26,10 +27,19 @@ public class BilleController : MonoBehaviour
 
         SetSpecificParameters();
 
+        EventManager.AddListener("DropBilles", _OnDropBilles);
+
     }
 
     public virtual void SetSpecificParameters()
     {}
+
+    /*
+    public void ActiveGravity()
+    {
+        rb.isKinematic = false;
+    }
+    */
 
     public void DoRotate(bool flagRotate)
     {
@@ -44,5 +54,10 @@ public class BilleController : MonoBehaviour
             transform.Rotate(angularVelocity * Time.deltaTime * speed, Space.Self);
         }
 
+    }
+
+    private void _OnDropBilles()
+    {
+        rb.isKinematic = false;
     }
 }

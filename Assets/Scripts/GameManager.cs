@@ -227,11 +227,11 @@ public class GameManager : MonoBehaviour
     {
         coins = coins + quintes;
 
-        //Vector2Int values = new Vector2Int();
-        //values.x = quintes;
-        //values.y = scoreData.Score[quintes - 1];
+        Vector2Int values = new Vector2Int();
+        values.x = quintes;
+        values.y = scoreData.Score[quintes - 1];
 
-        //EventManager.TriggerEvent("UpdateScoreAndCoins", values);
+        EventManager.TriggerEvent("UpdateScoreAndCoins", values);
 
         score += scoreData.Score[quintes - 1];
 
@@ -263,6 +263,7 @@ public class GameManager : MonoBehaviour
             DictionaryStorage.SaveDictionaryToFile(scores, "dictionnaire.json");
             uiManager.GameOver();
             placeBille.Pause();
+            display.DropBilles();
         
         }
 

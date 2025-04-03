@@ -337,7 +337,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 27258900}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -2417,7 +2417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -100}
+  m_AnchoredPosition: {x: 50, y: -210}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1235874625
@@ -3410,7 +3410,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899072620}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -3618,8 +3618,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55f4155762018a4d9cb81b439c3e7e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstImage: {fileID: 21300000, guid: 32a2b958832fe854080bbb517b8e7014, type: 3}
-  secondImage: {fileID: 21300000, guid: 191d19be2c1a9ee4c9a6ca540a70589b, type: 3}
+  onSprite: {fileID: 21300000, guid: 32a2b958832fe854080bbb517b8e7014, type: 3}
+  offSprite: {fileID: 21300000, guid: 191d19be2c1a9ee4c9a6ca540a70589b, type: 3}
 --- !u!114 &2143725752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3663,19 +3663,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2143725753}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1846316900}
-        m_TargetAssemblyTypeName: FXManager, Assembly-CSharp
-        m_MethodName: ToggleFXSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
 --- !u!114 &2143725753
 MonoBehaviour:
   m_ObjectHideFlags: 0

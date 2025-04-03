@@ -3,14 +3,21 @@ using UnityEngine.UI;
 
 public class ToggleButtonFx : MonoBehaviour
 {
-    public Sprite firstImage;
-    public Sprite secondImage;
-    private bool isFirstImage = true;
+
+    [SerializeField] private Sprite onSprite;
+    [SerializeField] private Sprite offSprite;
+
     private Button button;
 
     void Start()
     {
         button = GetComponent<Button>();
+
+        if (!GameManager.Instance.FxOn)
+        {
+            ToggleImage();
+        }
+
         if (button != null)
         {
             button.onClick.AddListener(ToggleImage);
@@ -20,15 +27,16 @@ public class ToggleButtonFx : MonoBehaviour
 
     public void ToggleImage()
     {
-        if (isFirstImage)
+
+        if (button.image.sprite == onSprite)
         {
-            button.image.sprite = secondImage;
+            button.image.sprite = offSprite;
         }
         else
         {
-            button.image.sprite = firstImage;
+            button.image.sprite = onSprite;
         }
-        isFirstImage = !isFirstImage;
+
     }
 
     private void TriggerFx()

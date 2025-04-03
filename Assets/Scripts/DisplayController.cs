@@ -21,6 +21,19 @@ public class DisplayController : MonoBehaviour
         background.GetComponent<Image>().sprite = backgroundImage;
     }
 
+    public void DropBilles()
+    {
+        /*
+        foreach (Transform child in container.transform)
+        {
+            
+            child.gameObject.GetComponent<BilleController>().ActiveGravity();
+        }
+        */
+
+        EventManager.TriggerEvent("DropBilles");
+    }
+
     public void SetBilleAndPlomb(GameObject bille, GameObject plomb)
     {
         this.bille = bille;
@@ -49,13 +62,6 @@ public class DisplayController : MonoBehaviour
         float h_offset = (gridSize.x % 2 == 0) ? h_offset = 0.5f : h_offset = 0f;
         float v_offset = (gridSize.y % 2 == 0) ? v_offset = 0.5f : v_offset = 0f;
 
-        //Material material = background.gameObject.GetComponent<MeshRenderer>().material;
-        //material.SetTexture("_MainTex", backgroundTexture);
-
-        //background.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.5f);
-        //background.localScale = new Vector3(gridSize.x / 10 + 2, 1, (gridSize.x / 10 + 2) * 2);
-
-        //backgroundImage = backgroundTexture;
         background.GetComponent<Image>().sprite = backgroundTexture;
 
         grid.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);

@@ -6,12 +6,10 @@ using UnityEngine;
 public class FXManager : MonoBehaviour
 {
 
-    //[SerializeField] private SoundData soundData;
     private AudioSource audioSource;
 
     private FXData fxData;
     private bool fxOn = true;
-    //private bool musicOn = true;
 
 
     void Start()

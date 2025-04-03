@@ -23,8 +23,8 @@ public class LevelSelector : MonoBehaviour
         else
         {
             vault.gameObject.SetActive(false);
-            if (level.stars == 1) star1.color = new Color(star1.color.r, star1.color.g, star1.color.b, 1f);
-            if (level.stars == 2) star2.color = new Color(star2.color.r, star2.color.g, star2.color.b, 1f);
+            if (level.stars >= 1) star1.color = new Color(star1.color.r, star1.color.g, star1.color.b, 1f);
+            if (level.stars >= 2) star2.color = new Color(star2.color.r, star2.color.g, star2.color.b, 1f);
             if (level.stars == 3) star3.color = new Color(star2.color.r, star2.color.g, star2.color.b, 1f);
         }
 

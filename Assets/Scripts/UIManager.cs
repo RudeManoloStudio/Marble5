@@ -6,17 +6,31 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    //[SerializeField] private Transform headerPanel;
     [SerializeField] private Transform highScorePanel;
     [SerializeField] private Text highScoreText;
     [SerializeField] private Transform scorePanel;
     [SerializeField] private Text scoreText;
+    [SerializeField] private Transform updateScore;
+    [SerializeField] private float scoreToUpdateDuration = 2.0f;
+    [SerializeField] private Vector2 scoreToUpdateOffset = new Vector2(10, 10);
     [SerializeField] private Transform optionsPanel;
     [SerializeField] private Transform quitPanel;
     [SerializeField] private Transform mainPanel;
     [SerializeField] private Transform levelPanel;
     [SerializeField] private GameObject levelPrefab;
     [SerializeField] private Transform gameOverPanel;
+
+    private Text scoreToUpdate;
+
+    
+
+
+    private void Start()
+    {
+
+        scoreToUpdate = updateScore.gameObject.GetComponent<Text>();
+
+    }
 
     public void SetMainPanel(List<LevelStruct> list)
     {
@@ -28,7 +42,7 @@ public class UIManager : MonoBehaviour
         highScorePanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
         quitPanel.gameObject.SetActive(false);
-        //headerPanel.gameObject.SetActive(false);
+        scoreToUpdate.gameObject.SetActive(false);
 
         ClearMenu();
 
@@ -66,14 +80,12 @@ public class UIManager : MonoBehaviour
 
         mainPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
-        //headerPanel.gameObject.SetActive(true);
         scoreText.text = "0";
     }
 
     public void GameOver()
     {
 
-        //headerPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(true);
 
         mainPanel.gameObject.SetActive(false);
@@ -83,9 +95,32 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void UpdateScore(int score)
+    public void UpdateScore(int score, int increment)
     {
+
         scoreText.text = score.ToString();
+
+        StartCoroutine(ShowScoreIncrement(increment));
+        
+    }
+
+    private IEnumerator ShowScoreIncrement(int inc)
+    {
+
+        updateScore.gameObject.SetActive(true);
+
+        PositionneScoreIncrement();
+
+
+        scoreToUpdate.text = "+" + inc.ToString();
+        yield return new WaitForSeconds(scoreToUpdateDuration);
+        updateScore.gameObject.SetActive(false);
+    }
+
+    private void PositionneScoreIncrement()
+    {
+        Vector2 mousePosition = Input.mousePosition;
+        updateScore.position = mousePosition + scoreToUpdateOffset;
     }
 
     public void SetHighScoreText(int highScore)

@@ -5,7 +5,7 @@ using UnityEngine;
 public class DotsController : BilleController
 {
 
-    public override void SetShaderParameters()
+    public override void SetSpecificParameters()
     {
         mr.material.SetFloat("_size", Random.Range(0.09f, 0.9f));
     }

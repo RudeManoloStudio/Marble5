@@ -5,16 +5,17 @@ using UnityEngine;
 public class RedSpaceController : BilleController
 {
 
-    public override void SetShaderParameters()
+    public override void SetSpecificParameters()
     {
-        int x = Random.Range(0, 360);
-        int y = Random.Range(0, 360);
-        int z = Random.Range(0, 360);
+
+        int x = Random.Range(-180, 180);
+        int y = Random.Range(-180, 180);
+        int z = Random.Range(-180, 180);
 
         Vector3 angularPosition = new Vector3(x, y, z);
 
-        mr.material.SetFloat("_seed", Random.Range(0, 200));
         mr.gameObject.transform.localRotation = Quaternion.Euler(angularPosition);
+
     }
 }
 

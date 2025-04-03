@@ -5,7 +5,7 @@ using UnityEngine;
 public class MarbleController : BilleController
 {
 
-    public override void SetShaderParameters()
+    public override void SetSpecificParameters()
     {
         mr.material.SetFloat("_scale", Random.Range(50, 150));
     }

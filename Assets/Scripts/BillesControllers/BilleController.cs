@@ -51,6 +51,7 @@ public class BilleController : MonoBehaviour
 
     private void _OnDropBilles()
     {
+        DoRotate(true);
         rb.isKinematic = false;
     }
 }

@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text highScoreText;
     [SerializeField] private Transform scorePanel;
     [SerializeField] private Text scoreText;
-    [SerializeField] private Transform updateScore;
+    [SerializeField] private GameObject scoreIncrementPrefab;
     [SerializeField] private float scoreToUpdateDuration = 2.0f;
     [SerializeField] private Vector2 scoreToUpdateOffset = new Vector2(10, 10);
     [SerializeField] private Transform optionsPanel;
@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject levelPrefab;
     [SerializeField] private Transform gameOverPanel;
 
-    private Text scoreToUpdate;
+    //private Text scoreToUpdate;
 
     
 
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
 
-        scoreToUpdate = updateScore.gameObject.GetComponent<Text>();
+        //scoreToUpdate = updateScore.gameObject.GetComponent<Text>();
 
     }
 
@@ -42,7 +42,7 @@ public class UIManager : MonoBehaviour
         highScorePanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
         quitPanel.gameObject.SetActive(false);
-        scoreToUpdate.gameObject.SetActive(false);
+        //scoreToUpdate.gameObject.SetActive(false);
 
         ClearMenu();
 
@@ -100,27 +100,37 @@ public class UIManager : MonoBehaviour
 
         scoreText.text = score.ToString();
 
-        StartCoroutine(ShowScoreIncrement(increment));
-        
+        //StartCoroutine(ShowScoreIncrement(increment));
+
+        ShowScoreIncrement(increment);
+
+
     }
 
-    private IEnumerator ShowScoreIncrement(int inc)
+    //private IEnumerator ShowScoreIncrement(int inc)
+    private void ShowScoreIncrement(int inc)
     {
 
-        updateScore.gameObject.SetActive(true);
+        //updateScore.gameObject.SetActive(true);
 
-        PositionneScoreIncrement();
+        GameObject go = Instantiate(scoreIncrementPrefab, scorePanel);
+        //go.transform.SetParent(this.GetComponent<CanvasRenderer>().transform);
+        go.GetComponent<Text>().text = "+" + inc.ToString();
+
+        PositionneScoreIncrement(go);
 
 
-        scoreToUpdate.text = "+" + inc.ToString();
-        yield return new WaitForSeconds(scoreToUpdateDuration);
-        updateScore.gameObject.SetActive(false);
+        //scoreToUpdate.text = "+" + inc.ToString();
+        //yield return new WaitForSeconds(scoreToUpdateDuration);
+
+        Destroy(go, scoreToUpdateDuration);
+        //updateScore.gameObject.SetActive(false);
     }
 
-    private void PositionneScoreIncrement()
+    private void PositionneScoreIncrement(GameObject go)
     {
         Vector2 mousePosition = Input.mousePosition;
-        updateScore.position = mousePosition + scoreToUpdateOffset;
+        go.transform.position = mousePosition + scoreToUpdateOffset;
     }
 
     public void SetHighScoreText(int highScore)

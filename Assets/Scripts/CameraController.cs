@@ -23,13 +23,7 @@ public class CameraController : MonoBehaviour
     {
         mainCamera = GetComponent<Camera>();
 
-        //sizeX = GameManager.Instance.GridSize.x;
-        //sizeY = GameManager.Instance.GridSize.y;
-
-        //minPosition = new Vector2(0, 0);
-        //maxPosition = new Vector2(sizeX - 1, sizeY - 1);
-
-        //Setup();
+        Debug.Log(mainCamera.aspect);
 
         EventManager.AddListener("Replay", _OnReplay);
     }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RedSpaceController : BilleController
+public class StarController : BilleController
 {
 
     public override void SetSpecificParameters()

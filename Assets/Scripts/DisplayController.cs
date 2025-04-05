@@ -23,13 +23,6 @@ public class DisplayController : MonoBehaviour
 
     public void DropBilles()
     {
-        /*
-        foreach (Transform child in container.transform)
-        {
-            
-            child.gameObject.GetComponent<BilleController>().ActiveGravity();
-        }
-        */
 
         EventManager.TriggerEvent("DropBilles");
     }
@@ -51,6 +44,7 @@ public class DisplayController : MonoBehaviour
     public void ResetBoard()
     {
         background.GetComponent<Image>().sprite = backgroundImage;
+        grid.gameObject.SetActive(false);
         ClearBoard();
     }
 
@@ -64,6 +58,7 @@ public class DisplayController : MonoBehaviour
 
         background.GetComponent<Image>().sprite = backgroundTexture;
 
+        grid.gameObject.SetActive(true);
         grid.transform.position = new Vector3(gridSize.x / 2 + h_offset, gridSize.y / 2 + v_offset, 0.4f);
         grid.transform.localScale = new Vector3(gridSize.x, gridSize.y, 1);
         Material gridSGMaterial = grid.GetComponent<MeshRenderer>().material;

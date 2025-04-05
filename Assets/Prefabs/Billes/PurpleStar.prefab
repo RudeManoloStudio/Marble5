@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4293693447022345080}
   - component: {fileID: -458794077632730842}
   m_Layer: 3
-  m_Name: RedSpace
+  m_Name: PurpleStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 802442ba886ed6b48ac1b323d99f8d3a, type: 2}
+  - {fileID: 2100000, guid: f1a86f6975999f04f9a571f381261afc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

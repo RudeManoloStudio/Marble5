@@ -21,9 +21,8 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        mainCamera = GetComponent<Camera>();
 
-        Debug.Log(mainCamera.aspect);
+        mainCamera = GetComponent<Camera>();
 
         EventManager.AddListener("Replay", _OnReplay);
     }

@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform levelPanel;
     [SerializeField] private GameObject levelPrefab;
     [SerializeField] private Transform gameOverPanel;
+    [SerializeField] private Transform reservePanel;
 
     //private Text scoreToUpdate;
 
@@ -42,7 +43,7 @@ public class UIManager : MonoBehaviour
         highScorePanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
         quitPanel.gameObject.SetActive(false);
-        //scoreToUpdate.gameObject.SetActive(false);
+        reservePanel.gameObject.SetActive(false);
 
         ClearMenu();
 
@@ -77,9 +78,11 @@ public class UIManager : MonoBehaviour
         highScorePanel.gameObject.SetActive(true);
         scorePanel.gameObject.SetActive(true);
         optionsPanel.gameObject.SetActive(true);
+        reservePanel.gameObject.SetActive(true);
 
         mainPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
+
         scoreText.text = "0";
     }
 
@@ -92,6 +95,7 @@ public class UIManager : MonoBehaviour
         highScorePanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
         optionsPanel.gameObject.SetActive(false);
+        reservePanel.gameObject.SetActive(false);
 
     }
 

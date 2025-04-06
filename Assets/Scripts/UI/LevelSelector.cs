@@ -13,7 +13,7 @@ public class LevelSelector : MonoBehaviour
     public void SetLevelParameters(LevelStruct level)
     {
 
-        text.text = level.ID.ToString();
+        text.text = (level.ID + 1).ToString();
 
         if (!level.available)
         {

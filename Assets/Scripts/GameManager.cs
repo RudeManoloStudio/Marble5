@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool infinisCoins = false;
     [SerializeField] private ScoreData scoreData;
     [SerializeField] private Sprite initialBackground;
+    [SerializeField] private ReserveController reserveController;
 
     private Vector2Int gridSize;
     private PlaceBille placeBille;
@@ -203,19 +204,29 @@ public class GameManager : MonoBehaviour
         // bille + plomb + background + grid
         display.ClearBoard();
         display.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
-        //display.ShowBackground();
         display.PrepareBackgroundAndGrid(gridSize, levelData.layers[level].BackgroundTexture);
         if (levelData.layers[level].Motif != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif, handicap); }
 
-
         placeBille.Setup(gridSize, levelData.layers[level].Bille, levelData.layers[level].Quinte);
         placePlomb.Setup(gridSize, levelData.layers[level].Plomb);
+
+        reserveController.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
 
         difficulte = levelData.layers[level].Difficulte;
 
         coins = initialCoins;
         compteurBilles = 0;
         score = 0;
+
+        PrepareReserve();
+    }
+
+    private void PrepareReserve()
+    {
+        for (int x = 0; x < initialCoins; x++)
+        {
+            reserveController.AddBille();
+        }
     }
 
     public void Replay()
@@ -236,6 +247,12 @@ public class GameManager : MonoBehaviour
         score += scoreData.Score[quintes - 1];
 
         uiManager.UpdateScore(score, scoreData.Score[quintes - 1]);
+
+        for (int x = 0; x < quintes; x++)
+        {
+            reserveController.AddBille();
+        }
+
     }
 
     private void _OnPoseBille(object billePosition)
@@ -273,6 +290,8 @@ public class GameManager : MonoBehaviour
             placePlomb.PlacePlombAt(bPosition);
             compteurBilles = 0;
         }
+
+        reserveController.RemoveBille();
     }
 
     public void Quit()

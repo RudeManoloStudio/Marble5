@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GridSGMat
-  m_Shader: {fileID: -6465566751694194690, guid: ef192d9255d191d4c8303aaa76db5685, type: 3}
+  m_Name: PlombMat
+  m_Shader: {fileID: -6465566751694194690, guid: f4f24e17218f8d24fb3f0f7b84ce73e2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -112,16 +112,13 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _size: 0.05
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _color: {r: 0.9924528, g: 0.020598056, b: 0.020598056, a: 1}
-    - _tiling: {r: 10, g: 10, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &6728987935022242094
+--- !u!114 &7616621190330161927
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

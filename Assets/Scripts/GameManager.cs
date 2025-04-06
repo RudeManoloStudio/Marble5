@@ -247,6 +247,12 @@ public class GameManager : MonoBehaviour
         score += scoreData.Score[quintes - 1];
 
         uiManager.UpdateScore(score, scoreData.Score[quintes - 1]);
+
+        for (int x = 0; x < quintes; x++)
+        {
+            reserveController.AddBille();
+        }
+
     }
 
     private void _OnPoseBille(object billePosition)
@@ -284,6 +290,8 @@ public class GameManager : MonoBehaviour
             placePlomb.PlacePlombAt(bPosition);
             compteurBilles = 0;
         }
+
+        reserveController.RemoveBille();
     }
 
     public void Quit()

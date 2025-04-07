@@ -100,7 +100,7 @@ MonoBehaviour:
     BackgroundTexture: {fileID: 21300000, guid: c75af7781891ae847afee4e57a3f9123, type: 3}
     Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
     Handicap: 6
-    Difficulte: 3
+    Difficulte: 4
   - GridSize: {x: 30, y: 30}
     FirstStarScore: 25
     SecondStarScore: 50
@@ -110,8 +110,8 @@ MonoBehaviour:
     Quinte: {fileID: 6765585399786045169, guid: fb4a77309e2cdc245955a738364544db, type: 3}
     BackgroundTexture: {fileID: 21300000, guid: 0417bb17ad576d44fb2b2e2d81f3f151, type: 3}
     Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
-    Handicap: 6
-    Difficulte: 4
+    Handicap: 2
+    Difficulte: 3
   - GridSize: {x: 30, y: 30}
     FirstStarScore: 25
     SecondStarScore: 50
@@ -121,5 +121,5 @@ MonoBehaviour:
     Quinte: {fileID: 6765585399786045169, guid: fb4a77309e2cdc245955a738364544db, type: 3}
     BackgroundTexture: {fileID: 21300000, guid: 13d1ae8d85adbfb42b14d2f74012bc91, type: 3}
     Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
-    Handicap: 2
+    Handicap: 4
     Difficulte: 3

@@ -20,16 +20,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject levelPrefab;
     [SerializeField] private Transform gameOverPanel;
     [SerializeField] private Transform reservePanel;
-
-    //private Text scoreToUpdate;
-
+    [SerializeField] private Transform slidersPanel;
     
-
-
-    private void Start()
+    public void ShowSliders()
     {
-
-        //scoreToUpdate = updateScore.gameObject.GetComponent<Text>();
 
     }
 
@@ -103,32 +97,20 @@ public class UIManager : MonoBehaviour
     {
 
         scoreText.text = score.ToString();
-
-        //StartCoroutine(ShowScoreIncrement(increment));
-
         ShowScoreIncrement(increment);
-
 
     }
 
-    //private IEnumerator ShowScoreIncrement(int inc)
     private void ShowScoreIncrement(int inc)
     {
 
-        //updateScore.gameObject.SetActive(true);
-
         GameObject go = Instantiate(scoreIncrementPrefab, scorePanel);
-        //go.transform.SetParent(this.GetComponent<CanvasRenderer>().transform);
         go.GetComponent<Text>().text = "+" + inc.ToString();
 
         PositionneScoreIncrement(go);
 
-
-        //scoreToUpdate.text = "+" + inc.ToString();
-        //yield return new WaitForSeconds(scoreToUpdateDuration);
-
         Destroy(go, scoreToUpdateDuration);
-        //updateScore.gameObject.SetActive(false);
+
     }
 
     private void PositionneScoreIncrement(GameObject go)

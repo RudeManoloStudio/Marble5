@@ -177,9 +177,5 @@ public class PlacePlomb : MonoBehaviour
         return positionsLibres;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
 }

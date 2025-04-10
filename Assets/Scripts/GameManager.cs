@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     private Vector2Int gridSize;
     private PlaceBille placeBille;
     private PlacePlomb placePlomb;
-    private int compteurBilles;
+    [SerializeField] private int compteurBilles;
     private int difficulte;
     private int score;
     private int level;
@@ -218,14 +218,27 @@ public class GameManager : MonoBehaviour
         compteurBilles = 0;
         score = 0;
 
-        PrepareReserve();
+        //PrepareReserve();
     }
 
     private void PrepareReserve()
     {
+        int nextPlomb = difficulte;
+
         for (int x = 0; x < initialCoins; x++)
         {
+            
             reserveController.AddBille();
+
+            nextPlomb--;
+
+            if (nextPlomb <= 0)
+            {
+                reserveController.AddPlomb();
+                nextPlomb = difficulte;
+
+            }
+
         }
     }
 
@@ -248,10 +261,12 @@ public class GameManager : MonoBehaviour
 
         uiManager.UpdateScore(score, scoreData.Score[quintes - 1]);
 
+        /*
         for (int x = 0; x < quintes; x++)
         {
             reserveController.AddBille();
         }
+        */
 
     }
 
@@ -288,10 +303,11 @@ public class GameManager : MonoBehaviour
         if (compteurBilles >= difficulte)
         {
             placePlomb.PlacePlombAt(bPosition);
+            //reserveController.RemoveBille();
             compteurBilles = 0;
         }
 
-        reserveController.RemoveBille();
+        //reserveController.RemoveBille();
     }
 
     public void Quit()

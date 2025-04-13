@@ -2419,7 +2419,7 @@ MonoBehaviour:
   uiManager: {fileID: 820335634}
   display: {fileID: 2072814220}
   fxData: {fileID: 11400000, guid: 483a7048415fece489914e9366e35753, type: 2}
-  musicData: {fileID: 11400000, guid: 36595d3d9e4162546b368a59afea310e, type: 2}
+  musicData: {fileID: 11400000, guid: 58a4b8df2ec67404b99560e2d00fafb8, type: 2}
   initialCoins: 5
   infinisCoins: 0
   scoreData: {fileID: 11400000, guid: 747e0e556cc72654d825c222e4c670d7, type: 2}

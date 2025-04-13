@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,3 +45,4 @@ public class ToggleButtonFx : MonoBehaviour
         EventManager.TriggerEvent("ToggleFX");
     }
 }
+*/

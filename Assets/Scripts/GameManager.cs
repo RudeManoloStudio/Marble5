@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     private Vector2Int gridSize;
     private PlaceBille placeBille;
     private PlacePlomb placePlomb;
-    [SerializeField] private int compteurBilles;
+    private int compteurBilles;
     private int difficulte;
     private int score;
     private int level;
@@ -27,13 +27,15 @@ public class GameManager : MonoBehaviour
     private UserData userData;
     private Dictionary<int, int> scores;
     private int coins;
-    private bool musicOn;
-    private bool fxOn;
+    //private bool musicOn;
+    private float musicVolume;
+    //private bool fxOn;
+    private float fxVolume;
     public static GameManager Instance { get; private set; }
 
-    public bool MusicOn
+    public float MusicVolume
     {
-        get { return musicOn; }
+        get { return musicVolume; }
     }
 
     public List<AudioClip> Playlist
@@ -41,11 +43,10 @@ public class GameManager : MonoBehaviour
         get { return musicData.Playlist; }
     }
 
-    public bool FxOn
+    public float FxVolume
     {
-        get { return fxOn; }
+        get { return fxVolume; }
     }
-
     public FXData FxData
     {
         get { return fxData; }
@@ -74,13 +75,15 @@ public class GameManager : MonoBehaviour
         userData = userDataManager.GetUserData();
 
         // Musique
-        musicOn = userData.musicOn;
+        musicVolume = userData.musicVolume;
+        //musicOn = userData.musicOn;
 
         // FX
-        fxOn = userData.fxOn;
+        fxVolume = userData.fxVolume;
+        //fxOn = userData.fxOn;
 
-        EventManager.AddListener("ToggleMusic", _OnToggleMusic);
-        EventManager.AddListener("ToggleFX", _OnToggleFX);
+        //EventManager.AddListener("ToggleMusic", _OnToggleMusic);
+        //EventManager.AddListener("ToggleFX", _OnToggleFX);
 
     }
 
@@ -210,7 +213,7 @@ public class GameManager : MonoBehaviour
         placeBille.Setup(gridSize, levelData.layers[level].Bille, levelData.layers[level].Quinte);
         placePlomb.Setup(gridSize, levelData.layers[level].Plomb);
 
-        reserveController.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
+        //reserveController.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
 
         difficulte = levelData.layers[level].Difficulte;
 
@@ -315,19 +318,29 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    public void SetMusicVolume(float volume)
+    {
+        userDataManager.SaveMusicVolume(volume);
+    }
+
+    public void SetFxVolume(float volume)
+    {
+        userDataManager.SaveFxVolume(volume);
+    }
+
     private void _OnToggleMusic()
     {
 
-        musicOn = musicOn == true ? false : true;
-        userDataManager.ToggleMusic(musicOn);
+        //musicOn = musicOn == true ? false : true;
+        //userDataManager.ToggleMusic(musicOn);
 
     }
 
     private void _OnToggleFX()
     {
 
-        fxOn = fxOn == true ? false : true;
-        userDataManager.ToggleFX(fxOn);
+        //fxOn = fxOn == true ? false : true;
+        //userDataManager.ToggleFX(fxOn);
 
     }
 }

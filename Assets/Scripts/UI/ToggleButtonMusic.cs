@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ public class ToggleButtonMusic : MonoBehaviour
     {
         button = GetComponent<Button>();
 
+        
         if (!GameManager.Instance.MusicOn)
         {
             ToggleImage();
@@ -44,3 +46,4 @@ public class ToggleButtonMusic : MonoBehaviour
         EventManager.TriggerEvent("ToggleMusic");
     }
 }
+*/

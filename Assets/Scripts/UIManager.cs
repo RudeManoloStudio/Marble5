@@ -6,44 +6,58 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    [SerializeField] private Transform highScorePanel;
-    [SerializeField] private Text highScoreText;
+    // score
     [SerializeField] private Transform scorePanel;
     [SerializeField] private Text scoreText;
     [SerializeField] private GameObject scoreIncrementPrefab;
     [SerializeField] private float scoreToUpdateDuration = 2.0f;
     [SerializeField] private Vector2 scoreToUpdateOffset = new Vector2(10, 10);
-    [SerializeField] private Transform optionsPanel;
+
+    // quit ou menu
+    [SerializeField] private Transform quitButton;
+    [SerializeField] private Transform menuButton;
+
+    //options sons
+    [SerializeField] private Transform slidersPanel;
+
+    // quit confirmation
     [SerializeField] private Transform quitPanel;
+
+    // abort confirmation
+    [SerializeField] private Transform abortPanel;
+
+    // main panel
     [SerializeField] private Transform mainPanel;
     [SerializeField] private Transform levelPanel;
     [SerializeField] private GameObject levelPrefab;
+
+    //gameover
     [SerializeField] private Transform gameOverPanel;
-    [SerializeField] private Transform reservePanel;
-
-    //private Text scoreToUpdate;
-
     
-
-
-    private void Start()
+    public void ToggleSliders()
     {
-
-        //scoreToUpdate = updateScore.gameObject.GetComponent<Text>();
-
+        if (!slidersPanel.gameObject.activeSelf)
+        {
+            slidersPanel.gameObject.SetActive(true);
+        }
+        else
+        {
+            slidersPanel.gameObject.SetActive(false);
+        }
     }
 
     public void SetMainPanel(List<LevelStruct> list)
     {
 
         mainPanel.gameObject.SetActive(true);
-        optionsPanel.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
 
         gameOverPanel.gameObject.SetActive(false);
-        highScorePanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
         quitPanel.gameObject.SetActive(false);
-        reservePanel.gameObject.SetActive(false);
+        slidersPanel.gameObject.SetActive(false);
+        menuButton.gameObject.SetActive(false);
+        abortPanel.gameObject.SetActive(false);
 
         ClearMenu();
 
@@ -75,12 +89,12 @@ public class UIManager : MonoBehaviour
 
     public void SetGameMode()
     {
-        highScorePanel.gameObject.SetActive(true);
+
         scorePanel.gameObject.SetActive(true);
-        optionsPanel.gameObject.SetActive(true);
-        reservePanel.gameObject.SetActive(true);
+        menuButton.gameObject.SetActive(true);
 
         mainPanel.gameObject.SetActive(false);
+        quitButton.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
 
         scoreText.text = "0";
@@ -91,11 +105,8 @@ public class UIManager : MonoBehaviour
 
         gameOverPanel.gameObject.SetActive(true);
 
-        mainPanel.gameObject.SetActive(false);
-        highScorePanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
-        optionsPanel.gameObject.SetActive(false);
-        reservePanel.gameObject.SetActive(false);
+        menuButton.gameObject.SetActive(false);
 
     }
 
@@ -103,32 +114,20 @@ public class UIManager : MonoBehaviour
     {
 
         scoreText.text = score.ToString();
-
-        //StartCoroutine(ShowScoreIncrement(increment));
-
         ShowScoreIncrement(increment);
-
 
     }
 
-    //private IEnumerator ShowScoreIncrement(int inc)
     private void ShowScoreIncrement(int inc)
     {
 
-        //updateScore.gameObject.SetActive(true);
-
         GameObject go = Instantiate(scoreIncrementPrefab, scorePanel);
-        //go.transform.SetParent(this.GetComponent<CanvasRenderer>().transform);
         go.GetComponent<Text>().text = "+" + inc.ToString();
 
         PositionneScoreIncrement(go);
 
-
-        //scoreToUpdate.text = "+" + inc.ToString();
-        //yield return new WaitForSeconds(scoreToUpdateDuration);
-
         Destroy(go, scoreToUpdateDuration);
-        //updateScore.gameObject.SetActive(false);
+
     }
 
     private void PositionneScoreIncrement(GameObject go)
@@ -139,7 +138,7 @@ public class UIManager : MonoBehaviour
 
     public void SetHighScoreText(int highScore)
     {
-        highScoreText.text = highScore.ToString();
+        //highScoreText.text = highScore.ToString();
     }
 
     public void ConfirmQuit()
@@ -150,5 +149,20 @@ public class UIManager : MonoBehaviour
     public void CancelQuit()
     {
         quitPanel.gameObject.SetActive(false);
+    }
+
+    public void ConfirmAbort()
+    {
+        abortPanel.gameObject.SetActive(true);
+    }
+
+    public void CancelAbort()
+    {
+        abortPanel.gameObject.SetActive(false);
+    }
+
+    public void ReturnToMain()
+    {
+        GameManager.Instance.PrepareMainMenu();
     }
 }

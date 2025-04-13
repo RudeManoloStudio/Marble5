@@ -35,8 +35,8 @@ public class ReserveController : MonoBehaviour
         GameObject newBille = Instantiate(bille, container);
         newBille.transform.localScale = new Vector3(1, 1, 1);
 
-        newBille.transform.SetLocalPositionAndRotation(new Vector3(0, list.Count, 0), Quaternion.identity);
-        Debug.Log("add bille position : " + newBille.transform.localPosition);
+        newBille.transform.SetLocalPositionAndRotation(new Vector3(0, list.Count * -1, 0), Quaternion.identity);
+        
         BilleController bc = newBille.GetComponent<BilleController>();
         bc.DoRotate(false);
         bc.SetSpecificParameters();
@@ -53,15 +53,52 @@ public class ReserveController : MonoBehaviour
         list.RemoveAt(0);
         Destroy(container.GetChild(0).gameObject);
         
+        
         foreach (GameObject billeToMove in list)
         {
-            billeToMove.transform.Translate(new Vector3(0, -1, 0), Space.World);
+            billeToMove.transform.Translate(new Vector3(0, 1, 0), Space.World);
         }
+        
         
 
         AdjustCameraToContainer();
         AdjustReserveUIHeight(list.Count);
     }
+
+    public void AddPlomb()
+    {
+        GameObject newPlomb = Instantiate(plomb, container);
+        newPlomb.transform.localScale = new Vector3(1, 1, 1);
+
+        newPlomb.transform.SetLocalPositionAndRotation(new Vector3(0, list.Count * -1, 0), Quaternion.identity);
+
+        BilleController bc = newPlomb.GetComponent<BilleController>();
+        bc.DoRotate(false);
+        bc.SetSpecificParameters();
+
+        list.Add(newPlomb);
+
+        AdjustCameraToContainer();
+        AdjustReserveUIHeight(list.Count);
+    }
+
+    /*
+    public void RemovePlomb()
+    {
+
+        list.RemoveAt(0);
+        Destroy(container.GetChild(0).gameObject);
+
+        foreach (GameObject billeToMove in list)
+        {
+            billeToMove.transform.Translate(new Vector3(0, -1, 0), Space.World);
+        }
+
+
+        AdjustCameraToContainer();
+        AdjustReserveUIHeight(list.Count);
+    }
+    */
 
     void AdjustReserveUIHeight(int nbBilles)
     {
@@ -79,7 +116,7 @@ public class ReserveController : MonoBehaviour
         reserveCam.orthographicSize = cameraHeight;
         reserveCam.aspect = 1f / (float)nbBilles;
 
-        reserveCam.transform.SetLocalPositionAndRotation(new Vector3(0, nbBilles / 2f - 0.5f, 0), Quaternion.identity);
+        reserveCam.transform.SetLocalPositionAndRotation(new Vector3(0, -(nbBilles / 2f - 0.5f), 0), Quaternion.identity);
 
     }
 }

@@ -33,7 +33,12 @@ public class UIManager : MonoBehaviour
 
     //gameover
     [SerializeField] private Transform gameOverPanel;
-    
+    [SerializeField] private Transform gameOverScorePanel;
+    [SerializeField] private Transform gameOverNewHighscorePanel;
+    [SerializeField] private Text finalScore;
+    [SerializeField] private Text bestScore;
+    [SerializeField] private Text newBestScore;
+
     public void ToggleSliders()
     {
         if (!slidersPanel.gameObject.activeSelf)
@@ -100,13 +105,29 @@ public class UIManager : MonoBehaviour
         scoreText.text = "0";
     }
 
-    public void GameOver()
+    public void GameOver(int score, int highscore)
     {
 
         gameOverPanel.gameObject.SetActive(true);
 
         scorePanel.gameObject.SetActive(false);
         menuButton.gameObject.SetActive(false);
+
+        if (score == highscore)
+        {
+            gameOverNewHighscorePanel.gameObject.SetActive(true);
+            gameOverScorePanel.gameObject.SetActive(false);
+
+            newBestScore.text = score.ToString();
+        }
+        else
+        {
+            gameOverScorePanel.gameObject.SetActive(true);
+            gameOverNewHighscorePanel.gameObject.SetActive(false);
+
+            finalScore.text = score.ToString();
+            bestScore.text = highscore.ToString();
+        }
 
     }
 

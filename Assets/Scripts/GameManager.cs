@@ -27,10 +27,12 @@ public class GameManager : MonoBehaviour
     private UserData userData;
     private Dictionary<int, int> scores;
     private int coins;
-    //private bool musicOn;
+    private int highScore;
     private float musicVolume;
     //private bool fxOn;
     private float fxVolume;
+
+
     public static GameManager Instance { get; private set; }
 
     public float MusicVolume
@@ -189,6 +191,7 @@ public class GameManager : MonoBehaviour
         uiManager.SetGameMode();
         placeBille.Unpause();
 
+        /*
         if (scores.ContainsKey(level))
         {
             uiManager.SetHighScoreText(scores[level]);
@@ -197,8 +200,18 @@ public class GameManager : MonoBehaviour
         {
             uiManager.SetHighScoreText(0);
         }
+        */
 
-        gridSize = levelData.layers[level].GridSize;
+        if (scores.ContainsKey(level))
+        {
+            highScore = scores[level];
+        }
+        else
+        {
+            highScore = 0;
+        }
+
+            gridSize = levelData.layers[level].GridSize;
         handicap = levelData.layers[level].Handicap;
 
         // positionnement de la camera
@@ -287,16 +300,22 @@ public class GameManager : MonoBehaviour
                 if (score >= scores[level])
                 {
                     scores[level] = score;
+                    highScore = score;
+                }
+                else
+                {
+                    highScore = scores[level];
                 }
             }
             else
             {
                 scores.Add(level, score);
+                highScore = score;
             }
 
             // Sauvegarde du dictionnaire
             DictionaryStorage.SaveDictionaryToFile(scores, "dictionnaire.json");
-            uiManager.GameOver();
+            uiManager.GameOver(score, highScore);
             placeBille.Pause();
             display.DropBilles();
         

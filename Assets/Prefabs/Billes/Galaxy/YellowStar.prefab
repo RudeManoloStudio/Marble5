@@ -123,6 +123,10 @@ MonoBehaviour:
   rb: {fileID: -458794077632730842}
   minRotationSpeed: 0.09
   maxRotationSpeed: 0.2
+  textures:
+  - {fileID: 2800000, guid: 2bd9ceccb85a9fd4e92704d10b021b17, type: 3}
+  - {fileID: 2800000, guid: 2a3b77fca3238904bb7343d9e02300f0, type: 3}
+  - {fileID: 2800000, guid: b84710602c901a143bb8c1ea03bd128a, type: 3}
 --- !u!54 &-458794077632730842
 Rigidbody:
   m_ObjectHideFlags: 0

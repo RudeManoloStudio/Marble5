@@ -2,18 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StarController : BilleController
+public class PlombController : BilleController
 {
-
-    [SerializeField] List<Texture2D> textures;
 
     public override void SetSpecificParameters()
     {
-
-        int randomTextureIndex = Random.Range(0, textures.Count);
-
-        Material material = mr.material;
-        material.SetTexture("_texture", textures[randomTextureIndex]);
 
         int x = Random.Range(-180, 180);
         int y = Random.Range(-180, 180);

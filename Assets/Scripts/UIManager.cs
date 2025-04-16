@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     // score
     [SerializeField] private Transform scorePanel;
     [SerializeField] private Text scoreText;
+    [SerializeField] private ScoreBarController scoreBarController;
     [SerializeField] private GameObject scoreIncrementPrefab;
     [SerializeField] private float scoreToUpdateDuration = 2.0f;
     [SerializeField] private Vector2 scoreToUpdateOffset = new Vector2(10, 10);
@@ -92,7 +93,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void SetGameMode()
+    public void SetGameMode(Vector3Int starsScore)
     {
 
         scorePanel.gameObject.SetActive(true);
@@ -103,6 +104,7 @@ public class UIManager : MonoBehaviour
         gameOverPanel.gameObject.SetActive(false);
 
         scoreText.text = "0";
+        scoreBarController.SetStars(starsScore);
     }
 
     public void GameOver(int score, int highscore)
@@ -136,6 +138,7 @@ public class UIManager : MonoBehaviour
 
         scoreText.text = score.ToString();
         ShowScoreIncrement(increment);
+        scoreBarController.AddScore(increment);
 
     }
 

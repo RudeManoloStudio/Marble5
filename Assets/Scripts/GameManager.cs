@@ -188,20 +188,6 @@ public class GameManager : MonoBehaviour
     private void PrepareLevelX()
     {
 
-        uiManager.SetGameMode();
-        placeBille.Unpause();
-
-        /*
-        if (scores.ContainsKey(level))
-        {
-            uiManager.SetHighScoreText(scores[level]);
-        }
-        else
-        {
-            uiManager.SetHighScoreText(0);
-        }
-        */
-
         if (scores.ContainsKey(level))
         {
             highScore = scores[level];
@@ -211,8 +197,13 @@ public class GameManager : MonoBehaviour
             highScore = 0;
         }
 
-            gridSize = levelData.layers[level].GridSize;
+        gridSize = levelData.layers[level].GridSize;
         handicap = levelData.layers[level].Handicap;
+
+        Vector3Int starsScore = new Vector3Int(levelData.layers[level].FirstStarScore, levelData.layers[level].SecondStarScore, levelData.layers[level].ThirdStarScore);
+
+        uiManager.SetGameMode(starsScore);
+        placeBille.Unpause();
 
         // positionnement de la camera
         Camera.main.GetComponent<CameraController>().Setup(gridSize);

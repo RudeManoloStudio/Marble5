@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layers:
   - GridSize: {x: 30, y: 30}
-    FirstStarScore: 50
-    SecondStarScore: 75
-    ThirdStarScore: 125
+    FirstStarScore: 40
+    SecondStarScore: 60
+    ThirdStarScore: 80
     Bille: {fileID: 7484250924146756646, guid: 018feacccd4c17e4eb8a19c1e6269f28, type: 3}
     Plomb: {fileID: 7484250924146756646, guid: 6f731e5c35fcb9f42924cb7f42e6048e, type: 3}
     Quinte: {fileID: 6765585399786045169, guid: fb4a77309e2cdc245955a738364544db, type: 3}

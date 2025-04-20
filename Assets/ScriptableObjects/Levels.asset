@@ -23,7 +23,7 @@ MonoBehaviour:
     BackgroundTexture: {fileID: 21300000, guid: 4785d8d31b8766b47bbd60681ce5fcb9, type: 3}
     Motif: {fileID: 11400000, guid: 2def0e8d90cb06843abc256f8d22bf70, type: 2}
     Handicap: 0
-    Difficulte: 1000
+    Difficulte: 0
   - GridSize: {x: 30, y: 30}
     FirstStarScore: 25
     SecondStarScore: 50

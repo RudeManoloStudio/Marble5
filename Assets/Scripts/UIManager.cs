@@ -32,13 +32,48 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform levelPanel;
     [SerializeField] private GameObject levelPrefab;
 
-    //gameover
+    // gameover
     [SerializeField] private Transform gameOverPanel;
     [SerializeField] private Transform gameOverScorePanel;
     [SerializeField] private Transform gameOverNewHighscorePanel;
     [SerializeField] private Text finalScore;
     [SerializeField] private Text bestScore;
     [SerializeField] private Text newBestScore;
+
+    // reserve
+    [SerializeField] private Transform reservePanel;
+    [SerializeField] private Text reserveBilleCounter;
+    [SerializeField] private Text reservePlombCounter;
+
+
+    public void UpdateReserveBilleCounter(int count)
+    {
+        if (count == 1)
+        {
+            reserveBilleCounter.color = new Color(255, 0, 0);
+        }
+        else
+        {
+            reserveBilleCounter.color = new Color(255, 255, 255);
+        }
+
+        reserveBilleCounter.text = count.ToString();
+    }
+
+    public void UpdateReservePlombCounter(int count)
+    {
+        if (count == 1)
+        {
+            reservePlombCounter.color = new Color(255, 0, 0);
+        }
+        else
+        {
+            reservePlombCounter.color = new Color(255, 255, 255);
+        }
+
+        reservePlombCounter.text = count.ToString();
+    }
+
 
     public void ToggleSliders()
     {
@@ -64,6 +99,7 @@ public class UIManager : MonoBehaviour
         slidersPanel.gameObject.SetActive(false);
         menuButton.gameObject.SetActive(false);
         abortPanel.gameObject.SetActive(false);
+        reservePanel.gameObject.SetActive(false);
 
         ClearMenu();
 
@@ -98,6 +134,7 @@ public class UIManager : MonoBehaviour
 
         scorePanel.gameObject.SetActive(true);
         menuButton.gameObject.SetActive(true);
+        reservePanel.gameObject.SetActive(true);
 
         mainPanel.gameObject.SetActive(false);
         quitButton.gameObject.SetActive(false);
@@ -114,6 +151,7 @@ public class UIManager : MonoBehaviour
 
         scorePanel.gameObject.SetActive(false);
         menuButton.gameObject.SetActive(false);
+        reservePanel.gameObject.SetActive(false);
 
         if (score == highscore)
         {

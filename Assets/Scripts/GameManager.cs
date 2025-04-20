@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     private PlacePlomb placePlomb;
     private int compteurBilles;
     private int difficulte;
+    private bool isDifficulte = true;
     private int score;
     private int level;
     private int handicap;
@@ -29,7 +30,6 @@ public class GameManager : MonoBehaviour
     private int coins;
     private int highScore;
     private float musicVolume;
-    //private bool fxOn;
     private float fxVolume;
 
 
@@ -78,14 +78,9 @@ public class GameManager : MonoBehaviour
 
         // Musique
         musicVolume = userData.musicVolume;
-        //musicOn = userData.musicOn;
 
         // FX
         fxVolume = userData.fxVolume;
-        //fxOn = userData.fxOn;
-
-        //EventManager.AddListener("ToggleMusic", _OnToggleMusic);
-        //EventManager.AddListener("ToggleFX", _OnToggleFX);
 
     }
 
@@ -213,40 +208,28 @@ public class GameManager : MonoBehaviour
         display.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
         display.PrepareBackgroundAndGrid(gridSize, levelData.layers[level].BackgroundTexture);
         if (levelData.layers[level].Motif != null) { display.PrepareMotif(gridSize, levelData.layers[level].Motif, handicap); }
+        display.PrepareReserve();
 
         placeBille.Setup(gridSize, levelData.layers[level].Bille, levelData.layers[level].Quinte);
         placePlomb.Setup(gridSize, levelData.layers[level].Plomb);
 
-        //reserveController.SetBilleAndPlomb(levelData.layers[level].Bille, levelData.layers[level].Plomb);
-
         difficulte = levelData.layers[level].Difficulte;
+        if (difficulte <= 0)
+        {
+            isDifficulte = false;
+        }
+        else
+        {
+            isDifficulte = true;
+        }
 
         coins = initialCoins;
         compteurBilles = 0;
         score = 0;
 
-        //PrepareReserve();
-    }
+        uiManager.UpdateReserveBilleCounter(coins);
+        uiManager.UpdateReservePlombCounter(difficulte);
 
-    private void PrepareReserve()
-    {
-        int nextPlomb = difficulte;
-
-        for (int x = 0; x < initialCoins; x++)
-        {
-            
-            reserveController.AddBille();
-
-            nextPlomb--;
-
-            if (nextPlomb <= 0)
-            {
-                reserveController.AddPlomb();
-                nextPlomb = difficulte;
-
-            }
-
-        }
     }
 
     public void Replay()
@@ -256,6 +239,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateScoreAndCoins(int quintes)
     {
+
         coins = coins + quintes;
 
         Vector2Int values = new Vector2Int();
@@ -267,13 +251,7 @@ public class GameManager : MonoBehaviour
         score += scoreData.Score[quintes - 1];
 
         uiManager.UpdateScore(score, scoreData.Score[quintes - 1]);
-
-        /*
-        for (int x = 0; x < quintes; x++)
-        {
-            reserveController.AddBille();
-        }
-        */
+        uiManager.UpdateReserveBilleCounter(coins);
 
     }
 
@@ -282,6 +260,7 @@ public class GameManager : MonoBehaviour
 
         Vector3 bPosition = (Vector3)(billePosition);
         coins--;
+        uiManager.UpdateReserveBilleCounter(coins);
 
         if (coins <= 0 && !infinisCoins)
         {
@@ -312,15 +291,20 @@ public class GameManager : MonoBehaviour
         
         }
 
-        compteurBilles++;
-        if (compteurBilles >= difficulte)
+        if (isDifficulte)
         {
-            placePlomb.PlacePlombAt(bPosition);
-            //reserveController.RemoveBille();
-            compteurBilles = 0;
+            compteurBilles++;
+            if (compteurBilles >= difficulte)
+            {
+                placePlomb.PlacePlombAt(bPosition);
+                compteurBilles = 0;
+                uiManager.UpdateReservePlombCounter(difficulte);
+            }
+            else
+            {
+                uiManager.UpdateReservePlombCounter(difficulte - compteurBilles);
+            }
         }
-
-        //reserveController.RemoveBille();
     }
 
     public void Quit()
@@ -336,22 +320,6 @@ public class GameManager : MonoBehaviour
     public void SetFxVolume(float volume)
     {
         userDataManager.SaveFxVolume(volume);
-    }
-
-    private void _OnToggleMusic()
-    {
-
-        //musicOn = musicOn == true ? false : true;
-        //userDataManager.ToggleMusic(musicOn);
-
-    }
-
-    private void _OnToggleFX()
-    {
-
-        //fxOn = fxOn == true ? false : true;
-        //userDataManager.ToggleFX(fxOn);
-
     }
 }
 

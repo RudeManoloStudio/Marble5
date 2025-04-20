@@ -67,13 +67,6 @@ public class DisplayController : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
-        /*
-        foreach (Transform child in reserve.transform)
-        {
-            Destroy(child.gameObject);
-        }
-        */
     }
 
     public void ResetBoard()

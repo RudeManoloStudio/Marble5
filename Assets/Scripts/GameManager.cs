@@ -285,8 +285,9 @@ public class GameManager : MonoBehaviour
 
             // Sauvegarde du dictionnaire
             DictionaryStorage.SaveDictionaryToFile(scores, "dictionnaire.json");
-            uiManager.GameOver(score, highScore);
             placeBille.Pause();
+            uiManager.GameOver(score, highScore);
+
             display.DropBilles();
         
         }

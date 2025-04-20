@@ -9,22 +9,50 @@ public class DisplayController : MonoBehaviour
     [SerializeField] private Transform background;
     [SerializeField] private GameObject grid;
     [SerializeField] private Transform container;
+    [SerializeField] private GameObject reserve;
+    [SerializeField] private GameObject reserveContainer;
+    [SerializeField] private RectTransform reserveRenderer;
 
     private GameObject bille;
     private GameObject plomb; // pour le handicap
 
     private Sprite backgroundImage;
 
+
+
     private void Start()
     {
+
         backgroundImage = GameManager.Instance.InitialBackground;
         background.GetComponent<Image>().sprite = backgroundImage;
+
+        reserve.GetComponentInChildren<Camera>().aspect = reserveRenderer.rect.width / reserveRenderer.rect.height;
+
+
+
     }
 
+    public void PrepareReserve()
+    {
+        
+        foreach (Transform child in reserveContainer.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        GameObject reserveBille = Instantiate(bille, reserveContainer.transform);
+        reserveBille.transform.localScale = new Vector3(1, 1, 1);
+        reserveBille.transform.SetLocalPositionAndRotation(new Vector3(-0.5f, 0, 0), Quaternion.identity);
+
+        GameObject reservePlomb = Instantiate(plomb, reserveContainer.transform);
+        reservePlomb.transform.localScale = new Vector3(1, 1, 1);
+        reservePlomb.transform.SetLocalPositionAndRotation(new Vector3(2.5f, 0, 0), Quaternion.identity);
+    }
     public void DropBilles()
     {
 
         EventManager.TriggerEvent("DropBilles");
+
     }
 
     public void SetBilleAndPlomb(GameObject bille, GameObject plomb)
@@ -39,6 +67,13 @@ public class DisplayController : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        /*
+        foreach (Transform child in reserve.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        */
     }
 
     public void ResetBoard()

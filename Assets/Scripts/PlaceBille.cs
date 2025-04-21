@@ -7,13 +7,12 @@ public class PlaceBille : MonoBehaviour
 {
 
     [SerializeField] private Transform container;
+
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();
     private bool verificationEffectuee = false;
-
     private GameObject bille;
     private GameObject quinte;
     private bool pause = false;
-
     private Vector2Int gridSize;
 
     private static readonly Vector3[] adjacentDirections = new Vector3[]
@@ -28,19 +27,9 @@ public class PlaceBille : MonoBehaviour
         new Vector3(-1, -1, 0)
    };
 
-
     private void Start()
     {
-
-        //gridSize = GameManager.Instance.GridSize;
-
-        //bille = GameManager.Instance.Bille;
-        //quinte = GameManager.Instance.Quinte;
-        //container = GameManager.Instance.Container;
-        
         EventManager.AddListener("GameOver", _OnPause);
-        //EventManager.AddListener("Replay", _OnReplay);
-
     }
 
     public void Pause()
@@ -70,8 +59,8 @@ public class PlaceBille : MonoBehaviour
     public void Replay()
     {
         
-            liaisonsUtilisées.Clear();
-            pause = false;
+        liaisonsUtilisées.Clear();
+        pause = false;
         
     }
 
@@ -80,20 +69,13 @@ public class PlaceBille : MonoBehaviour
         pause = true;
     }
 
-    /*
-    private void _OnReplay()
-    {
-        liaisonsUtilisées.Clear();
-        gameOver = false;
-    }
-    */
-
     void Update()
     {
         if (pause) { return; }
 
         if (Input.GetMouseButtonDown(0) && !verificationEffectuee)
         {
+
             verificationEffectuee = true;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -103,7 +85,6 @@ public class PlaceBille : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                //Debug.Log($"🎯 Raycast touche : {hit.collider.gameObject.name} à {hit.point}");
 
                 if (hit.collider.gameObject.tag != "Bille" && hit.collider.gameObject.tag != "Plomb") // Vérifie si l'emplacement est libre
                 {
@@ -119,36 +100,6 @@ public class PlaceBille : MonoBehaviour
                         return;
                     }
 
-                    /* modifs New_UI
-                    //if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x - 1 || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y - 1)
-                    if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y)
-                    {
-                        EventManager.TriggerEvent("NoPoseBille");
-                        return;
-                    }
-
-                    GameObject nouvelleBille = Instantiate(bille, nouvellePosition, Quaternion.identity);
-                    nouvelleBille.transform.SetParent(container);
-                    nouvelleBille.tag = "Bille";
-                    //Debug.Log("✅ Bille placée en : " + nouvellePosition);
-
-                  
-
-                    // 📌 Vérification des quintes dans toutes les directions
-                    int quinteTrouvees = VerifierToutesLesQuintes(nouvellePosition);
-
-
-
-                    if (quinteTrouvees > 0)
-                    {
-                        //Debug.Log("🎯 Une quinte a été détectée !");
-                        
-                        GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
-                    }
-
-                    EventManager.TriggerEvent("PoseBille",nouvellePosition);
-                }  */
-
                     // Vérifier, en plus du raycast, qu'aucune bille/plomb n'occupe déjà cette position (ou très proche).
                     float rayonDeCollision = 0.4f; // Ajuste selon la taille de ta bille
                     Collider[] collisions = Physics.OverlapSphere(nouvellePosition, rayonDeCollision);
@@ -162,8 +113,7 @@ public class PlaceBille : MonoBehaviour
                     else
                     {
                         // Vérifie les limites de la grille (si nécessaire)
-                        if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x ||
-                            nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y)
+                        if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y)
                         {
                             EventManager.TriggerEvent("NoPoseBille");
                             verificationEffectuee = false;
@@ -208,12 +158,10 @@ public class PlaceBille : MonoBehaviour
                         EventManager.TriggerEvent("PoseBille", nouvellePosition);
                     }
                 }
-            
-
-            else
-            {
-                EventManager.TriggerEvent("NoPoseBille");
-            }
+                else
+                {
+                    EventManager.TriggerEvent("NoPoseBille");
+                }
             }
             else
             {
@@ -222,6 +170,7 @@ public class PlaceBille : MonoBehaviour
         }
 
         verificationEffectuee = false;
+
     }
 
 

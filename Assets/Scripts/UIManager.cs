@@ -145,6 +145,11 @@ public class UIManager : MonoBehaviour
         scoreBarController.SetStars(starsScore);
     }
 
+    public void HideReservePanel()
+    {
+        reservePanel.gameObject.SetActive(false);
+    }
+
     public void GameOver(int score, int highscore)
     {
 
@@ -152,7 +157,7 @@ public class UIManager : MonoBehaviour
 
         scorePanel.gameObject.SetActive(false);
         menuButton.gameObject.SetActive(false);
-        reservePanel.gameObject.SetActive(false);
+        //reservePanel.gameObject.SetActive(false);
 
         if (score == highscore)
         {

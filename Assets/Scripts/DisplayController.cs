@@ -18,8 +18,6 @@ public class DisplayController : MonoBehaviour
 
     private Sprite backgroundImage;
 
-
-
     private void Start()
     {
 
@@ -48,10 +46,12 @@ public class DisplayController : MonoBehaviour
         reservePlomb.transform.localScale = new Vector3(1, 1, 1);
         reservePlomb.transform.SetLocalPositionAndRotation(new Vector3(2.5f, 0, 0), Quaternion.identity);
     }
-    public void DropBilles()
+
+    public void AnimBilles()
     {
 
-        EventManager.TriggerEvent("DropBilles");
+        //EventManager.TriggerEvent("DropBilles");
+        EventManager.TriggerEvent("ExplodeBilles");
 
     }
 

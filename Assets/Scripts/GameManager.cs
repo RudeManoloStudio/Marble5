@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ScoreData scoreData;
     [SerializeField] private Sprite initialBackground;
     [SerializeField] private ReserveController reserveController;
+    [SerializeField] private float cameraShakeDuration;
+    [SerializeField] private float dropBillesDuration;
 
     private Vector2Int gridSize;
     private PlaceBille placeBille;
@@ -31,9 +34,15 @@ public class GameManager : MonoBehaviour
     private int highScore;
     private float musicVolume;
     private float fxVolume;
+    private Camera _camera;
 
 
     public static GameManager Instance { get; private set; }
+
+    public Vector2Int GridSize
+    {
+        get { return gridSize; }
+    }
 
     public float MusicVolume
     {
@@ -86,6 +95,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
+        _camera = Camera.main;
 
         placeBille = GetComponent<PlaceBille>();
         placePlomb = GetComponent<PlacePlomb>();
@@ -201,7 +212,7 @@ public class GameManager : MonoBehaviour
         placeBille.Unpause();
 
         // positionnement de la camera
-        Camera.main.GetComponent<CameraController>().Setup(gridSize);
+        _camera.GetComponent<CameraController>().Setup(gridSize);
 
         // bille + plomb + background + grid
         display.ClearBoard();
@@ -285,11 +296,11 @@ public class GameManager : MonoBehaviour
 
             // Sauvegarde du dictionnaire
             DictionaryStorage.SaveDictionaryToFile(scores, "dictionnaire.json");
-            placeBille.Pause();
-            uiManager.GameOver(score, highScore);
 
-            display.DropBilles();
-        
+            // gameover sequence
+            placeBille.Pause();
+            StartCoroutine("GameOverSequence");
+
         }
 
         if (isDifficulte)
@@ -307,6 +318,30 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator GameOverSequence()
+    {
+
+        uiManager.HideReservePanel();
+
+        _camera.GetComponent<CameraShake>().Shake(cameraShakeDuration);
+        yield return new WaitForSeconds(cameraShakeDuration);
+
+        display.AnimBilles();
+        yield return new WaitForSeconds(cameraShakeDuration + dropBillesDuration);
+
+        uiManager.GameOver(score, highScore);
+
+    }
+
+
+    private IEnumerator Co_DropBilles()
+    {
+
+        yield return new WaitForSeconds(dropBillesDuration);
+
+    }
+
 
     public void Quit()
     {

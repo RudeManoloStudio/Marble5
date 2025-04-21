@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -36,9 +37,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform gameOverPanel;
     [SerializeField] private Transform gameOverScorePanel;
     [SerializeField] private Transform gameOverNewHighscorePanel;
-    [SerializeField] private Text finalScore;
-    [SerializeField] private Text bestScore;
-    [SerializeField] private Text newBestScore;
+    [SerializeField] private TMP_Text finalScore;
+    [SerializeField] private TMP_Text bestScore;
+    [SerializeField] private TMP_Text newBestScore;
 
     // reserve
     [SerializeField] private Transform reservePanel;
@@ -144,6 +145,11 @@ public class UIManager : MonoBehaviour
         scoreBarController.SetStars(starsScore);
     }
 
+    public void HideReservePanel()
+    {
+        reservePanel.gameObject.SetActive(false);
+    }
+
     public void GameOver(int score, int highscore)
     {
 
@@ -151,7 +157,7 @@ public class UIManager : MonoBehaviour
 
         scorePanel.gameObject.SetActive(false);
         menuButton.gameObject.SetActive(false);
-        reservePanel.gameObject.SetActive(false);
+        //reservePanel.gameObject.SetActive(false);
 
         if (score == highscore)
         {

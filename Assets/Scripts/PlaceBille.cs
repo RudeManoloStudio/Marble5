@@ -7,13 +7,12 @@ public class PlaceBille : MonoBehaviour
 {
 
     [SerializeField] private Transform container;
+
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();
     private bool verificationEffectuee = false;
-
     private GameObject bille;
     private GameObject quinte;
     private bool pause = false;
-
     private Vector2Int gridSize;
 
     private static readonly Vector3[] adjacentDirections = new Vector3[]
@@ -28,19 +27,9 @@ public class PlaceBille : MonoBehaviour
         new Vector3(-1, -1, 0)
    };
 
-
     private void Start()
     {
-
-        //gridSize = GameManager.Instance.GridSize;
-
-        //bille = GameManager.Instance.Bille;
-        //quinte = GameManager.Instance.Quinte;
-        //container = GameManager.Instance.Container;
-        
         EventManager.AddListener("GameOver", _OnPause);
-        //EventManager.AddListener("Replay", _OnReplay);
-
     }
 
     public void Pause()
@@ -70,8 +59,8 @@ public class PlaceBille : MonoBehaviour
     public void Replay()
     {
         
-            liaisonsUtilisées.Clear();
-            pause = false;
+        liaisonsUtilisées.Clear();
+        pause = false;
         
     }
 
@@ -80,37 +69,49 @@ public class PlaceBille : MonoBehaviour
         pause = true;
     }
 
-    /*
-    private void _OnReplay()
-    {
-        liaisonsUtilisées.Clear();
-        gameOver = false;
-    }
-    */
-
     void Update()
     {
         if (pause) { return; }
 
-        if (Input.GetMouseButtonDown(0) && !verificationEffectuee)
+        bool interaction = false;
+        Vector3 interactionPosition = Vector3.zero;
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+        if (Input.GetMouseButtonDown(0))
+        {
+            interaction = true;
+            interactionPosition = Input.mousePosition;
+        }
+#endif
+
+#if UNITY_ANDROID || UNITY_IOS
+        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            {
+                interaction = true;
+                interactionPosition = Input.GetTouch(0).position;
+            }
+        }
+#endif
+
+        if (interaction && !verificationEffectuee)
         {
             verificationEffectuee = true;
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(interactionPosition);
             RaycastHit hit;
 
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
             if (Physics.Raycast(ray, out hit))
             {
-                //Debug.Log($"🎯 Raycast touche : {hit.collider.gameObject.name} à {hit.point}");
-
-                if (hit.collider.gameObject.tag != "Bille" && hit.collider.gameObject.tag != "Plomb") // Vérifie si l'emplacement est libre
+                if (hit.collider.gameObject.tag != "Bille" && hit.collider.gameObject.tag != "Plomb")
                 {
                     Vector3 nouvellePosition = new Vector3(
                         Mathf.FloorToInt(hit.point.x + 0.5f),
                         Mathf.FloorToInt(hit.point.y + 0.5f),
-                        0.0f  // Fixe Z au bon niveau
+                        0.0f
                     );
 
                     if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y || EventSystem.current.IsPointerOverGameObject())
@@ -119,63 +120,27 @@ public class PlaceBille : MonoBehaviour
                         return;
                     }
 
-                    /* modifs New_UI
-                    //if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x - 1 || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y - 1)
-                    if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y)
-                    {
-                        EventManager.TriggerEvent("NoPoseBille");
-                        return;
-                    }
-
-                    GameObject nouvelleBille = Instantiate(bille, nouvellePosition, Quaternion.identity);
-                    nouvelleBille.transform.SetParent(container);
-                    nouvelleBille.tag = "Bille";
-                    //Debug.Log("✅ Bille placée en : " + nouvellePosition);
-
-                  
-
-                    // 📌 Vérification des quintes dans toutes les directions
-                    int quinteTrouvees = VerifierToutesLesQuintes(nouvellePosition);
-
-
-
-                    if (quinteTrouvees > 0)
-                    {
-                        //Debug.Log("🎯 Une quinte a été détectée !");
-                        
-                        GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
-                    }
-
-                    EventManager.TriggerEvent("PoseBille",nouvellePosition);
-                }  */
-
-                    // Vérifier, en plus du raycast, qu'aucune bille/plomb n'occupe déjà cette position (ou très proche).
-                    float rayonDeCollision = 0.4f; // Ajuste selon la taille de ta bille
+                    float rayonDeCollision = 0.4f;
                     Collider[] collisions = Physics.OverlapSphere(nouvellePosition, rayonDeCollision);
                     bool estOccupe = collisions.Any(col => col.CompareTag("Bille") || col.CompareTag("Plomb"));
 
                     if (estOccupe)
                     {
-                        // Si quelque chose est déjà là, on empêche la pose
                         EventManager.TriggerEvent("NoPoseBille");
                     }
                     else
                     {
-                        // Vérifie les limites de la grille (si nécessaire)
-                        if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x ||
-                            nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y)
+                        if (nouvellePosition.x < 0 || nouvellePosition.x > gridSize.x || nouvellePosition.y < 0 || nouvellePosition.y > gridSize.y)
                         {
                             EventManager.TriggerEvent("NoPoseBille");
                             verificationEffectuee = false;
                             return;
                         }
 
-                        // 2) Contrôler qu’au moins un voisin (8 positions) est une Bille ou un Plomb.
                         bool auMoinsUnVoisin = false;
                         foreach (Vector3 dir in adjacentDirections)
                         {
                             Vector3 voisin = nouvellePosition + dir;
-                            // Petit OverlapSphere pour détecter la présence
                             Collider[] voisins = Physics.OverlapSphere(voisin, 0.4f);
                             if (voisins.Any(col => col.CompareTag("Bille") || col.CompareTag("Plomb")))
                             {
@@ -184,7 +149,6 @@ public class PlaceBille : MonoBehaviour
                             }
                         }
 
-                        // Si aucun voisin n’est une Bille/Plomb, on empêche la pose
                         if (!auMoinsUnVoisin)
                         {
                             EventManager.TriggerEvent("NoPoseBille");
@@ -192,36 +156,34 @@ public class PlaceBille : MonoBehaviour
                             return;
                         }
 
-                        // Tout est OK, on instancie la nouvelle bille
                         GameObject nouvelleBille = Instantiate(bille, nouvellePosition, Quaternion.identity);
                         nouvelleBille.transform.SetParent(container);
                         nouvelleBille.tag = "Bille";
 
-                        // Vérification des quintes
                         int quinteTrouvees = VerifierToutesLesQuintes(nouvellePosition);
                         if (quinteTrouvees > 0)
                         {
                             GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
                         }
 
-                        // On signale qu’une bille a été posée
                         EventManager.TriggerEvent("PoseBille", nouvellePosition);
                     }
                 }
-            
-
-            else
-            {
-                EventManager.TriggerEvent("NoPoseBille");
-            }
+                else
+                {
+                    EventManager.TriggerEvent("NoPoseBille");
+                }
             }
             else
             {
                 EventManager.TriggerEvent("NoPoseBille");
             }
         }
+    
 
-        verificationEffectuee = false;
+
+    verificationEffectuee = false;
+
     }
 
 

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlombMat
-  m_Shader: {fileID: -6465566751694194690, guid: f4f24e17218f8d24fb3f0f7b84ce73e2, type: 3}
+  m_Name: QuinteMat 1
+  m_Shader: {fileID: -6465566751694194690, guid: 044b5acfb10fa5943a8b9003f74ba735, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -16,7 +16,7 @@ Material:
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 

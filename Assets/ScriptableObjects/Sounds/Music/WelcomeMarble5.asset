@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b9a5846d66574b49b0b9b8b73b63abb, type: 3}
+  m_Name: WelcomeMarble5
+  m_EditorClassIdentifier: 
+  Playlist:
+  - {fileID: 8300000, guid: 943a8ef3c8233c14bb55d8ff2417dfcf, type: 3}
+  - {fileID: 8300000, guid: 39acdbe809d0f6f4eb6927bb4a8a45cd, type: 3}
+  - {fileID: 8300000, guid: 5e821321024436b4599e0481935ea178, type: 3}
+  - {fileID: 8300000, guid: a5d39b1ee1b66d54cb860950696cbb88, type: 3}
+  - {fileID: 8300000, guid: 10e19de0f5e7b76428c1067c1397f697, type: 3}

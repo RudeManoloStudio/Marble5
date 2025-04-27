@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private DisplayController display;
     [SerializeField] private FXData fxData;
     [SerializeField] private MusicData musicData;
+    [SerializeField] private RankingData rankingData;
     [SerializeField] private int initialCoins = 5;
     [SerializeField] private bool infinisCoins = false;
     [SerializeField] private ScoreData scoreData;

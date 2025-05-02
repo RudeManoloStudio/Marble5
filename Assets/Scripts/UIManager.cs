@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     // rank
     //[SerializeField] private Transform rankStar;
     [SerializeField] private TMP_Text rankText;
+    [SerializeField] private RankingData rankingData;
+    [SerializeField] private TMP_Text rankTitle;
 
     // score
     [SerializeField] private Transform scorePanel;
@@ -27,7 +29,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform slidersPanel;
 
     // quit confirmation
-    [SerializeField] private Transform quitPanel;
+    //[SerializeField] private Transform quitPanel;
 
     // main panel
     [SerializeField] private Transform mainPanel;
@@ -186,6 +188,8 @@ public class UIManager : MonoBehaviour
         int starsToHighlight = scoreBarController.GetStars();
         starRecapController.SetStarsHighlight(starsToHighlight);
 
+        
+
     }
 
     public void UpdateScore(int score, int increment)
@@ -222,12 +226,12 @@ public class UIManager : MonoBehaviour
 
     public void ConfirmQuit()
     {
-        quitPanel.gameObject.SetActive(true);
+        //quitPanel.gameObject.SetActive(true);
     }
 
     public void CancelQuit()
     {
-        quitPanel.gameObject.SetActive(false);
+        //quitPanel.gameObject.SetActive(false);
     }
 
     public void ConfirmAbort()

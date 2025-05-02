@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5054ab2e0349a1f4682eed85e5e8ed66, type: 3}
+  m_Name: Ranking
+  m_EditorClassIdentifier: 
+  layers:
+  - Stars: 0
+    Rank: "D\xE9butant absolu"
+  - Stars: 3
+    Rank: Novice
+  - Stars: 6
+    Rank: Apprenti
+  - Stars: 9
+    Rank: "Initi\xE9"
+  - Stars: 12
+    Rank: Amateur
+  - Stars: 15
+    Rank: Joueur occasionnel
+  - Stars: 18
+    Rank: "Interm\xE9diaire bas"
+  - Stars: 21
+    Rank: "Interm\xE9diaire"
+  - Stars: 24
+    Rank: "Confirm\xE9"
+  - Stars: 27
+    Rank: "Comp\xE9tent"
+  - Stars: 30
+    Rank: Habile
+  - Stars: 33
+    Rank: Expert
+  - Stars: 36
+    Rank: "Ma\xEEtre"
+  - Stars: 39
+    Rank: Champion
+  - Stars: 42
+    Rank: "L\xE9gende"
+  - Stars: 45
+    Rank: Mythe

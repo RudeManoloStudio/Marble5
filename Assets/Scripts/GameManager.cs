@@ -274,6 +274,7 @@ public class GameManager : MonoBehaviour
         coins--;
         uiManager.UpdateReserveBilleCounter(coins);
 
+        // gameover
         if (coins <= 0 && !infinisCoins)
         {
             

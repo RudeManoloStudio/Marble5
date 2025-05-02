@@ -7,6 +7,10 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
 
+    // rank
+    //[SerializeField] private Transform rankStar;
+    [SerializeField] private TMP_Text rankText;
+
     // score
     [SerializeField] private Transform scorePanel;
     [SerializeField] private Text scoreText;
@@ -16,17 +20,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Vector2 scoreToUpdateOffset = new Vector2(10, 10);
 
     // quit ou menu
-    [SerializeField] private Transform quitButton;
-    [SerializeField] private Transform menuButton;
+    //[SerializeField] private Transform quitButton;
+    //[SerializeField] private Transform menuButton;
 
     //options sons
     [SerializeField] private Transform slidersPanel;
 
     // quit confirmation
     [SerializeField] private Transform quitPanel;
-
-    // abort confirmation
-    [SerializeField] private Transform abortPanel;
 
     // main panel
     [SerializeField] private Transform mainPanel;
@@ -40,6 +41,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text finalScore;
     [SerializeField] private TMP_Text bestScore;
     [SerializeField] private TMP_Text newBestScore;
+    [SerializeField] private StarRecapController starRecapController;
 
     // reserve
     [SerializeField] private Transform reservePanel;
@@ -92,20 +94,26 @@ public class UIManager : MonoBehaviour
     {
 
         mainPanel.gameObject.SetActive(true);
-        quitButton.gameObject.SetActive(true);
+        //quitButton.gameObject.SetActive(true);
 
         gameOverPanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
-        quitPanel.gameObject.SetActive(false);
+        //quitPanel.gameObject.SetActive(false);
         slidersPanel.gameObject.SetActive(false);
-        menuButton.gameObject.SetActive(false);
-        abortPanel.gameObject.SetActive(false);
+        //menuButton.gameObject.SetActive(false);
+        //abortPanel.gameObject.SetActive(false);
         reservePanel.gameObject.SetActive(false);
+        //rankStar.gameObject.SetActive(false);
+        //rankText.gameObject.SetActive(false);
 
         ClearMenu();
 
+        int totalStars = 0;
+
         for (int x = 0; x < list.Count; x++)
         {
+
+            totalStars += list[x].stars;
 
             GameObject lp = Instantiate(levelPrefab, levelPanel);
 
@@ -115,6 +123,8 @@ public class UIManager : MonoBehaviour
             AddLevelButton(button, x);
 
         }
+
+        rankText.text = totalStars.ToString() + "/" + list.Count * 3;
     }
 
     private void AddLevelButton(Button b, int x)
@@ -134,11 +144,11 @@ public class UIManager : MonoBehaviour
     {
 
         scorePanel.gameObject.SetActive(true);
-        menuButton.gameObject.SetActive(true);
+        //menuButton.gameObject.SetActive(true);
         reservePanel.gameObject.SetActive(true);
 
         mainPanel.gameObject.SetActive(false);
-        quitButton.gameObject.SetActive(false);
+        //quitButton.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
 
         scoreText.text = "0";
@@ -156,8 +166,6 @@ public class UIManager : MonoBehaviour
         gameOverPanel.gameObject.SetActive(true);
 
         scorePanel.gameObject.SetActive(false);
-        menuButton.gameObject.SetActive(false);
-        //reservePanel.gameObject.SetActive(false);
 
         if (score == highscore)
         {
@@ -174,6 +182,9 @@ public class UIManager : MonoBehaviour
             finalScore.text = score.ToString();
             bestScore.text = highscore.ToString();
         }
+
+        int starsToHighlight = scoreBarController.GetStars();
+        starRecapController.SetStarsHighlight(starsToHighlight);
 
     }
 
@@ -221,12 +232,12 @@ public class UIManager : MonoBehaviour
 
     public void ConfirmAbort()
     {
-        abortPanel.gameObject.SetActive(true);
+        //abortPanel.gameObject.SetActive(true);
     }
 
     public void CancelAbort()
     {
-        abortPanel.gameObject.SetActive(false);
+        //abortPanel.gameObject.SetActive(false);
     }
 
     public void ReturnToMain()

@@ -188,8 +188,16 @@ public class UIManager : MonoBehaviour
         int starsToHighlight = scoreBarController.GetStars();
         starRecapController.SetStarsHighlight(starsToHighlight);
 
-        
+        int totalStars = GameManager.Instance.TotalStars;
 
+        for (int x = rankingData.layers.Length - 1; x >= 0; x--)
+        {
+            if (totalStars >= rankingData.layers[x].Stars)
+            {
+                rankTitle.text = rankingData.layers[x].Rank;
+                break;
+            }
+        }
     }
 
     public void UpdateScore(int score, int increment)

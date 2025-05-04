@@ -74,7 +74,6 @@ public class ScoreBarController : MonoBehaviour
         firstStar.anchoredPosition = new Vector2(firstStarPos, firstStar.anchoredPosition.y);
         secondStar.anchoredPosition = new Vector2(secondStarPos, secondStar.anchoredPosition.y);
         thirdStar.anchoredPosition = new Vector2(50, thirdStar.anchoredPosition.y);
+
     }
-
-
 }

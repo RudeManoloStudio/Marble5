@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     private float musicVolume;
     private float fxVolume;
     private Camera _camera;
+    private int totalStars;
 
 
     public static GameManager Instance { get; private set; }
@@ -67,6 +68,11 @@ public class GameManager : MonoBehaviour
     public Sprite InitialBackground
     {
         get { return initialBackground; }
+    }
+
+    public int TotalStars
+    {
+        get { return totalStars; }
     }
 
     private void Awake()
@@ -299,9 +305,24 @@ public class GameManager : MonoBehaviour
             // Sauvegarde du dictionnaire
             DictionaryStorage.SaveDictionaryToFile(scores, "dictionnaire.json");
 
+            // ici calcul du nombre d'étoiles total
+            // mise à jour de la propriété TotalStars
+            totalStars = 0;
+            //scores = DictionaryStorage.LoadDictionaryFromFile<int, int>("dictionnaire.json");
+            foreach (KeyValuePair<int, int> kvp in scores)
+            {
+
+                if (kvp.Value >= levelData.layers[kvp.Key].FirstStarScore) totalStars++;
+                if (kvp.Value >= levelData.layers[kvp.Key].SecondStarScore) totalStars++;
+                if (kvp.Value >= levelData.layers[kvp.Key].ThirdStarScore) totalStars++;
+
+            }
+
             // gameover sequence
             placeBille.Pause();
             StartCoroutine("GameOverSequence");
+
+
 
         }
 

@@ -14,34 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layers:
   - Stars: 0
-    Rank: "D\xE9butant absolu"
-  - Stars: 3
-    Rank: Novice
+    Rank: 1- Little Pebble
   - Stars: 6
-    Rank: Apprenti
+    Rank: 2- Beginner Roller
   - Stars: 9
-    Rank: "Initi\xE9"
+    Rank: 3- Agate Collector
   - Stars: 12
-    Rank: Amateur
+    Rank: 4- Marble Head
   - Stars: 15
-    Rank: Joueur occasionnel
+    Rank: 5- Orb launcher
   - Stars: 18
-    Rank: "Interm\xE9diaire bas"
+    Rank: 6- Line tracer
   - Stars: 21
-    Rank: "Interm\xE9diaire"
+    Rank: 7- Tightrope Walker of Five
   - Stars: 24
-    Rank: "Confirm\xE9"
+    Rank: 8- Seeker of Quintets
   - Stars: 27
-    Rank: "Comp\xE9tent"
+    Rank: 9- Spherical Master
   - Stars: 30
-    Rank: Habile
+    Rank: 10- Mad Marbler
   - Stars: 33
-    Rank: Expert
+    Rank: 11- Marble Tamer
   - Stars: 36
-    Rank: "Ma\xEEtre"
+    Rank: 12- Artisan of Five
   - Stars: 39
-    Rank: Champion
+    Rank: 13- Quintet Genius
   - Stars: 42
-    Rank: "L\xE9gende"
+    Rank: 14- Marble Legend
   - Stars: 45
-    Rank: Mythe
+    Rank: 15- Grand Architect of Marble5

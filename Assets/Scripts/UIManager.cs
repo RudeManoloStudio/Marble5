@@ -8,9 +8,8 @@ public class UIManager : MonoBehaviour
 {
 
     // rank
-    //[SerializeField] private Transform rankStar;
+    [SerializeField] private Transform rankPanel;
     [SerializeField] private TMP_Text rankText;
-    [SerializeField] private RankingData rankingData;
     [SerializeField] private TMP_Text rankTitle;
 
     // score
@@ -21,15 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float scoreToUpdateDuration = 2.0f;
     [SerializeField] private Vector2 scoreToUpdateOffset = new Vector2(10, 10);
 
-    // quit ou menu
-    //[SerializeField] private Transform quitButton;
-    //[SerializeField] private Transform menuButton;
-
-    //options sons
+    // options sons
     [SerializeField] private Transform slidersPanel;
-
-    // quit confirmation
-    //[SerializeField] private Transform quitPanel;
 
     // main panel
     [SerializeField] private Transform mainPanel;
@@ -49,7 +41,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform reservePanel;
     [SerializeField] private Text reserveBilleCounter;
     [SerializeField] private Text reservePlombCounter;
-
 
     public void UpdateReserveBilleCounter(int count)
     {
@@ -92,21 +83,16 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void SetMainPanel(List<LevelStruct> list)
+    public void SetMainPanel(List<LevelStruct> list, string rank)
     {
 
         mainPanel.gameObject.SetActive(true);
-        //quitButton.gameObject.SetActive(true);
+        rankPanel.gameObject.SetActive(true);
 
         gameOverPanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
-        //quitPanel.gameObject.SetActive(false);
         slidersPanel.gameObject.SetActive(false);
-        //menuButton.gameObject.SetActive(false);
-        //abortPanel.gameObject.SetActive(false);
         reservePanel.gameObject.SetActive(false);
-        //rankStar.gameObject.SetActive(false);
-        //rankText.gameObject.SetActive(false);
 
         ClearMenu();
 
@@ -127,6 +113,7 @@ public class UIManager : MonoBehaviour
         }
 
         rankText.text = totalStars.ToString() + "/" + list.Count * 3;
+        rankTitle.text = rank;
     }
 
     private void AddLevelButton(Button b, int x)
@@ -146,12 +133,11 @@ public class UIManager : MonoBehaviour
     {
 
         scorePanel.gameObject.SetActive(true);
-        //menuButton.gameObject.SetActive(true);
         reservePanel.gameObject.SetActive(true);
 
         mainPanel.gameObject.SetActive(false);
-        //quitButton.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
+        rankPanel.gameObject.SetActive(false);
 
         scoreText.text = "0";
         scoreBarController.SetStars(starsScore);
@@ -190,14 +176,6 @@ public class UIManager : MonoBehaviour
 
         int totalStars = GameManager.Instance.TotalStars;
 
-        for (int x = rankingData.layers.Length - 1; x >= 0; x--)
-        {
-            if (totalStars >= rankingData.layers[x].Stars)
-            {
-                rankTitle.text = rankingData.layers[x].Rank;
-                break;
-            }
-        }
     }
 
     public void UpdateScore(int score, int increment)
@@ -227,6 +205,12 @@ public class UIManager : MonoBehaviour
         go.transform.position = mousePosition + scoreToUpdateOffset;
     }
 
+    public void ReturnToMain()
+    {
+        GameManager.Instance.PrepareMainMenu();
+    }
+
+    /*
     public void SetHighScoreText(int highScore)
     {
         //highScoreText.text = highScore.ToString();
@@ -251,9 +235,5 @@ public class UIManager : MonoBehaviour
     {
         //abortPanel.gameObject.SetActive(false);
     }
-
-    public void ReturnToMain()
-    {
-        GameManager.Instance.PrepareMainMenu();
-    }
+    */
 }

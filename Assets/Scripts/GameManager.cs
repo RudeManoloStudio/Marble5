@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool infinisCoins = false;
     [SerializeField] private ScoreData scoreData;
     [SerializeField] private Sprite initialBackground;
-    [SerializeField] private ReserveController reserveController;
     [SerializeField] private float cameraShakeDuration;
     [SerializeField] private float dropBillesDuration;
 
@@ -37,7 +36,7 @@ public class GameManager : MonoBehaviour
     private float fxVolume;
     private Camera _camera;
     private int totalStars;
-
+    private string rank;
 
     public static GameManager Instance { get; private set; }
 
@@ -69,7 +68,6 @@ public class GameManager : MonoBehaviour
     {
         get { return initialBackground; }
     }
-
     public int TotalStars
     {
         get { return totalStars; }
@@ -187,7 +185,17 @@ public class GameManager : MonoBehaviour
             list.Add(levelStruct);
         }
 
-        uiManager.SetMainPanel(list);
+        // on calcule le rank
+        for (int x = rankingData.layers.Length - 1; x >= 0; x--)
+        {
+            if (totalStars >= rankingData.layers[x].Stars)
+            {
+                rank = rankingData.layers[x].Rank;
+                break;
+            }
+        }
+
+        uiManager.SetMainPanel(list, rank);
         display.ResetBoard();
     }
 

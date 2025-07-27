@@ -1,0 +1,54 @@
+{
+    "name": "Inputs",
+    "maps": [
+        {
+            "name": "TouchSmartphones",
+            "id": "2729c6fd-2e66-408c-aad3-fbc7fbc9ddba",
+            "actions": [
+                {
+                    "name": "Place_bille",
+                    "type": "Button",
+                    "id": "6711c6af-fbdb-4185-83c5-61319b779146",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Button",
+                    "id": "a18f1e04-f17c-4bb8-98c0-9954f954f43a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c940a56b-c7d2-4491-a765-ff8408aff03f",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Place_bille",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3cee1e8c-5c8b-4061-bdbe-62d7977a347f",
+                    "path": "<Touchscreen>/touch*/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -143,7 +143,8 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 1
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: -944628639613478452, guid: 684dd4d9ee1db4a419fa7b72b5fb75fb, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -165,7 +166,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.RymoStudio.Marble5
-    Standalone: com.Rude-Manolo-Studio.Marble5
+    Standalone: com.RymoStudio.Marble5
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -958,11 +959,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 1b8af909-eb6b-4759-b074-8d4ad60b1ed2
+  cloudProjectId: 
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: My project
-  organizationId: manudelbarre
+  projectName: 
+  organizationId: 
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

@@ -85,7 +85,7 @@ public class PlaceBille : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID || UNITY_IOS
-        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
             if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {

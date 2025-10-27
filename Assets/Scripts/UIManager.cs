@@ -155,7 +155,7 @@ public class UIManager : MonoBehaviour
 
         scorePanel.gameObject.SetActive(false);
 
-        if (score == highscore)
+        if (score >= highscore)
         {
             gameOverNewHighscorePanel.gameObject.SetActive(true);
             gameOverScorePanel.gameObject.SetActive(false);

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,9 @@ public class ScoreBarController : MonoBehaviour
 
     [SerializeField] private Image fillImage;
     [SerializeField] private RectTransform firstStar, secondStar, thirdStar;
+    [SerializeField] private Sprite fullStar;
+    [SerializeField] private Sprite emptyStar;
+    [SerializeField] private Color fillColor;
 
     private float maxScore;
     private float currentScore;
@@ -34,6 +38,25 @@ public class ScoreBarController : MonoBehaviour
         currentScore += amount;
         currentScore = Mathf.Clamp(currentScore, 0, maxScore);
         UpdateHealthBar();
+
+        // ajout changement de couleur
+        if (currentScore >= firstStarScore)
+        {
+            firstStar.gameObject.GetComponent<Image>().sprite = fullStar;
+            firstStar.gameObject.GetComponent<Image>().color = fillColor;
+
+        }
+        if (currentScore >= secondStarScore)
+        {
+            secondStar.gameObject.GetComponent<Image>().sprite = fullStar;
+            secondStar.gameObject.GetComponent<Image>().color = fillColor;
+        }
+        if (currentScore >= thirdStarScore)
+        {
+            thirdStar.gameObject.GetComponent<Image>().sprite = fullStar;
+            thirdStar.gameObject.GetComponent<Image>().color = fillColor;
+        }
+
     }
 
     public int GetStars()
@@ -74,6 +97,15 @@ public class ScoreBarController : MonoBehaviour
         firstStar.anchoredPosition = new Vector2(firstStarPos, firstStar.anchoredPosition.y);
         secondStar.anchoredPosition = new Vector2(secondStarPos, secondStar.anchoredPosition.y);
         thirdStar.anchoredPosition = new Vector2(50, thirdStar.anchoredPosition.y);
+
+        firstStar.gameObject.GetComponent<Image>().sprite = emptyStar;
+        firstStar.gameObject.GetComponent<Image>().color = fillColor;
+
+        secondStar.gameObject.GetComponent<Image>().sprite = emptyStar;
+        secondStar.gameObject.GetComponent<Image>().color = fillColor;
+
+        thirdStar.gameObject.GetComponent<Image>().sprite = emptyStar;
+        thirdStar.gameObject.GetComponent<Image>().color = fillColor;
 
     }
 }

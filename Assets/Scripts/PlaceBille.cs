@@ -5,7 +5,7 @@ using System.Linq;
 
 public class PlaceBille : MonoBehaviour
 {
-
+    //
     [SerializeField] private Transform container;
 
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();

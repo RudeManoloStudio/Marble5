@@ -14,7 +14,8 @@ public class UIManager : MonoBehaviour
 
     // score
     [SerializeField] private Transform scorePanel;
-    [SerializeField] private Text scoreText;
+    //[SerializeField] private Text scoreText;
+    [SerializeField] private TMP_Text scoreText;
     [SerializeField] private ScoreBarController scoreBarController;
     [SerializeField] private GameObject scoreIncrementPrefab;
     [SerializeField] private float scoreToUpdateDuration = 2.0f;

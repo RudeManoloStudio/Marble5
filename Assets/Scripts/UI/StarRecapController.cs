@@ -16,8 +16,8 @@ public class StarRecapController : MonoBehaviour
     {
 
         firstStarTransform.gameObject.GetComponent<Image>().sprite = emptyStar;
-        firstStarTransform.gameObject.GetComponent<Image>().sprite = emptyStar;
-        firstStarTransform.gameObject.GetComponent<Image>().sprite = emptyStar;
+        secondStarTransform.gameObject.GetComponent<Image>().sprite = emptyStar;
+        thirdStarTransform.gameObject.GetComponent<Image>().sprite = emptyStar;
 
         if (x >= 1)
         {

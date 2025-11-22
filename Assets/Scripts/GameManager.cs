@@ -160,18 +160,7 @@ public class GameManager : MonoBehaviour
             if (scores.ContainsKey(x))
             {
                 int value = scores[x];
-                if (value >= levelData.layers[x].FirstStarScore)
-                {
-                    stars++;
-                }
-                if (value >= levelData.layers[x].SecondStarScore)
-                {
-                    stars++;
-                }
-                if (value >= levelData.layers[x].ThirdStarScore)
-                {
-                    stars++;
-                }
+                stars = CalculateStars(value, levelData.layers[x]);
             }
 
             if (stars > 0)
@@ -316,14 +305,9 @@ public class GameManager : MonoBehaviour
             // ici calcul du nombre d'étoiles total
             // mise à jour de la propriété TotalStars
             totalStars = 0;
-            //scores = DictionaryStorage.LoadDictionaryFromFile<int, int>("dictionnaire.json");
             foreach (KeyValuePair<int, int> kvp in scores)
             {
-
-                if (kvp.Value >= levelData.layers[kvp.Key].FirstStarScore) totalStars++;
-                if (kvp.Value >= levelData.layers[kvp.Key].SecondStarScore) totalStars++;
-                if (kvp.Value >= levelData.layers[kvp.Key].ThirdStarScore) totalStars++;
-
+                totalStars += CalculateStars(kvp.Value, levelData.layers[kvp.Key]);
             }
 
             // gameover sequence
@@ -387,6 +371,23 @@ public class GameManager : MonoBehaviour
     public void SetFxVolume(float volume)
     {
         userDataManager.SaveFxVolume(volume);
+    }
+
+    /// <summary>
+    /// Calcule le nombre d'étoiles obtenues pour un score donné sur un niveau donné.
+    /// </summary>
+    /// <param name="score">Le score obtenu</param>
+    /// <param name="levelLayer">Les données du niveau (LevelData.Layer)</param>
+    /// <returns>Nombre d'étoiles (0 à 3)</returns>
+    private int CalculateStars(int score, LevelData.Layer levelLayer)
+    {
+        int stars = 0;
+        
+        if (score >= levelLayer.FirstStarScore) stars++;
+        if (score >= levelLayer.SecondStarScore) stars++;
+        if (score >= levelLayer.ThirdStarScore) stars++;
+        
+        return stars;
     }
 }
 

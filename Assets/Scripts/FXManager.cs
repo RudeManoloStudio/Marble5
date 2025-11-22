@@ -11,7 +11,6 @@ public class FXManager : MonoBehaviour
     [SerializeField] private AudioSource fxSource;
 
     private FXData fxData;
-    //private bool fxOn = true;
 
 
     void Start()
@@ -19,19 +18,16 @@ public class FXManager : MonoBehaviour
 
         fxSource = GetComponent<AudioSource>();
 
-        //fxOn = GameManager.Instance.FxOn;
         fxData = GameManager.Instance.FxData;
 
         // Initialise le slider avec le volume actuel
         float initialVolume = GameManager.Instance.FxVolume;
         fxSlider.value = initialVolume;
-        //volumeSlider.value = musicSource.volume;
         fxSource.volume = initialVolume;
 
-        // Abonne-toi à l'événement de changement de valeur
+        // Abonne-toi ï¿½ l'ï¿½vï¿½nement de changement de valeur
         fxSlider.onValueChanged.AddListener(SetVolume);
 
-        //EventManager.AddListener("ToggleFX", _OnToggleFx);
         EventManager.AddListener("UpdateScoreAndCoins", _OnUpdateScoreAndCoins);
         EventManager.AddListener("PoseBille", _OnPoseBille);
         EventManager.AddListener("NoPoseBille", _OnNoPoseBille);
@@ -59,13 +55,4 @@ public class FXManager : MonoBehaviour
     {
         fxSource.PlayOneShot(fxData.NoPoseBilleSound);
     }
-
-    /*
-    private void _OnToggleFx()
-    {
-
-        fxOn = fxOn == true ? false : true;
-
-    }
-    */
 }

@@ -280,27 +280,42 @@ public class PlaceBille : MonoBehaviour
         int y = Mathf.FloorToInt(position.y);
         int quintesTrouvees = 0;
 
-        // Pour chaque direction possible
         foreach (Vector3 dir in quinteDirections)
         {
-            // On vérifie d'abord la double quinte (la bille est au centre de 2 quintes)
             if (VerifierDoubleQuinte(x, y, dir))
             {
                 quintesTrouvees += 2;
             }
             else
             {
-                // Sinon on vérifie les quintes simples
-                // La bille posée peut être en position 1, 2, 3, 4 ou 5 de la quinte
+                List<List<Vector3>> quintesValides = new List<List<Vector3>>();
+
                 for (int pos = 0; pos < 5; pos++)
                 {
                     List<Vector3> quinte = GenererQuinte(x, y, dir, pos);
                     if (VerifierQuinte(quinte[0], quinte[1], quinte[2], quinte[3], quinte[4]))
                     {
-                        TracerLigneQuinte(quinte, quintesTrouvees + 1); // ← Passe le numéro de quinte
-                        quintesTrouvees++;
-                        break;
+                        quintesValides.Add(quinte);
                     }
+                }
+
+                if (quintesValides.Count > 0)
+                {
+                    List<Vector3> meilleureQuinte = quintesValides[0];
+                    int meilleurScore = CalculerScoreQuinte(meilleureQuinte);
+
+                    for (int i = 1; i < quintesValides.Count; i++)
+                    {
+                        int score = CalculerScoreQuinte(quintesValides[i]);
+                        if (score > meilleurScore)
+                        {
+                            meilleurScore = score;
+                            meilleureQuinte = quintesValides[i];
+                        }
+                    }
+
+                    TracerLigneQuinte(meilleureQuinte, quintesTrouvees + 1);
+                    quintesTrouvees++;
                 }
             }
         }
@@ -394,7 +409,7 @@ public class PlaceBille : MonoBehaviour
 
         foreach (var liaison in liaisons)
         {
-            var liaisonOrdonnee = liaison.Item1.x < liaison.Item2.x ? liaison : (liaison.Item2, liaison.Item1); // Toujours dans le même ordre
+            var liaisonOrdonnee = NormaliserLiaison(liaison.Item1, liaison.Item2);
             if (liaisonsUtilisées.Contains(liaisonOrdonnee))
             {
                 return false; // La quinte est invalide car une liaison est déjà utilisée
@@ -440,7 +455,7 @@ public class PlaceBille : MonoBehaviour
         for (int i = 0; i < positions.Count - 1; i++)
         {
 
-            var liaison = positions[i].x < positions[i + 1].x ? (positions[i], positions[i + 1]) : (positions[i + 1], positions[i]);
+            var liaison = NormaliserLiaison(positions[i], positions[i + 1]);
             liaisonsUtilisées.Add(liaison);
 
         }
@@ -602,4 +617,63 @@ public class PlaceBille : MonoBehaviour
         // Libérer la bille (animation terminée)
         billesEnCoursAnimation.Remove(bille);
     }
+
+    /// <summary>
+    /// Calcule un score de qualité pour une quinte potentielle
+    /// Plus le score est élevé, meilleure est la quinte (moins de trous créés)
+    /// </summary>
+    private int CalculerScoreQuinte(List<Vector3> quinte)
+    {
+        int score = 0;
+
+        foreach (Vector3 pos in quinte)
+        {
+            Vector3[] directions = { Vector3.right, Vector3.up, new Vector3(1, 1, 0), new Vector3(1, -1, 0) };
+
+            foreach (Vector3 dir in directions)
+            {
+                Vector3 prev = pos - dir;
+                Vector3 next = pos + dir;
+
+                var liaisonAvant = NormaliserLiaison(pos, prev);
+                var liaisonApres = NormaliserLiaison(pos, next);
+
+                if (liaisonsUtilisées.Contains(liaisonAvant) || liaisonsUtilisées.Contains(liaisonApres))
+                {
+                    score += 100;
+                }
+            }
+        }
+
+        int liaisonsConsecutives = 0;
+        for (int i = 0; i < quinte.Count - 1; i++)
+        {
+            var liaison = NormaliserLiaison(quinte[i], quinte[i + 1]);
+
+            if (!liaisonsUtilisées.Contains(liaison))
+            {
+                liaisonsConsecutives++;
+            }
+        }
+
+        score += liaisonsConsecutives * 10;
+
+        return score;
+    }
+
+    /// <summary>
+    /// Normalise une liaison pour qu'elle soit toujours dans le même ordre
+    /// </summary>
+    private (Vector3, Vector3) NormaliserLiaison(Vector3 pos1, Vector3 pos2)
+    {
+        if (pos1.x < pos2.x)
+            return (pos1, pos2);
+        if (pos1.x > pos2.x)
+            return (pos2, pos1);
+        if (pos1.y < pos2.y)
+            return (pos1, pos2);
+        return (pos2, pos1);
+    }
 }
+
+

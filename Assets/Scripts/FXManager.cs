@@ -15,17 +15,12 @@ public class FXManager : MonoBehaviour
 
     void Start()
     {
-
         fxSource = GetComponent<AudioSource>();
 
-        fxData = GameManager.Instance.FxData;
+        // Récupère les données depuis GameManager via une méthode Setup
+        Setup(GameManager.Instance.FxVolume, GameManager.Instance.FxData);
 
-        // Initialise le slider avec le volume actuel
-        float initialVolume = GameManager.Instance.FxVolume;
-        fxSlider.value = initialVolume;
-        fxSource.volume = initialVolume;
-
-        // Abonne-toi � l'�v�nement de changement de valeur
+        // Abonne-toi à l'événement de changement de valeur
         fxSlider.onValueChanged.AddListener(SetVolume);
 
         EventManager.AddListener("UpdateScoreAndCoins", _OnUpdateScoreAndCoins);
@@ -33,12 +28,19 @@ public class FXManager : MonoBehaviour
         EventManager.AddListener("NoPoseBille", _OnNoPoseBille);
     }
 
+    public void Setup(float volume, FXData data)
+    {
+        // Initialise le slider avec le volume actuel
+        fxSlider.value = volume;
+        fxSource.volume = volume;
+
+        fxData = data;
+    }
+
     void SetVolume(float volume)
     {
         fxSource.volume = volume;
-        // Optionnel : sauvegarder le volume si besoin
-        GameManager.Instance.SetFxVolume(volume);
-        //PlayerPrefs.SetFloat("MusicVolume", volume);
+        EventManager.TriggerEvent("FxVolumeChanged", volume);
     }
 
     void _OnUpdateScoreAndCoins(object noUse)

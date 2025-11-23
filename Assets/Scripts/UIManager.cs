@@ -119,7 +119,7 @@ public class UIManager : MonoBehaviour
 
     private void AddLevelButton(Button b, int x)
     {
-        b.onClick.AddListener(() => GameManager.Instance.PrepareLevel(x));
+        b.onClick.AddListener(() => EventManager.TriggerEvent("LevelSelected", x));
     }
 
     private void ClearMenu()
@@ -175,8 +175,6 @@ public class UIManager : MonoBehaviour
         int starsToHighlight = scoreBarController.GetStars();
         starRecapController.SetStarsHighlight(starsToHighlight);
 
-        int totalStars = GameManager.Instance.TotalStars;
-
     }
 
     public void UpdateScore(int score, int increment)
@@ -208,7 +206,7 @@ public class UIManager : MonoBehaviour
 
     public void ReturnToMain()
     {
-        GameManager.Instance.PrepareMainMenu();
+        EventManager.TriggerEvent("ReturnToMainMenu");
     }
 
     /*

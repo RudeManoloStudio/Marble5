@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int initialCoins = 5;
     [SerializeField] private bool infinisCoins = false;
     [SerializeField] private ScoreData scoreData;
-    [SerializeField] private Sprite initialBackground;
     [SerializeField] private float cameraShakeDuration;
     [SerializeField] private float dropBillesDuration;
 
@@ -64,10 +63,7 @@ public class GameManager : MonoBehaviour
         get { return fxData; }
     }
 
-    public Sprite InitialBackground
-    {
-        get { return initialBackground; }
-    }
+    
     public int TotalStars
     {
         get { return totalStars; }
@@ -119,6 +115,7 @@ public class GameManager : MonoBehaviour
         PrepareMainMenu();
 
         EventManager.AddListener("PoseBille", _OnPoseBille);
+        EventManager.AddListener("QuinteFormee", _OnQuinteFormee);
     }
 
     public void PrepareMainMenu()
@@ -245,6 +242,11 @@ public class GameManager : MonoBehaviour
         uiManager.UpdateReserveBilleCounter(coins);
         uiManager.UpdateReservePlombCounter(difficulte);
 
+    }
+        private void _OnQuinteFormee(object data)
+    {
+        int quinteTrouvees = (int)data;
+        UpdateScoreAndCoins(quinteTrouvees);
     }
 
     public void Replay()

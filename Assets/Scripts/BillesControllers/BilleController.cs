@@ -15,6 +15,7 @@ public class BilleController : MonoBehaviour
     private Vector3 angularVelocity;
     private float speed;
     private bool rotate = true;
+    private Vector2Int gridSize;
 
     private void OnEnable()
     {
@@ -32,6 +33,11 @@ public class BilleController : MonoBehaviour
         EventManager.AddListener("DropBilles", _OnDropBilles);
         EventManager.AddListener("ExplodeBilles", _OnExplodeBilles);
 
+    }
+
+        public void SetGridSize(Vector2Int size)
+    {
+        gridSize = size;
     }
 
     public virtual void SetSpecificParameters()
@@ -61,7 +67,7 @@ public class BilleController : MonoBehaviour
     private void _OnExplodeBilles()
     {
 
-        repulsionPoint = new Vector3(GameManager.Instance.GridSize.x / 2, GameManager.Instance.GridSize.y / 2, 0);
+        repulsionPoint = new Vector3(gridSize.x / 2, gridSize.y / 2, 0);
 
         rb.isKinematic = false;
         rb.useGravity = false;

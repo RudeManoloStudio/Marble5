@@ -118,6 +118,39 @@ public class GameManager : MonoBehaviour
         EventManager.AddListener("QuinteFormee", _OnQuinteFormee);
         EventManager.AddListener("LevelSelected", _OnLevelSelected);
         EventManager.AddListener("ReturnToMainMenu", _OnReturnToMainMenu);
+
+        // Initialise MusicManager
+        MusicManager musicManager = FindObjectOfType<MusicManager>();
+        if (musicManager != null)
+        {
+            musicManager.Setup(musicVolume, musicData.Playlist);
+        }
+
+        // Ecoute les changements de volume
+        EventManager.AddListener("MusicVolumeChanged", _OnMusicVolumeChanged);
+
+        // Initialise FXManager
+        FXManager fxManager = FindObjectOfType<FXManager>();
+        if (fxManager != null)
+        {
+            fxManager.Setup(fxVolume, fxData);
+        }
+
+        // Ecoute les changements de volume FX
+        EventManager.AddListener("FxVolumeChanged", _OnFxVolumeChanged);
+
+    }
+
+    private void _OnMusicVolumeChanged(object data)
+    {
+        float volume = (float)data;
+        SetMusicVolume(volume);
+    }
+
+    private void _OnFxVolumeChanged(object data)
+    {
+        float volume = (float)data;
+        SetFxVolume(volume);
     }
 
     private void _OnLevelSelected(object data)

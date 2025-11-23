@@ -11,23 +11,25 @@ public class MusicManager : MonoBehaviour
 
     void Start()
     {
+        // Récupère les données depuis GameManager via une méthode Setup
+        Setup(GameManager.Instance.MusicVolume, GameManager.Instance.Playlist);
 
+        // Abonne-toi à l'événement de changement de valeur
+        volumeSlider.onValueChanged.AddListener(SetVolume);
+    }
+
+    public void Setup(float volume, List<AudioClip> musicPlaylist)
+    {
         // Initialise le slider avec le volume actuel
-        float initialVolume = GameManager.Instance.MusicVolume;
-        volumeSlider.value = initialVolume;
-        musicSource.volume = initialVolume;
+        volumeSlider.value = volume;
+        musicSource.volume = volume;
 
-        playlist = GameManager.Instance.Playlist;
+        playlist = musicPlaylist;
 
         if (playlist.Count > 0)
         {
-
             PlayNextClip();
-
         }
-
-        // Abonne-toi � l'�v�nement de changement de valeur
-        volumeSlider.onValueChanged.AddListener(SetVolume);
     }
 
     void Update()
@@ -49,9 +51,7 @@ public class MusicManager : MonoBehaviour
     void SetVolume(float volume)
     {
         musicSource.volume = volume;
-        // Optionnel : sauvegarder le volume si besoin
-        GameManager.Instance.SetMusicVolume(volume);
-        //PlayerPrefs.SetFloat("MusicVolume", volume);
+        EventManager.TriggerEvent("MusicVolumeChanged", volume);
     }
 
     private void OnDestroy()

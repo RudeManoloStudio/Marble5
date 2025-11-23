@@ -59,7 +59,6 @@ public class PlacePlomb : MonoBehaviour
 
         // Récupération de la position de la dernière bille
         Vector3 positionDerniereBille = position;
-        Debug.Log("Dernière bille placée en : " + positionDerniereBille);
 
         // --- 1) Recherche au niveau 1 ---
         List<Vector3> positionsLibres = GetFreePositions(positionDerniereBille, directions);
@@ -67,19 +66,14 @@ public class PlacePlomb : MonoBehaviour
         // --- 2) Si aucune position libre au niveau 1, on tente le niveau 2 ---
         if (positionsLibres.Count == 0)
         {
-            Debug.LogWarning("Aucune position libre autour de la bille (niveau 1). Recherche au niveau 2...");
             positionsLibres = GetFreePositions(positionDerniereBille, directionsLevel2);
 
             // Si toujours aucune position, on abandonne
             if (positionsLibres.Count == 0)
             {
-                Debug.LogWarning("Aucune position libre autour de la bille (niveau 2) non plus !");
                 return;
             }
         }
-
-        // On a au moins une position disponible
-        Debug.Log("Nombre d'emplacements libres : " + positionsLibres.Count);
 
         // On choisit une position aléatoire
         Vector3 positionChoisie = positionsLibres[Random.Range(0, positionsLibres.Count)];
@@ -95,54 +89,6 @@ public class PlacePlomb : MonoBehaviour
 
         Debug.Log("Plomb placée en : " + positionChoisie);
     }
-
-    
-
-    // Cette fonction récupère la position de la bille et essaie de placer un plomb
-    // autour de la bille, d'abord au niveau 1, sinon au niveau 2.
-
-    /*
-    void _OnPosePlomb(object data)
-    {
-        // Récupération de la position de la dernière bille
-        Vector3 positionDerniereBille = (Vector3)data;
-        Debug.Log("Dernière bille placée en : " + positionDerniereBille);
-
-        // --- 1) Recherche au niveau 1 ---
-        List<Vector3> positionsLibres = GetFreePositions(positionDerniereBille, directions);
-
-        // --- 2) Si aucune position libre au niveau 1, on tente le niveau 2 ---
-        if (positionsLibres.Count == 0)
-        {
-            Debug.LogWarning("Aucune position libre autour de la bille (niveau 1). Recherche au niveau 2...");
-            positionsLibres = GetFreePositions(positionDerniereBille, directionsLevel2);
-
-            // Si toujours aucune position, on abandonne
-            if (positionsLibres.Count == 0)
-            {
-                Debug.LogWarning("Aucune position libre autour de la bille (niveau 2) non plus !");
-                return;
-            }
-        }
-
-        // On a au moins une position disponible
-        Debug.Log("Nombre d'emplacements libres : " + positionsLibres.Count);
-
-        // On choisit une position aléatoire
-        Vector3 positionChoisie = positionsLibres[Random.Range(0, positionsLibres.Count)];
-
-        // On instancie le plomb à la position choisie
-        GameObject nouveauPlomb = Instantiate(plomb, positionChoisie, Quaternion.identity);
-        nouveauPlomb.transform.SetParent(container);
-        nouveauPlomb.tag = "Plomb";
-
-        // Gestion du composant de la bille (rotation éventuelle, etc.)
-        BilleController bc = nouveauPlomb.GetComponent<BilleController>();
-        bc.DoRotate(false);
-
-        Debug.Log("Plomb placée en : " + positionChoisie);
-    }
-    */
 
     // Fonction utilitaire pour récupérer la liste des emplacements libres
     // en fonction d'une position de base et d'un tableau de directions.

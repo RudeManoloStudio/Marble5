@@ -164,7 +164,8 @@ public class PlaceBille : MonoBehaviour
                         int quinteTrouvees = VerifierToutesLesQuintes(nouvellePosition);
                         if (quinteTrouvees > 0)
                         {
-                            GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
+                            // Ancienne méthode avant refacto : GameManager.Instance.UpdateScoreAndCoins(quinteTrouvees);
+                            EventManager.TriggerEvent("QuinteFormee", quinteTrouvees);
                         }
 
                         EventManager.TriggerEvent("PoseBille", nouvellePosition);
@@ -190,7 +191,6 @@ public class PlaceBille : MonoBehaviour
 
     // ============================================================
     // MÉTHODE REFACTORISÉE - VerifierToutesLesQuintes
-    // À copier dans PlaceBille.cs en remplacement de l'ancienne
     // ============================================================
 
     // Les 4 directions possibles pour former une quinte
@@ -288,10 +288,6 @@ public class PlaceBille : MonoBehaviour
 
         return quinte;
     }
-
-
-
-
 
     bool PositionContientBille(Vector3 position)
     {

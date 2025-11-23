@@ -12,6 +12,7 @@ public class DisplayController : MonoBehaviour
     [SerializeField] private GameObject reserve;
     [SerializeField] private GameObject reserveContainer;
     [SerializeField] private RectTransform reserveRenderer;
+    [SerializeField] private Sprite initialBackgroundSprite;
 
     private GameObject bille;
     private GameObject plomb; // pour le handicap
@@ -21,13 +22,11 @@ public class DisplayController : MonoBehaviour
     private void Start()
     {
 
-        backgroundImage = GameManager.Instance.InitialBackground;
+        // refactor backgroundImage = GameManager.Instance.InitialBackground;
+        backgroundImage = initialBackgroundSprite;
         background.GetComponent<Image>().sprite = backgroundImage;
 
         reserve.GetComponentInChildren<Camera>().aspect = reserveRenderer.rect.width / reserveRenderer.rect.height;
-
-
-
     }
 
     public void PrepareReserve()
@@ -116,6 +115,7 @@ public class DisplayController : MonoBehaviour
                 GameObject newBille = Instantiate(bille, new Vector3Int(position.x + gridSize.x / 2, position.y + gridSize.y / 2), Quaternion.identity);
                 newBille.transform.SetParent(container);
                 newBille.tag = "Bille";
+                newBille.GetComponent<BilleController>().SetGridSize(gridSize);
             }
 
             foreach (Vector2Int position in billesTransformees)
@@ -124,6 +124,7 @@ public class DisplayController : MonoBehaviour
                 newPlomb.transform.SetParent(container);
                 newPlomb.tag = "Plomb";
                 newPlomb.GetComponent<BilleController>().DoRotate(false);
+                newPlomb.GetComponent<BilleController>().SetGridSize(gridSize);
             }
         }
     }

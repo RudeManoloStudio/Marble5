@@ -82,24 +82,7 @@ public class ReserveController : MonoBehaviour
         AdjustReserveUIHeight(list.Count);
     }
 
-    /*
-    public void RemovePlomb()
-    {
-
-        list.RemoveAt(0);
-        Destroy(container.GetChild(0).gameObject);
-
-        foreach (GameObject billeToMove in list)
-        {
-            billeToMove.transform.Translate(new Vector3(0, -1, 0), Space.World);
-        }
-
-
-        AdjustCameraToContainer();
-        AdjustReserveUIHeight(list.Count);
-    }
-    */
-
+  
     void AdjustReserveUIHeight(int nbBilles)
     {
 

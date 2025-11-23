@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class PlaceBille : MonoBehaviour
 {
@@ -187,554 +188,110 @@ public class PlaceBille : MonoBehaviour
     }
 
 
-    //bool VerifierToutesLesQuintes(Vector3 position)
+    // ============================================================
+    // MÉTHODE REFACTORISÉE - VerifierToutesLesQuintes
+    // À copier dans PlaceBille.cs en remplacement de l'ancienne
+    // ============================================================
+
+    // Les 4 directions possibles pour former une quinte
+    private static readonly Vector3[] quinteDirections = new Vector3[]
+    {
+    new Vector3(1, 0, 0),   // Horizontal →
+    new Vector3(0, 1, 0),   // Vertical ↑
+    new Vector3(1, 1, 0),   // Diagonale ↗
+    new Vector3(1, -1, 0)   // Diagonale ↘
+    };
+
     int VerifierToutesLesQuintes(Vector3 position)
     {
-
         int x = Mathf.FloorToInt(position.x);
         int y = Mathf.FloorToInt(position.y);
-        //bool quinteTrouvee = false;
-        int quintestrouvees = 0;
+        int quintesTrouvees = 0;
 
-        //**************************************************
-        // 1️⃣ Vérification des quintes horizontales
-        //**************************************************
-
-        // Recherche de la double quinte horizontale
-        var quinteHorizontaleGauche = new List<Vector3> {
-        new Vector3(x -4, y, 0),
-        new Vector3(x -3, y, 0),
-        new Vector3(x -2, y, 0),
-        new Vector3(x -1, y, 0),
-        new Vector3(x , y, 0)
-            };
-        var quinteHorizontaleDroite = new List<Vector3> {
-        new Vector3(x , y, 0),
-        new Vector3(x +1, y, 0),
-        new Vector3(x +2, y, 0),
-        new Vector3(x +3 , y, 0),
-        new Vector3(x +4, y, 0)
-            };
-
-        if (VerifierQuinte(quinteHorizontaleGauche[0], quinteHorizontaleGauche[1], quinteHorizontaleGauche[2], quinteHorizontaleGauche[3], quinteHorizontaleGauche[4])
-            && VerifierQuinte(quinteHorizontaleDroite[0], quinteHorizontaleDroite[1], quinteHorizontaleDroite[2], quinteHorizontaleDroite[3], quinteHorizontaleDroite[4]))
+        // Pour chaque direction possible
+        foreach (Vector3 dir in quinteDirections)
         {
-            //Debug.Log($"🎯 Double quinte horizontale trouvée à partir de ({x}, {y})");
-            TracerLigneQuinte(quinteHorizontaleGauche); // 🔵 Tracé de la quinte gauche-droite
-            TracerLigneQuinte(quinteHorizontaleDroite); // 🔵 Tracé de la quinte droite-gauche
-            //quinteTrouvee = true;
-            quintestrouvees = quintestrouvees + 2;
-
-            //EventManager.TriggerEvent("UpdateScore"); // Score quinte gauche-droite
-            //EventManager.TriggerEvent("UpdateScore"); // Score quinte droite-gauche
-
+            // On vérifie d'abord la double quinte (la bille est au centre de 2 quintes)
+            if (VerifierDoubleQuinte(x, y, dir))
+            {
+                quintesTrouvees += 2;
+            }
+            else
+            {
+                // Sinon on vérifie les quintes simples
+                // La bille posée peut être en position 1, 2, 3, 4 ou 5 de la quinte
+                for (int pos = 0; pos < 5; pos++)
+                {
+                    List<Vector3> quinte = GenererQuinte(x, y, dir, pos);
+                    if (VerifierQuinte(quinte[0], quinte[1], quinte[2], quinte[3], quinte[4]))
+                    {
+                        TracerLigneQuinte(quinte);
+                        quintesTrouvees++;
+                        break; // Une seule quinte par direction (évite les doublons)
+                    }
+                }
+            }
         }
 
-        // Recherche de la quinte horizontale centrale
-        var quinteCentraleHorizontale = new List<Vector3> {
-        new Vector3(x -2, y, 0),
-        new Vector3(x -1, y, 0),
-        new Vector3(x , y, 0),
-        new Vector3(x +1, y, 0),
-        new Vector3(x +2, y, 0)
-            };
-
-        if (VerifierQuinte(quinteCentraleHorizontale[0], quinteCentraleHorizontale[1], quinteCentraleHorizontale[2], quinteCentraleHorizontale[3], quinteCentraleHorizontale[4]))
-        {
-            //Debug.Log($"🎯 Quinte horizontale centrale trouvée à partir de ({x}, {y})");
-            TracerLigneQuinte(quinteCentraleHorizontale); // 🔵 Tracé de la quinte centrale horizontale
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); // Score quinte centrale horizontale
-
-        }
-
-        // Recherche de la quinte horizontale avec bille en position 2
-        var quinteHorizontalePos2 = new List<Vector3> {
-        new Vector3(x -1, y, 0),
-        new Vector3(x , y, 0),
-        new Vector3(x +1, y, 0),
-        new Vector3(x +2, y, 0),
-        new Vector3(x +3, y, 0)
-            };
-
-        if (VerifierQuinte(quinteHorizontalePos2[0], quinteHorizontalePos2[1], quinteHorizontalePos2[2], quinteHorizontalePos2[3], quinteHorizontalePos2[4]))
-        {
-            //Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 2 sur ({x}, {y})");
-            TracerLigneQuinte(quinteHorizontalePos2); // 🔵 Tracé de la quinte horizontale position 2
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); // Score quinte position 2
-
-        }
-
-        // Recherche de la quinte avec bille en position 4
-        var quinteHorizontalePos4 = new List<Vector3> {
-        new Vector3(x -3, y, 0),
-        new Vector3(x -2, y, 0),
-        new Vector3(x -1, y, 0),
-        new Vector3(x , y, 0),
-        new Vector3(x +1, y, 0)
-            };
-
-        if (VerifierQuinte(quinteHorizontalePos4[0], quinteHorizontalePos4[1], quinteHorizontalePos4[2], quinteHorizontalePos4[3], quinteHorizontalePos4[4]))
-        {
-            //Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 4 sur ({x}, {y})");
-            TracerLigneQuinte(quinteHorizontalePos4); // 🔵 Tracé de la quinte horizontale position 4
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); // Score quinte position 4
-
-        }
-
-        // Recherche de la quinte avec bille en position 1
-        var quinteHorizontalePos1 = new List<Vector3> {
-        new Vector3(x , y, 0),
-        new Vector3(x +1, y, 0),
-        new Vector3(x +2, y, 0),
-        new Vector3(x +3, y, 0),
-        new Vector3(x +4, y, 0)
-            };
-
-        if (VerifierQuinte(quinteHorizontalePos1[0], quinteHorizontalePos1[1], quinteHorizontalePos1[2], quinteHorizontalePos1[3], quinteHorizontalePos1[4]))
-        {
-            //Debug.Log($"🎯 Quinte horizontale trouvée avec bille en position 1 sur ({x}, {y})");
-            TracerLigneQuinte(quinteHorizontalePos1); // 🔵 Tracé de la quinte horizontale position 1
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); // Score quinte position 1
-
-        }
-
-        // Recherche de la quinte avec bille en position 5
-        var quinteHorizontalePos5 = new List<Vector3> {
-        new Vector3(x-4 , y, 0),
-        new Vector3(x-3, y, 0),
-        new Vector3(x-2, y, 0),
-        new Vector3(x-1, y, 0),
-        new Vector3(x, y, 0)
-            };
-
-        if (VerifierQuinte(quinteHorizontalePos5[0], quinteHorizontalePos5[1], quinteHorizontalePos5[2], quinteHorizontalePos5[3], quinteHorizontalePos5[4]))
-        {
-            //Debug.Log($"🎯 Quinte trouvée avec bille en position 5 sur ({x}, {y})");
-            TracerLigneQuinte(quinteHorizontalePos5); // 🔵 Tracé de la quinte horizontale position 5
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); // Score quinte position 5
-
-        }
-
-
-        //**************************************************
-        // 2️⃣ Vérification des quintes verticales
-        //**************************************************
-
-        // Recherche de la double quinte verticale
-        var quinteBas = new List<Vector3> {
-        new Vector3(x, y -4, 0),
-        new Vector3(x, y -3, 0),
-        new Vector3(x, y -2, 0),
-        new Vector3(x, y -1, 0),
-        new Vector3(x, y, 0)
-            };
-        var quinteHaut = new List<Vector3> {
-        new Vector3(x, y, 0),
-        new Vector3(x, y +1, 0),
-        new Vector3(x, y +2, 0),
-        new Vector3(x, y +3, 0),
-        new Vector3(x, y +4, 0)
-            };
-
-        if (VerifierQuinte(quinteBas[0], quinteBas[1], quinteBas[2], quinteBas[3], quinteBas[4])
-            && VerifierQuinte(quinteHaut[0], quinteHaut[1], quinteHaut[2], quinteHaut[3], quinteHaut[4]))
-        {
-            //Debug.Log($"🎯 Double quinte verticale trouvée à partir de ({x}, {y})");
-            TracerLigneQuinte(quinteBas); // 🔵 Tracé de la quinte bas
-            TracerLigneQuinte(quinteHaut); // 🔵 Tracé de la quinte haut
-            //quinteTrouvee = true;
-            quintestrouvees = quintestrouvees + 2;
-
-            //EventManager.TriggerEvent("UpdateScore"); //Score quinte bas
-            //EventManager.TriggerEvent("UpdateScore"); //Score quinte haut
-
-        }
-
-        // Recherche de la quinte verticale centrale
-        var quinteCentraleVerticale = new List<Vector3> {
-        new Vector3(x, y -2, 0),
-        new Vector3(x, y -1, 0),
-        new Vector3(x, y, 0),
-        new Vector3(x, y +1, 0),
-        new Vector3(x, y +2, 0)
-            };
-
-        if (VerifierQuinte(quinteCentraleVerticale[0], quinteCentraleVerticale[1], quinteCentraleVerticale[2], quinteCentraleVerticale[3], quinteCentraleVerticale[4]))
-        {
-            //Debug.Log($"🎯 Quinte verticale centrale trouvée à partir de ({x}, {y})");
-            TracerLigneQuinte(quinteCentraleVerticale); // 🔵 Tracé de la quinte centrale
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); //Score quinte centrale
-
-        }
-
-        // Recherche de la quinte verticale avec bille position 2
-        var quinteVerticalePos2 = new List<Vector3> {
-        new Vector3(x, y -1, 0),
-        new Vector3(x, y, 0),
-        new Vector3(x, y +1, 0),
-        new Vector3(x, y +2, 0),
-        new Vector3(x, y +3, 0)
-            };
-
-        if (VerifierQuinte(quinteVerticalePos2[0], quinteVerticalePos2[1], quinteVerticalePos2[2], quinteVerticalePos2[3], quinteVerticalePos2[4]))
-        {
-            //Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 2 sur ({x}, {y})");
-            TracerLigneQuinte(quinteVerticalePos2); // 🔵 Tracé de la quinte en position 2
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); //Score quinte position 2
-
-        }
-
-        // Recherche de la quinte avec bille position 4
-        var quinteVerticalePos4 = new List<Vector3> {
-        new Vector3(x, y -3, 0),
-        new Vector3(x, y -2, 0),
-        new Vector3(x, y -1, 0),
-        new Vector3(x, y, 0),
-        new Vector3(x, y +1, 0)
-            };
-
-        if (VerifierQuinte(quinteVerticalePos4[0], quinteVerticalePos4[1], quinteVerticalePos4[2], quinteVerticalePos4[3], quinteVerticalePos4[4]))
-        {
-            //Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 4 sur ({x}, {y})");
-            TracerLigneQuinte(quinteVerticalePos4); // 🔵 Tracé de la quinte en position 4
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); //Score quinte position 4
-
-        }
-
-        // Recherche de la quinte avec bille position 1
-        var quinteVerticalePos1 = new List<Vector3> {
-        new Vector3(x, y, 0),
-        new Vector3(x, y +1, 0),
-        new Vector3(x, y +2, 0),
-        new Vector3(x, y +3, 0),
-        new Vector3(x, y +4, 0)
-            };
-
-        if (VerifierQuinte(quinteVerticalePos1[0], quinteVerticalePos1[1], quinteVerticalePos1[2], quinteVerticalePos1[3], quinteVerticalePos1[4]))
-        {
-            //Debug.Log($"🎯 Quinte verticale trouvée avec bille en position 1 sur ({x}, {y})");
-            TracerLigneQuinte(quinteVerticalePos1); // 🔵 Tracé de la quinte en position 1
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); //Score quinte position 1
-
-        }
-
-        // Recherche de la quinte avec bille position 5
-        var quinteVerticalePos5 = new List<Vector3> {
-        new Vector3(x, y -4, 0),
-        new Vector3(x, y -3, 0),
-        new Vector3(x, y -2, 0),
-        new Vector3(x, y -1, 0),
-        new Vector3(x, y, 0)
-            };
-
-        if (VerifierQuinte(quinteVerticalePos5[0], quinteVerticalePos5[1], quinteVerticalePos5[2], quinteVerticalePos5[3], quinteVerticalePos5[4]))
-        {
-            //Debug.Log($"🎯 Quinte trouvée avec bille en position 5 sur ({x}, {y})");
-            TracerLigneQuinte(quinteVerticalePos5); // 🔵 Tracé de la quinte en position 5
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); //Score quinte position 5
-
-        }
-
-        //**************************************************
-        // 3 Vérification des quintes diagonales ↘
-        //**************************************************
-
-        // Recherche de la double quinte diagonale ↘
-        var quinteDiagonaleHG = new List<Vector3> {
-        new Vector3(x -4, y +4, 0),
-        new Vector3(x -3, y +3, 0),
-        new Vector3(x -2, y +2, 0),
-        new Vector3(x -1, y +1, 0),
-        new Vector3(x , y, 0)
-            };
-        var quinteDiagonaleBD = new List<Vector3> {
-        new Vector3(x , y, 0),
-        new Vector3(x +1, y -1, 0),
-        new Vector3(x +2, y -2, 0),
-        new Vector3(x +3, y -3, 0),
-        new Vector3(x +4, y -4, 0)
-            };
-
-        if (VerifierQuinte(quinteDiagonaleHG[0], quinteDiagonaleHG[1], quinteDiagonaleHG[2], quinteDiagonaleHG[3], quinteDiagonaleHG[4])
-            && VerifierQuinte(quinteDiagonaleBD[0], quinteDiagonaleBD[1], quinteDiagonaleBD[2], quinteDiagonaleBD[3], quinteDiagonaleBD[4]))
-        {
-            //Debug.Log($"🎯 Double quinte diagonale ↘ trouvée à partir de ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonaleHG); // 🔵 Tracé de la quinte haut-gauche
-            TracerLigneQuinte(quinteDiagonaleBD); // 🔵 Tracé de la quinte bas-droite
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore"); // Score quinte haut-gauche
-            //EventManager.TriggerEvent("UpdateScore"); // Score quinte bas-droite
-
-        }
-
-        // Recherche de la quinte diagonale ↘ centrale
-        var quinteCentraleDiagonale = new List<Vector3> {
-            new Vector3(x -2, y +2, 0),
-            new Vector3(x -1, y +1, 0),
-            new Vector3(x , y, 0),
-            new Vector3(x +1, y -1, 0),
-            new Vector3(x +2, y -2, 0)
-            };
-
-        if (VerifierQuinte(quinteCentraleDiagonale[0], quinteCentraleDiagonale[1], quinteCentraleDiagonale[2], quinteCentraleDiagonale[3], quinteCentraleDiagonale[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↘ centrale trouvée à partir de ({x}, {y})");
-            TracerLigneQuinte(quinteCentraleDiagonale);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        // Recherche de la quinte diagonale ↘ avec bille en position 2
-        var quinteDiagonalePos2 = new List<Vector3> {
-    new Vector3(x -1, y +1, 0),
-    new Vector3(x , y, 0),
-    new Vector3(x +1, y -1, 0),
-    new Vector3(x +2, y -2, 0),
-    new Vector3(x +3, y -3, 0)
-};
-
-        if (VerifierQuinte(quinteDiagonalePos2[0], quinteDiagonalePos2[1], quinteDiagonalePos2[2], quinteDiagonalePos2[3], quinteDiagonalePos2[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 2 sur ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonalePos2);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        // Recherche de la quinte diagonale ↘ avec bille en position 4
-        var quinteDiagonalePos4 = new List<Vector3> {
-    new Vector3(x -3, y +3, 0),
-    new Vector3(x -2, y +2, 0),
-    new Vector3(x -1, y +1, 0),
-    new Vector3(x , y, 0),
-    new Vector3(x +1, y -1, 0)
-};
-
-        if (VerifierQuinte(quinteDiagonalePos4[0], quinteDiagonalePos4[1], quinteDiagonalePos4[2], quinteDiagonalePos4[3], quinteDiagonalePos4[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 4 sur ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonalePos4);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        // Recherche de la quinte diagonale ↘ avec bille en position 1
-        var quinteDiagonalePos1 = new List<Vector3> {
-    new Vector3(x , y, 0),
-    new Vector3(x +1, y -1, 0),
-    new Vector3(x +2, y -2, 0),
-    new Vector3(x +3, y -3, 0),
-    new Vector3(x +4, y -4, 0)
-};
-
-        if (VerifierQuinte(quinteDiagonalePos1[0], quinteDiagonalePos1[1], quinteDiagonalePos1[2], quinteDiagonalePos1[3], quinteDiagonalePos1[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 1 sur ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonalePos1);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        // Recherche de la quinte diagonale ↘ avec bille en position 5
-        var quinteDiagonalePos5 = new List<Vector3> {
-    new Vector3(x-4 , y +4, 0),
-    new Vector3(x-3, y +3, 0),
-    new Vector3(x-2, y +2, 0),
-    new Vector3(x-1, y +1, 0),
-    new Vector3(x, y, 0)
-};
-
-        if (VerifierQuinte(quinteDiagonalePos5[0], quinteDiagonalePos5[1], quinteDiagonalePos5[2], quinteDiagonalePos5[3], quinteDiagonalePos5[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↘ trouvée avec bille en position 5 sur ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonalePos5);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        //**************************************************
-        // 4 Vérification des quintes diagonales ↙
-        //**************************************************
-        // Recherche de la double quinte diagonale ↙
-        var quinteDiagonaleHautDroit = new List<Vector3> {
-    new Vector3(x +4, y +4, 0),
-    new Vector3(x +3, y +3, 0),
-    new Vector3(x +2, y +2, 0),
-    new Vector3(x +1, y +1, 0),
-    new Vector3(x , y, 0)
-};
-        var quinteDiagonaleBasGauche = new List<Vector3> {
-    new Vector3(x , y, 0),
-    new Vector3(x -1, y -1, 0),
-    new Vector3(x -2, y -2, 0),
-    new Vector3(x -3, y -3, 0),
-    new Vector3(x -4, y -4, 0)
-};
-
-        if (VerifierQuinte(quinteDiagonaleHautDroit[0], quinteDiagonaleHautDroit[1], quinteDiagonaleHautDroit[2], quinteDiagonaleHautDroit[3], quinteDiagonaleHautDroit[4])
-            && VerifierQuinte(quinteDiagonaleBasGauche[0], quinteDiagonaleBasGauche[1], quinteDiagonaleBasGauche[2], quinteDiagonaleBasGauche[3], quinteDiagonaleBasGauche[4]))
-        {
-            //Debug.Log($"🎯 Double quinte diagonale ↙ trouvée à partir de ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonaleHautDroit);
-            TracerLigneQuinte(quinteDiagonaleBasGauche);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        // Recherche de la quinte diagonale ↙ centrale
-        var quinteCentraleDiagonaleBG = new List<Vector3> {
-    new Vector3(x +2, y +2, 0),
-    new Vector3(x +1, y +1, 0),
-    new Vector3(x , y, 0),
-    new Vector3(x -1, y -1, 0),
-    new Vector3(x -2, y -2, 0)
-};
-
-        if (VerifierQuinte(quinteCentraleDiagonaleBG[0], quinteCentraleDiagonaleBG[1], quinteCentraleDiagonaleBG[2], quinteCentraleDiagonaleBG[3], quinteCentraleDiagonaleBG[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↙ centrale trouvée à partir de ({x}, {y})");
-            TracerLigneQuinte(quinteCentraleDiagonaleBG);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        // Recherche de la quinte diagonale ↙ avec bille en position 2
-        var quinteDiagonaleBGPos2 = new List<Vector3> {
-    new Vector3(x +1, y +1, 0),
-    new Vector3(x , y, 0),
-    new Vector3(x -1, y -1, 0),
-    new Vector3(x -2, y -2, 0),
-    new Vector3(x -3, y -3, 0)
-};
-
-        if (VerifierQuinte(quinteDiagonaleBGPos2[0], quinteDiagonaleBGPos2[1], quinteDiagonaleBGPos2[2], quinteDiagonaleBGPos2[3], quinteDiagonaleBGPos2[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 2 sur ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonaleBGPos2);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        // Recherche de la quinte diagonale ↙ avec bille en position 4
-        var quinteDiagonaleBGPos4 = new List<Vector3> {
-    new Vector3(x +3, y +3, 0),
-    new Vector3(x +2, y +2, 0),
-    new Vector3(x +1, y +1, 0),
-    new Vector3(x , y, 0),
-    new Vector3(x -1, y -1, 0)
-};
-
-        if (VerifierQuinte(quinteDiagonaleBGPos4[0], quinteDiagonaleBGPos4[1], quinteDiagonaleBGPos4[2], quinteDiagonaleBGPos4[3], quinteDiagonaleBGPos4[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 4 sur ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonaleBGPos4);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        // Recherche de la quinte diagonale ↙ avec bille en position 1
-        var quinteDiagonaleBGPos1 = new List<Vector3> {
-    new Vector3(x , y, 0),
-    new Vector3(x -1, y -1, 0),
-    new Vector3(x -2, y -2, 0),
-    new Vector3(x -3, y -3, 0),
-    new Vector3(x -4, y -4, 0)
-};
-
-        if (VerifierQuinte(quinteDiagonaleBGPos1[0], quinteDiagonaleBGPos1[1], quinteDiagonaleBGPos1[2], quinteDiagonaleBGPos1[3], quinteDiagonaleBGPos1[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 1 sur ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonaleBGPos1);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        // Recherche de la quinte diagonale ↙ avec bille en position 5
-        var quinteDiagonaleBGPos5 = new List<Vector3> {
-    new Vector3(x+4 , y +4, 0),
-    new Vector3(x+3, y +3, 0),
-    new Vector3(x+2, y +2, 0),
-    new Vector3(x+1, y +1, 0),
-    new Vector3(x, y, 0)
-};
-
-        if (VerifierQuinte(quinteDiagonaleBGPos5[0], quinteDiagonaleBGPos5[1], quinteDiagonaleBGPos5[2], quinteDiagonaleBGPos5[3], quinteDiagonaleBGPos5[4]))
-        {
-            //Debug.Log($"🎯 Quinte diagonale ↙ trouvée avec bille en position 5 sur ({x}, {y})");
-            TracerLigneQuinte(quinteDiagonaleBGPos5);
-            //quinteTrouvee = true;
-            quintestrouvees++;
-
-            //EventManager.TriggerEvent("UpdateScore");
-
-        }
-
-        return quintestrouvees;
-
+        return quintesTrouvees;
     }
+
+    /// <summary>
+    /// Vérifie si la position (x,y) est le centre d'une double quinte dans la direction donnée
+    /// </summary>
+    private bool VerifierDoubleQuinte(int x, int y, Vector3 dir)
+    {
+        // Quinte "avant" : de -4 à 0 par rapport à la position
+        List<Vector3> quinteAvant = new List<Vector3>();
+        for (int i = -4; i <= 0; i++)
+        {
+            quinteAvant.Add(new Vector3(x + dir.x * i, y + dir.y * i, 0));
+        }
+
+        // Quinte "après" : de 0 à +4 par rapport à la position
+        List<Vector3> quinteApres = new List<Vector3>();
+        for (int i = 0; i <= 4; i++)
+        {
+            quinteApres.Add(new Vector3(x + dir.x * i, y + dir.y * i, 0));
+        }
+
+        // Les deux quintes doivent être valides pour une double quinte
+        bool avantValide = VerifierQuinte(quinteAvant[0], quinteAvant[1], quinteAvant[2], quinteAvant[3], quinteAvant[4]);
+        bool apresValide = VerifierQuinte(quinteApres[0], quinteApres[1], quinteApres[2], quinteApres[3], quinteApres[4]);
+
+        if (avantValide && apresValide)
+        {
+            TracerLigneQuinte(quinteAvant);
+            TracerLigneQuinte(quinteApres);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Génère les 5 positions d'une quinte où la bille posée est à la position 'positionDansBille' (0 à 4)
+    /// </summary>
+    private List<Vector3> GenererQuinte(int x, int y, Vector3 dir, int positionDansQuinte)
+    {
+        List<Vector3> quinte = new List<Vector3>();
+
+        // La bille posée est à l'index 'positionDansQuinte'
+        // Donc on commence à (positionDansQuinte) cases "avant" dans la direction opposée
+        int startOffset = -positionDansQuinte;
+
+        for (int i = 0; i < 5; i++)
+        {
+            int offset = startOffset + i;
+            quinte.Add(new Vector3(x + dir.x * offset, y + dir.y * offset, 0));
+        }
+
+        return quinte;
+    }
+
+
+
+
 
     bool PositionContientBille(Vector3 position)
     {

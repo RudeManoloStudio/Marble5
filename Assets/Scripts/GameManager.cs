@@ -116,6 +116,19 @@ public class GameManager : MonoBehaviour
 
         EventManager.AddListener("PoseBille", _OnPoseBille);
         EventManager.AddListener("QuinteFormee", _OnQuinteFormee);
+        EventManager.AddListener("LevelSelected", _OnLevelSelected);
+        EventManager.AddListener("ReturnToMainMenu", _OnReturnToMainMenu);
+    }
+
+    private void _OnLevelSelected(object data)
+    {
+        int level = (int)data;
+        PrepareLevel(level);
+    }
+
+    private void _OnReturnToMainMenu()
+    {
+        PrepareMainMenu();
     }
 
     public void PrepareMainMenu()

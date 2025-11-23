@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float panSpeed = 5f;
+    [SerializeField] private float panSpeed = 1f;
     [SerializeField] [Range(0.1f, 5f)] private float zoomSpeed = 2.5f;
     [SerializeField] private float minZoom = 10.0f;
     [SerializeField] private float maxZoom = 20.0f;
@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour
         mainCamera.transform.SetPositionAndRotation(new Vector3(sizeX / 2 + 0.5f, sizeY / 2 + 0.5f, -10), Quaternion.identity);
     }
 
-    void Update()
+    void LateUpdate()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
         HandleMouseInput(); // Garde les contrôles PC
@@ -67,8 +67,35 @@ public class CameraController : MonoBehaviour
             Vector3 move = new Vector3(-delta.x, -delta.y, 0) * panSpeed / 4 * Time.deltaTime;
             Vector3 newPosition = transform.position + move;
 
-            newPosition.x = Mathf.Clamp(newPosition.x, minPosition.x, maxPosition.x);
-            newPosition.y = Mathf.Clamp(newPosition.y, minPosition.y, maxPosition.y);
+            // Calculer les bounds en fonction du zoom actuel
+            float vertExtent = mainCamera.orthographicSize;
+            float horzExtent = vertExtent * Screen.width / Screen.height;
+
+            float minX = minPosition.x + horzExtent;
+            float maxX = maxPosition.x - horzExtent;
+            float minY = minPosition.y + vertExtent;
+            float maxY = maxPosition.y - vertExtent;
+
+            // Sécurité : si la grille est plus petite que la vue, on centre
+            if (minX > maxX)
+            {
+                float centerX = (minPosition.x + maxPosition.x) / 2f;
+                newPosition.x = centerX;
+            }
+            else
+            {
+                newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+            }
+
+            if (minY > maxY)
+            {
+                float centerY = (minPosition.y + maxPosition.y) / 2f;
+                newPosition.y = centerY;
+            }
+            else
+            {
+                newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
+            }
 
             transform.position = newPosition;
             lastMousePosition = Input.mousePosition;
@@ -106,8 +133,35 @@ public class CameraController : MonoBehaviour
             Vector3 move = new Vector3(-deltaMidpoint.x, -deltaMidpoint.y, 0) * panSpeed * 0.005f;
             Vector3 newPosition = transform.position + move;
 
-            newPosition.x = Mathf.Clamp(newPosition.x, minPosition.x, maxPosition.x);
-            newPosition.y = Mathf.Clamp(newPosition.y, minPosition.y, maxPosition.y);
+            // Calculer les bounds en fonction du zoom actuel
+            float vertExtent = mainCamera.orthographicSize;
+            float horzExtent = vertExtent * Screen.width / Screen.height;
+
+            float minX = minPosition.x + horzExtent;
+            float maxX = maxPosition.x - horzExtent;
+            float minY = minPosition.y + vertExtent;
+            float maxY = maxPosition.y - vertExtent;
+
+            // Sécurité : si la grille est plus petite que la vue, on centre
+            if (minX > maxX)
+            {
+                float centerX = (minPosition.x + maxPosition.x) / 2f;
+                newPosition.x = centerX;
+            }
+            else
+            {
+                newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+            }
+
+            if (minY > maxY)
+            {
+                float centerY = (minPosition.y + maxPosition.y) / 2f;
+                newPosition.y = centerY;
+            }
+            else
+            {
+                newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
+            }
 
             transform.position = newPosition;
         }

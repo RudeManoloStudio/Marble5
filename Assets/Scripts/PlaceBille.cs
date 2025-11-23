@@ -1,12 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlaceBille : MonoBehaviour
 {
     //
     [SerializeField] private Transform container;
+
+    [Header("Animation")]
+    [SerializeField] private GameObject quinteParticlesPrefab;
+    [SerializeField] private float pulseDuration = 0.3f;
+    [SerializeField] private float pulseScale = 1.3f;
+    [SerializeField] private bool useAnimations = true;
 
     private HashSet<(Vector3, Vector3)> liaisonsUtilisées = new HashSet<(Vector3, Vector3)>();
     private bool verificationEffectuee = false;
@@ -14,6 +21,17 @@ public class PlaceBille : MonoBehaviour
     private GameObject quinte;
     private bool pause = false;
     private Vector2Int gridSize;
+
+    // Gestion du touch pour éviter les placements involontaires lors du zoom
+    private bool touchEnCours = false;
+    private float touchStartTime = 0f;
+    private Vector3 touchStartPosition = Vector3.zero;
+    private bool multiTouchDetected = false;
+    private HashSet<GameObject> billesEnCoursAnimation = new HashSet<GameObject>();
+
+
+    // Seuil de mouvement pour annuler (si le doigt bouge trop, c'est un drag pas un tap)
+    private const float TOUCH_MOVE_THRESHOLD = 20f; // en pixels
 
     private static readonly Vector3[] adjacentDirections = new Vector3[]
    {
@@ -58,10 +76,10 @@ public class PlaceBille : MonoBehaviour
     }
     public void Replay()
     {
-        
+
         liaisonsUtilisées.Clear();
         pause = false;
-        
+
     }
 
     private void _OnPause()
@@ -77,21 +95,100 @@ public class PlaceBille : MonoBehaviour
         Vector3 interactionPosition = Vector3.zero;
 
 #if UNITY_EDITOR || UNITY_STANDALONE
+        // Détection du début du clic
         if (Input.GetMouseButtonDown(0))
         {
-            interaction = true;
-            interactionPosition = Input.mousePosition;
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                touchEnCours = true;
+                touchStartTime = Time.time;
+                touchStartPosition = Input.mousePosition;
+            }
+        }
+
+        // Détection de la fin du clic
+        if (Input.GetMouseButtonUp(0) && touchEnCours)
+        {
+            touchEnCours = false;
+
+            float touchDuration = Time.time - touchStartTime;
+            float touchDistance = Vector3.Distance(Input.mousePosition, touchStartPosition);
+
+            // Conditions pour un clic valide (comme sur mobile)
+            if (touchDistance < TOUCH_MOVE_THRESHOLD && touchDuration < 0.5f)
+            {
+                interaction = true;
+                interactionPosition = Input.mousePosition;
+            }
+        }
+
+        // Reset si clic droit (pour permettre le drag avec clic droit par exemple)
+        if (Input.GetMouseButtonDown(1))
+        {
+            touchEnCours = false;
         }
 #endif
 
 #if UNITY_ANDROID || UNITY_IOS
-        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        // Détection multi-touch (zoom)
+        if (Input.touchCount >= 2)
         {
-            if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            multiTouchDetected = true;
+            touchEnCours = false;
+        }
+
+        // Premier doigt posé
+        if (Input.touchCount == 1)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            // Début du touch
+            if (touch.phase == TouchPhase.Began)
             {
-                interaction = true;
-                interactionPosition = Input.GetTouch(0).position;
+                if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                {
+                    touchEnCours = true;
+                    touchStartTime = Time.time;
+                    touchStartPosition = touch.position;
+                    multiTouchDetected = false;
+                }
             }
+
+            // Fin du touch
+            if (touch.phase == TouchPhase.Ended && touchEnCours)
+            {
+                touchEnCours = false;
+
+                // Vérifier les conditions pour placer une bille
+                float touchDuration = Time.time - touchStartTime;
+                float touchDistance = Vector3.Distance(touch.position, touchStartPosition);
+
+                // Conditions pour un tap valide :
+                // 1. Pas de multi-touch détecté pendant le geste
+                // 2. Le doigt n'a pas trop bougé (sinon c'est un drag)
+                // 3. Durée raisonnable (pas trop long = drag/hold)
+
+                if (!multiTouchDetected &&
+                    touchDistance < TOUCH_MOVE_THRESHOLD &&
+                    touchDuration < 0.5f)
+                {
+                    interaction = true;
+                    interactionPosition = touch.position;
+                }
+            }
+
+            // Touch annulé (par exemple si un 2ème doigt arrive puis repart)
+            if (touch.phase == TouchPhase.Canceled)
+            {
+                touchEnCours = false;
+            }
+        }
+
+        // Reset si plus de touch
+        if (Input.touchCount == 0)
+        {
+            touchEnCours = false;
+            multiTouchDetected = false;
         }
 #endif
 
@@ -180,10 +277,10 @@ public class PlaceBille : MonoBehaviour
                 EventManager.TriggerEvent("NoPoseBille");
             }
         }
-    
 
 
-    verificationEffectuee = false;
+
+        verificationEffectuee = false;
 
     }
 
@@ -224,9 +321,9 @@ public class PlaceBille : MonoBehaviour
                     List<Vector3> quinte = GenererQuinte(x, y, dir, pos);
                     if (VerifierQuinte(quinte[0], quinte[1], quinte[2], quinte[3], quinte[4]))
                     {
-                        TracerLigneQuinte(quinte);
+                        TracerLigneQuinte(quinte, quintesTrouvees + 1); // ← Passe le numéro de quinte
                         quintesTrouvees++;
-                        break; // Une seule quinte par direction (évite les doublons)
+                        break;
                     }
                 }
             }
@@ -260,8 +357,8 @@ public class PlaceBille : MonoBehaviour
 
         if (avantValide && apresValide)
         {
-            TracerLigneQuinte(quinteAvant);
-            TracerLigneQuinte(quinteApres);
+            TracerLigneQuinte(quinteAvant, 1);  // ← Première quinte
+            TracerLigneQuinte(quinteApres, 2);  // ← Deuxième quinte
             return true;
         }
 
@@ -331,9 +428,9 @@ public class PlaceBille : MonoBehaviour
         return true; // Toutes les conditions sont remplies, la quinte est valide
     }
 
-    void TracerLigneQuinte(List<Vector3> positions)
+    void TracerLigneQuinte(List<Vector3> positions, int quinteIndex = 1)
     {
-        
+
         GameObject newQuinte = Instantiate(quinte, positions[2], Quaternion.identity);
         newQuinte.transform.SetParent(container);
 
@@ -372,7 +469,161 @@ public class PlaceBille : MonoBehaviour
 
         }
 
-        //Debug.Log("📌 Liaisons mises à jour !");
-        // abandon lr nouvelleLigne.transform.SetParent(container);
+        // Animation de la quinte formée
+        if (useAnimations)
+        {
+            StartCoroutine(AnimateQuinteFormation(positions, quinteIndex));
+        }
+
+    }
+    /// <summary>
+    /// Anime la formation d'une quinte avec des effets visuels
+    /// </summary>
+
+
+
+
+    /// <summary>
+    /// Anime la formation d'une quinte avec des effets visuels
+    /// </summary>
+    /// <param name="positions">Positions des billes de la quinte</param>
+    /// <param name="quinteIndex">Index de la quinte (1, 2, 3...)</param>
+
+    private IEnumerator AnimateQuinteFormation(List<Vector3> positions, int quinteIndex)
+    {
+        List<GameObject> billesDeQuinte = new List<GameObject>();
+
+        foreach (Vector3 pos in positions)
+        {
+            Collider[] colliders = Physics.OverlapSphere(pos, 0.1f);
+            foreach (Collider col in colliders)
+            {
+                if (col.CompareTag("Bille"))
+                {
+                    billesDeQuinte.Add(col.gameObject);
+                }
+            }
+        }
+
+        float pauseDuration = quinteIndex == 1 ? 0.1f : 0.05f;
+        yield return new WaitForSeconds(pauseDuration);
+
+        if (quinteParticlesPrefab != null)
+        {
+            Vector3 centerPosition = positions[2];
+            GameObject particles = Instantiate(quinteParticlesPrefab, centerPosition, Quaternion.identity);
+
+            ParticleSystem ps = particles.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                var main = ps.main;
+                var emission = ps.emission;
+
+                switch (quinteIndex)
+                {
+                    case 1:
+                        main.startSize = 0.5f;
+                        main.startSpeed = 5f;
+                        emission.SetBurst(0, new ParticleSystem.Burst(0f, 50));
+                        break;
+
+                    case 2:
+                        main.startSize = 0.7f;
+                        main.startSpeed = 7f;
+                        emission.SetBurst(0, new ParticleSystem.Burst(0f, 80));
+                        break;
+
+                    case 3:
+                        main.startSize = 1.0f;
+                        main.startSpeed = 10f;
+                        emission.SetBurst(0, new ParticleSystem.Burst(0f, 120));
+                        break;
+
+                    default:
+                        main.startSize = 1.2f;
+                        main.startSpeed = 12f;
+                        emission.SetBurst(0, new ParticleSystem.Burst(0f, 150));
+                        break;
+                }
+            }
+
+            Destroy(particles, 2f);
+        }
+
+        for (int i = 0; i < billesDeQuinte.Count; i++)
+        {
+            GameObject bille = billesDeQuinte[i];
+
+            if (!billesEnCoursAnimation.Contains(bille))
+            {
+                float bonusScale = 1.0f + (quinteIndex - 1) * 0.1f;
+                StartCoroutine(PulseBille(bille, bonusScale));
+            }
+
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        yield return new WaitForSeconds(pulseDuration * 2);
+
+#if UNITY_ANDROID || UNITY_IOS
+        for (int i = 0; i < quinteIndex; i++)
+        {
+            Handheld.Vibrate();
+            if (i < quinteIndex - 1)
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+#endif
+    }
+
+    /// <summary>
+    /// Fait pulser une bille (grossit puis revient à la taille normale)
+    /// </summary>
+    /// <param name="bille">La bille à animer</param>
+    /// <param name="scaleBonus">Bonus de scale (1.0 = normal, 1.2 = +20%)</param>
+    private IEnumerator PulseBille(GameObject bille, float scaleBonus = 1.0f)
+    {
+        // Marquer la bille comme en animation
+        billesEnCoursAnimation.Add(bille);
+
+        Vector3 originalScale = bille.transform.localScale;
+        Vector3 targetScale = originalScale * pulseScale * scaleBonus;
+
+        float elapsed = 0f;
+
+        // Phase 1 : Grossir
+        while (elapsed < pulseDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / pulseDuration;
+
+            // Courbe ease-out pour un mouvement plus naturel
+            float smoothT = 1f - Mathf.Pow(1f - t, 3f);
+
+            bille.transform.localScale = Vector3.Lerp(originalScale, targetScale, smoothT);
+            yield return null;
+        }
+
+        elapsed = 0f;
+
+        // Phase 2 : Revenir à la normale
+        while (elapsed < pulseDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / pulseDuration;
+
+            // Courbe ease-out pour un mouvement plus naturel
+            float smoothT = 1f - Mathf.Pow(1f - t, 3f);
+
+            bille.transform.localScale = Vector3.Lerp(targetScale, originalScale, smoothT);
+            yield return null;
+        }
+
+        // S'assurer qu'on revient exactement à la taille d'origine
+        bille.transform.localScale = originalScale;
+
+        // Libérer la bille (animation terminée)
+        billesEnCoursAnimation.Remove(bille);
     }
 }

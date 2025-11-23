@@ -87,7 +87,6 @@ public class PlacePlomb : MonoBehaviour
         BilleController bc = nouveauPlomb.GetComponent<BilleController>();
         bc.DoRotate(false);
 
-        Debug.Log("Plomb placée en : " + positionChoisie);
     }
 
     // Fonction utilitaire pour récupérer la liste des emplacements libres

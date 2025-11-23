@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Linq;
-using Unity.VisualScripting;
 
 public class PlaceBille : MonoBehaviour
 {
@@ -334,22 +333,7 @@ public class PlaceBille : MonoBehaviour
 
     void TracerLigneQuinte(List<Vector3> positions)
     {
-        //Debug.Log("🟢 Entrée dans TracerLigneQuinte()");
-
-        /* abandon du lr
-        GameObject nouvelleLigne = new GameObject("LigneQuinte");
-
-        LineRenderer lr = nouvelleLigne.AddComponent<LineRenderer>();
-        lr.positionCount = positions.Count;
-        lr.SetPositions(positions.ToArray());
-
-        lr.startWidth = 0.1f;
-        lr.endWidth = 0.1f;
-        lr.useWorldSpace = true;
-
-        lr.material = ligneMat;
-        fin abandon du lr */
-
+        
         GameObject newQuinte = Instantiate(quinte, positions[2], Quaternion.identity);
         newQuinte.transform.SetParent(container);
 

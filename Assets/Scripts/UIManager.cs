@@ -14,7 +14,6 @@ public class UIManager : MonoBehaviour
 
     // score
     [SerializeField] private Transform scorePanel;
-    //[SerializeField] private Text scoreText;
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private ScoreBarController scoreBarController;
     [SerializeField] private GameObject scoreIncrementPrefab;
@@ -40,18 +39,18 @@ public class UIManager : MonoBehaviour
 
     // reserve
     [SerializeField] private Transform reservePanel;
-    [SerializeField] private Text reserveBilleCounter;
-    [SerializeField] private Text reservePlombCounter;
+    [SerializeField] private TMP_Text reserveBilleCounter;
+    [SerializeField] private TMP_Text reservePlombCounter;
 
     public void UpdateReserveBilleCounter(int count)
     {
         if (count == 1)
         {
-            reserveBilleCounter.color = new Color(255, 0, 0);
+            reserveBilleCounter.color = Color.red;
         }
         else
         {
-            reserveBilleCounter.color = new Color(255, 255, 255);
+            reserveBilleCounter.color = Color.white;
         }
 
         reserveBilleCounter.text = count.ToString();
@@ -61,11 +60,11 @@ public class UIManager : MonoBehaviour
     {
         if (count == 1)
         {
-            reservePlombCounter.color = new Color(255, 0, 0);
+            reservePlombCounter.color = Color.red;
         }
         else
         {
-            reservePlombCounter.color = new Color(255, 255, 255);
+            reservePlombCounter.color = Color.white;
         }
 
         reservePlombCounter.text = count.ToString();
@@ -190,7 +189,7 @@ public class UIManager : MonoBehaviour
     {
 
         GameObject go = Instantiate(scoreIncrementPrefab, scorePanel);
-        go.GetComponent<Text>().text = "+" + inc.ToString();
+        go.GetComponent<TMP_Text>().text = "+" + inc.ToString();
 
         PositionneScoreIncrement(go);
 
@@ -209,30 +208,4 @@ public class UIManager : MonoBehaviour
         EventManager.TriggerEvent("ReturnToMainMenu");
     }
 
-    /*
-    public void SetHighScoreText(int highScore)
-    {
-        //highScoreText.text = highScore.ToString();
-    }
-
-    public void ConfirmQuit()
-    {
-        //quitPanel.gameObject.SetActive(true);
-    }
-
-    public void CancelQuit()
-    {
-        //quitPanel.gameObject.SetActive(false);
-    }
-
-    public void ConfirmAbort()
-    {
-        //abortPanel.gameObject.SetActive(true);
-    }
-
-    public void CancelAbort()
-    {
-        //abortPanel.gameObject.SetActive(false);
-    }
-    */
 }

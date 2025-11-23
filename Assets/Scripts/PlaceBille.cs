@@ -95,37 +95,13 @@ public class PlaceBille : MonoBehaviour
         Vector3 interactionPosition = Vector3.zero;
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-        // Détection du début du clic
         if (Input.GetMouseButtonDown(0))
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                touchEnCours = true;
-                touchStartTime = Time.time;
-                touchStartPosition = Input.mousePosition;
-            }
-        }
-
-        // Détection de la fin du clic
-        if (Input.GetMouseButtonUp(0) && touchEnCours)
-        {
-            touchEnCours = false;
-
-            float touchDuration = Time.time - touchStartTime;
-            float touchDistance = Vector3.Distance(Input.mousePosition, touchStartPosition);
-
-            // Conditions pour un clic valide (comme sur mobile)
-            if (touchDistance < TOUCH_MOVE_THRESHOLD && touchDuration < 0.5f)
-            {
                 interaction = true;
                 interactionPosition = Input.mousePosition;
             }
-        }
-
-        // Reset si clic droit (pour permettre le drag avec clic droit par exemple)
-        if (Input.GetMouseButtonDown(1))
-        {
-            touchEnCours = false;
         }
 #endif
 

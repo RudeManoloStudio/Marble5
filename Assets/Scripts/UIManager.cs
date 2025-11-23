@@ -187,14 +187,16 @@ public class UIManager : MonoBehaviour
 
     private void ShowScoreIncrement(int inc)
     {
-
         GameObject go = Instantiate(scoreIncrementPrefab, scorePanel);
         go.GetComponent<TMP_Text>().text = "+" + inc.ToString();
 
         PositionneScoreIncrement(go);
 
-        Destroy(go, scoreToUpdateDuration);
-
+        UpdateScoreIncrement flyScript = go.GetComponent<UpdateScoreIncrement>();
+        if (flyScript != null)
+        {
+            flyScript.FlyToScore(scoreText);
+        }
     }
 
     private void PositionneScoreIncrement(GameObject go)

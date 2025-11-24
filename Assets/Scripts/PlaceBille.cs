@@ -233,6 +233,7 @@ public class PlaceBille : MonoBehaviour
                         nouvelleBille.transform.SetParent(container);
                         nouvelleBille.tag = "Bille";
 
+
                         int quinteTrouvees = VerifierToutesLesQuintes(nouvellePosition);
                         if (quinteTrouvees > 0)
                         {

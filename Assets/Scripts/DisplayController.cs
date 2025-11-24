@@ -31,19 +31,12 @@ public class DisplayController : MonoBehaviour
 
     public void PrepareReserve()
     {
-        
         foreach (Transform child in reserveContainer.transform)
         {
             Destroy(child.gameObject);
         }
 
-        GameObject reserveBille = Instantiate(bille, reserveContainer.transform);
-        reserveBille.transform.localScale = new Vector3(1, 1, 1);
-        reserveBille.transform.SetLocalPositionAndRotation(new Vector3(-0.5f, 0, 0), Quaternion.identity);
-
-        GameObject reservePlomb = Instantiate(plomb, reserveContainer.transform);
-        reservePlomb.transform.localScale = new Vector3(1, 1, 1);
-        reservePlomb.transform.SetLocalPositionAndRotation(new Vector3(2.5f, 0, 0), Quaternion.identity);
+        // On ne crée plus les billes ici - c'est ReserveController qui gère
     }
 
     public void AnimBilles()

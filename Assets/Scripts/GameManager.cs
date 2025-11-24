@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelData levelData;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private DisplayController display;
+    [SerializeField] private ReserveController reserveController;
     [SerializeField] private FXData fxData;
     [SerializeField] private MusicData musicData;
     [SerializeField] private RankingData rankingData;
@@ -285,8 +286,13 @@ public class GameManager : MonoBehaviour
         compteurBilles = 0;
         score = 0;
 
-        uiManager.UpdateReserveBilleCounter(coins);
-        uiManager.UpdateReservePlombCounter(difficulte);
+        // Nouvelle réserve visuelle
+        reserveController.Setup(
+            levelData.layers[level].Bille,
+            levelData.layers[level].Plomb,
+            coins,
+            difficulte
+        );
 
     }
         private void _OnQuinteFormee(object data)
@@ -314,7 +320,7 @@ public class GameManager : MonoBehaviour
         score += scoreData.Score[quintes - 1];
 
         uiManager.UpdateScore(score, scoreData.Score[quintes - 1]);
-        uiManager.UpdateReserveBilleCounter(coins);
+        reserveController.AjouterBilles(quintes);
 
     }
 
@@ -323,7 +329,7 @@ public class GameManager : MonoBehaviour
 
         Vector3 bPosition = (Vector3)(billePosition);
         coins--;
-        uiManager.UpdateReserveBilleCounter(coins);
+        reserveController.ConsommerBille();
 
         // gameover
         if (coins <= 0 && !infinisCoins)

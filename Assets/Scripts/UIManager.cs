@@ -23,6 +23,10 @@ public class UIManager : MonoBehaviour
     // options sons
     [SerializeField] private Transform slidersPanel;
 
+    // options paramètres restart et quit
+    [SerializeField] private GameObject restartButton;    
+    [SerializeField] private GameObject quitToMenuButton;   
+
     // main panel
     [SerializeField] private Transform mainPanel;
     [SerializeField] private Transform levelPanel;
@@ -76,6 +80,11 @@ public class UIManager : MonoBehaviour
         if (!slidersPanel.gameObject.activeSelf)
         {
             slidersPanel.gameObject.SetActive(true);
+
+            // Afficher/cacher les boutons selon le contexte
+            bool inGame = scorePanel.gameObject.activeSelf;
+            restartButton.SetActive(inGame);
+            quitToMenuButton.SetActive(inGame);
         }
         else
         {
@@ -240,5 +249,15 @@ public class UIManager : MonoBehaviour
             developerModeToggle.onValueChanged.AddListener(OnDeveloperModeToggled);
         }
     }
+    public void RestartLevel()
+    {
+        GameManager.Instance.Replay();
+        slidersPanel.gameObject.SetActive(false); // Fermer le panneau
+    }
 
+    public void QuitToMenu()
+    {
+        EventManager.TriggerEvent("ReturnToMainMenu");
+        slidersPanel.gameObject.SetActive(false); // Fermer le panneau
+    }
 }

@@ -557,16 +557,19 @@ public class PlaceBille : MonoBehaviour
 
         yield return new WaitForSeconds(pulseDuration * 2);
 
-#if UNITY_ANDROID || UNITY_IOS
-        for (int i = 0; i < quinteIndex; i++)
-        {
-            Handheld.Vibrate();
-            if (i < quinteIndex - 1)
-            {
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-#endif
+        // TODO: Ajouter en paramètre utilisateur plus tard
+        /*
+        #if UNITY_ANDROID || UNITY_IOS
+                for (int i = 0; i < quinteIndex; i++)
+                {
+                    Handheld.Vibrate();
+                    if (i < quinteIndex - 1)
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+        #endif
+        */
     }
 
     /// <summary>

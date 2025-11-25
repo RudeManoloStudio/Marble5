@@ -71,7 +71,6 @@ public class UIManager : MonoBehaviour
         reservePlombCounter.text = count.ToString();
     }
 
-
     public void ToggleSliders()
     {
         if (!slidersPanel.gameObject.activeSelf)
@@ -81,8 +80,12 @@ public class UIManager : MonoBehaviour
         else
         {
             slidersPanel.gameObject.SetActive(false);
-            // Rafraîchir le menu après fermeture des paramètres
-            GameManager.Instance.PrepareMainMenu();
+
+            // Rafraîchir UNIQUEMENT si on est dans le menu principal
+            if (mainPanel.gameObject.activeSelf)
+            {
+                GameManager.Instance.PrepareMainMenu();
+            }
         }
     }
 
@@ -220,7 +223,8 @@ public class UIManager : MonoBehaviour
     public void OnDeveloperModeToggled(bool isEnabled)
     {
         GameManager.Instance.SetDeveloperMode(isEnabled);
-    }
+    
+}
 
     public void InitializeDeveloperToggle(bool currentValue)
     {

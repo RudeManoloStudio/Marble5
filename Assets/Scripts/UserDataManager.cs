@@ -1,17 +1,19 @@
-using System;
+﻿using System;
 using System.IO;
 using UnityEngine;
 
 [Serializable]
 public class UserData
-{   
+{
     public float fxVolume;
     public float musicVolume;
+    public bool developerMode; // ← AJOUTER CETTE LIGNE
 
     public UserData()
     {
         fxVolume = 1f;
         musicVolume = 1f;
+        developerMode = false; // ← AJOUTER CETTE LIGNE
     }
 }
 
@@ -67,5 +69,15 @@ public class UserDataManager
     {
         string json = JsonUtility.ToJson(userData);
         File.WriteAllText(filePath, json);
+    }
+    public void SaveDeveloperMode(bool isEnabled)
+    {
+        userData.developerMode = isEnabled;
+        SaveUserData();
+    }
+
+    public bool GetDeveloperMode()
+    {
+        return userData.developerMode;
     }
 }

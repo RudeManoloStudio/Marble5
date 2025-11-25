@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
 
     // reserve
     [SerializeField] private Transform reservePanel;
+    [SerializeField] private Toggle developerModeToggle;
     [SerializeField] private TMP_Text reserveBilleCounter;
     [SerializeField] private TMP_Text reservePlombCounter;
 
@@ -80,6 +81,8 @@ public class UIManager : MonoBehaviour
         else
         {
             slidersPanel.gameObject.SetActive(false);
+            // Rafraîchir le menu après fermeture des paramètres
+            GameManager.Instance.PrepareMainMenu();
         }
     }
 
@@ -114,6 +117,9 @@ public class UIManager : MonoBehaviour
 
         rankText.text = totalStars.ToString() + "/" + list.Count * 3;
         rankTitle.text = rank;
+
+        InitializeDeveloperToggle(GameManager.Instance.DeveloperMode);
+
     }
 
     private void AddLevelButton(Button b, int x)
@@ -208,6 +214,26 @@ public class UIManager : MonoBehaviour
     public void ReturnToMain()
     {
         EventManager.TriggerEvent("ReturnToMainMenu");
+    }
+
+    public void OnDeveloperModeToggled(bool isEnabled)
+    {
+        GameManager.Instance.SetDeveloperMode(isEnabled);
+    }
+
+    public void InitializeDeveloperToggle(bool currentValue)
+    {
+        if (developerModeToggle != null)
+        {
+            // Désactiver temporairement l'événement pour éviter de déclencher OnValueChanged
+            developerModeToggle.onValueChanged.RemoveListener(OnDeveloperModeToggled);
+
+            // Mettre à jour la valeur visuelle
+            developerModeToggle.isOn = currentValue;
+
+            // Réactiver l'événement
+            developerModeToggle.onValueChanged.AddListener(OnDeveloperModeToggled);
+        }
     }
 
 }

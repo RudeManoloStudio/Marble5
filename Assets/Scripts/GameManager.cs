@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     private Camera _camera;
     private int totalStars;
     private string rank;
+    private bool developerMode;
 
     public static GameManager Instance { get; private set; }
 
@@ -70,6 +71,11 @@ public class GameManager : MonoBehaviour
         get { return totalStars; }
     }
 
+    public bool DeveloperMode
+    {
+        get { return developerMode; }
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -89,9 +95,10 @@ public class GameManager : MonoBehaviour
 
         // Musique
         musicVolume = userData.musicVolume;
-
         // FX
         fxVolume = userData.fxVolume;
+        // Developer Mode
+        developerMode = userData.developerMode;
 
     }
 
@@ -171,6 +178,8 @@ public class GameManager : MonoBehaviour
         // on envoie au uiManager les éléments nécessaires dans une liste
         // pour chaque level : int ID & int étoiles obtenues & available
 
+        Debug.Log($"PrepareMainMenu called - Developer Mode is: {developerMode}");
+
         List<LevelStruct> list = new List<LevelStruct>();
 
         bool nextLevelAvailable = false;
@@ -189,7 +198,12 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if (nextLevelAvailable)
+                if (developerMode) // ← MODE DEV : tout est dispo
+                {
+                    levelStruct.available = true;
+                    Debug.Log($"Level {x} unlocked by Developer Mode");
+                }
+                else if (nextLevelAvailable) // ← MODE NORMAL
                 {
                     levelStruct.available = true;
                     nextLevelAvailable = false;
@@ -230,6 +244,14 @@ public class GameManager : MonoBehaviour
 
         uiManager.SetMainPanel(list, rank);
         display.ResetBoard();
+    }
+
+        public void SetDeveloperMode(bool isEnabled)
+    {
+        developerMode = isEnabled;
+        userDataManager.SaveDeveloperMode(isEnabled);
+        Debug.Log($"Developer Mode SET to: {isEnabled}");
+        //PrepareMainMenu(); // Rafraîchit l'affichage
     }
 
     public void PrepareLevel(int level)

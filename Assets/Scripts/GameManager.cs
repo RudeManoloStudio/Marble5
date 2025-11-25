@@ -178,8 +178,6 @@ public class GameManager : MonoBehaviour
         // on envoie au uiManager les éléments nécessaires dans une liste
         // pour chaque level : int ID & int étoiles obtenues & available
 
-        Debug.Log($"PrepareMainMenu called - Developer Mode is: {developerMode}");
-
         List<LevelStruct> list = new List<LevelStruct>();
 
         bool nextLevelAvailable = false;
@@ -201,7 +199,7 @@ public class GameManager : MonoBehaviour
                 if (developerMode) // ← MODE DEV : tout est dispo
                 {
                     levelStruct.available = true;
-                    Debug.Log($"Level {x} unlocked by Developer Mode");
+
                 }
                 else if (nextLevelAvailable) // ← MODE NORMAL
                 {
@@ -250,7 +248,6 @@ public class GameManager : MonoBehaviour
     {
         developerMode = isEnabled;
         userDataManager.SaveDeveloperMode(isEnabled);
-        Debug.Log($"Developer Mode SET to: {isEnabled}");
         //PrepareMainMenu(); // Rafraîchit l'affichage
     }
 
@@ -341,7 +338,7 @@ public class GameManager : MonoBehaviour
 
         score += scoreData.Score[quintes - 1];
 
-        uiManager.UpdateScore(score, scoreData.Score[quintes - 1]);
+        uiManager.UpdateScore(score, scoreData.Score[quintes - 1], quintes);
         reserveController.AjouterBilles(quintes);
 
     }

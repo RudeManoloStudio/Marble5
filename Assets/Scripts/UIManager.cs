@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -81,7 +81,7 @@ public class UIManager : MonoBehaviour
         else
         {
             slidersPanel.gameObject.SetActive(false);
-            // RafraÓchir le menu aprËs fermeture des paramËtres
+            // Rafra√Æchir le menu apr√®s fermeture des param√®tres
             GameManager.Instance.PrepareMainMenu();
         }
     }
@@ -181,20 +181,21 @@ public class UIManager : MonoBehaviour
         starRecapController.SetStarsHighlight(starsToHighlight);
 
     }
-
-    public void UpdateScore(int score, int increment)
+        public void UpdateScore(int score, int increment, int quinteCount)
     {
-
         scoreText.text = score.ToString();
-        ShowScoreIncrement(increment);
+        ShowScoreIncrement(increment, quinteCount);
         scoreBarController.AddScore(increment);
-
     }
 
-    private void ShowScoreIncrement(int inc)
+    private void ShowScoreIncrement(int inc, int quinteCount)  // ‚Üê Ajouter quinteCount ici
     {
         GameObject go = Instantiate(scoreIncrementPrefab, scorePanel);
-        go.GetComponent<TMP_Text>().text = "+" + inc.ToString();
+        TMP_Text textComponent = go.GetComponent<TMP_Text>();
+        textComponent.text = "+" + inc.ToString();
+
+        float fontSize = 36f + (quinteCount - 1) * 20f;
+        textComponent.fontSize = fontSize;
 
         PositionneScoreIncrement(go);
 
@@ -203,7 +204,7 @@ public class UIManager : MonoBehaviour
         {
             flyScript.FlyToScore(scoreText);
         }
-    }
+    }   
 
     private void PositionneScoreIncrement(GameObject go)
     {
@@ -225,13 +226,13 @@ public class UIManager : MonoBehaviour
     {
         if (developerModeToggle != null)
         {
-            // DÈsactiver temporairement l'ÈvÈnement pour Èviter de dÈclencher OnValueChanged
+            // D√©sactiver temporairement l'√©v√©nement pour √©viter de d√©clencher OnValueChanged
             developerModeToggle.onValueChanged.RemoveListener(OnDeveloperModeToggled);
 
-            // Mettre ‡ jour la valeur visuelle
+            // Mettre √† jour la valeur visuelle
             developerModeToggle.isOn = currentValue;
 
-            // RÈactiver l'ÈvÈnement
+            // R√©activer l'√©v√©nement
             developerModeToggle.onValueChanged.AddListener(OnDeveloperModeToggled);
         }
     }

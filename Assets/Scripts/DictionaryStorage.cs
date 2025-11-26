@@ -1,62 +1,120 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using UnityEngine;
 using Newtonsoft.Json;
 
+/// <summary>
+/// Wrapper pour stocker les données avec leur hash de validation
+/// </summary>
+[Serializable]
+public class SecureData
+{
+    public string data;
+    public string hash;
+}
+
 public class DictionaryStorage
 {
-    // Méthode pour sauvegarder un dictionnaire dans un fichier JSON
+    // Clé secrète pour le hash (à personnaliser)
+    private static readonly string SECRET_KEY = "Marble5_S3cr3t_K3y_2024!";
+
+    /// <summary>
+    /// Calcule le hash SHA256 des données + clé secrète
+    /// </summary>
+    private static string ComputeHash(string data)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            string toHash = data + SECRET_KEY;
+            byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(toHash));
+
+            StringBuilder builder = new StringBuilder();
+            foreach (byte b in bytes)
+            {
+                builder.Append(b.ToString("x2"));
+            }
+            return builder.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Sauvegarde un dictionnaire avec hash de validation
+    /// </summary>
     public static void SaveDictionaryToFile<T, U>(Dictionary<T, U> dictionary, string fileName)
     {
         try
         {
-            // Chemin où on veut sauvegarder le fichier (dans le dossier persistant d'Unity)
             string filePath = Path.Combine(Application.persistentDataPath, fileName);
 
-            // Sérialisation du dictionnaire en JSON
-            string json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
+            // Sérialisation des données
+            string json = JsonConvert.SerializeObject(dictionary);
 
-            // Écriture du JSON dans un fichier local
-            File.WriteAllText(filePath, json);
+            // Création de l'objet sécurisé avec hash
+            SecureData secureData = new SecureData
+            {
+                data = json,
+                hash = ComputeHash(json)
+            };
 
-            Debug.Log($"Le dictionnaire a été sauvegardé avec succès dans {filePath}");
+            // Sérialisation finale
+            string finalJson = JsonConvert.SerializeObject(secureData, Formatting.Indented);
+            File.WriteAllText(filePath, finalJson);
+
+            Debug.Log($"Dictionnaire sauvegardé avec validation dans {filePath}");
         }
         catch (Exception ex)
         {
-            Debug.LogError($"Erreur lors de la sauvegarde du dictionnaire : {ex.Message}");
+            Debug.LogError($"Erreur lors de la sauvegarde : {ex.Message}");
         }
     }
 
-    // Méthode pour charger un dictionnaire depuis un fichier JSON
+    /// <summary>
+    /// Charge un dictionnaire et vérifie son intégrité
+    /// </summary>
     public static Dictionary<T, U> LoadDictionaryFromFile<T, U>(string fileName)
     {
         try
         {
-            // Chemin du fichier
             string filePath = Path.Combine(Application.persistentDataPath, fileName);
 
-            // Vérifie si le fichier existe
-            if (File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
-                // Lecture du contenu du fichier JSON
-                string json = File.ReadAllText(filePath);
-
-                // Désérialisation du JSON en dictionnaire
-                Dictionary<T, U> dictionary = JsonConvert.DeserializeObject<Dictionary<T, U>>(json);
-
-                Debug.Log("Le dictionnaire a été chargé avec succès.");
-                return dictionary;
-            }
-            else
-            {
-                Debug.LogWarning("Le fichier n'existe pas.");
+                Debug.LogWarning("Fichier inexistant.");
                 return null;
             }
+
+            string fileContent = File.ReadAllText(filePath);
+
+            // Tenter de charger comme SecureData
+            SecureData secureData = JsonConvert.DeserializeObject<SecureData>(fileContent);
+
+            if (secureData == null || string.IsNullOrEmpty(secureData.data))
+            {
+                Debug.LogWarning("Format de fichier invalide.");
+                return null;
+            }
+
+            // Vérifier le hash
+            string expectedHash = ComputeHash(secureData.data);
+            if (secureData.hash != expectedHash)
+            {
+                Debug.LogWarning("Intégrité compromise ! Scores réinitialisés.");
+                // Supprimer le fichier corrompu
+                File.Delete(filePath);
+                return null;
+            }
+
+            // Hash valide, charger les données
+            Dictionary<T, U> dictionary = JsonConvert.DeserializeObject<Dictionary<T, U>>(secureData.data);
+            Debug.Log("Dictionnaire chargé avec succès (intégrité vérifiée).");
+            return dictionary;
         }
         catch (Exception ex)
         {
-            Debug.LogError($"Erreur lors du chargement du dictionnaire : {ex.Message}");
+            Debug.LogError($"Erreur lors du chargement : {ex.Message}");
             return null;
         }
     }

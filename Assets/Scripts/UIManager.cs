@@ -23,9 +23,11 @@ public class UIManager : MonoBehaviour
     // options sons
     [SerializeField] private Transform slidersPanel;
 
-    // options paramètres restart et quit
+    // options paramètres 
     [SerializeField] private GameObject restartButton;    
-    [SerializeField] private GameObject quitToMenuButton;   
+    [SerializeField] private GameObject quitToMenuButton;
+    [SerializeField] private TMP_Text prototypeExpirationText;
+
 
     // main panel
     [SerializeField] private Transform mainPanel;
@@ -46,6 +48,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Toggle developerModeToggle;
     [SerializeField] private TMP_Text reserveBilleCounter;
     [SerializeField] private TMP_Text reservePlombCounter;
+
+
+    private void Start()
+    {
+        UpdatePrototypeExpirationText();
+    }
+
+    private void UpdatePrototypeExpirationText()
+    {
+        if (prototypeExpirationText != null)
+        {
+            prototypeExpirationText.text = $"Prototype - Expire le {PrototypeManager.ExpirationDateString}";
+        }
+    }
 
     public void UpdateReserveBilleCounter(int count)
     {

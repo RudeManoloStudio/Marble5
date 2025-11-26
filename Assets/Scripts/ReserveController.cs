@@ -2,376 +2,458 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Type d'élément dans la réserve
+/// </summary>
+public enum ReserveItemType
+{
+    Marble,
+    Blocker
+}
+
+/// <summary>
+/// Gère la réserve de billes du joueur (données + affichage visuel)
+/// </summary>
 public class ReserveController : MonoBehaviour
 {
     [SerializeField] private Transform container;
     [SerializeField] private Camera reserveCam;
 
     [Header("Configuration")]
-    [SerializeField] private int nombreBillesAffichees = 10;
-    [SerializeField] private float espacement = 1.0f;
-    [SerializeField] private float cameraSize = 1.4f;
-    [SerializeField] private float graviteHorizontale = 5.0f;
+    [SerializeField] private int maxDisplayedItems = 10;
+    [SerializeField] private float spacing = 1.0f;
+    [SerializeField] private float horizontalGravity = 5.0f;
 
-    private GameObject billePrefab;
-    private GameObject plombPrefab;
-    private int frequencePlomb;
-    private int compteurPourPlomb;
+    [Header("Animation")]
+    [SerializeField] private float shrinkDuration = 0.2f;
+    [SerializeField] private float growDuration = 0.3f;
+
+    // Prefabs
+    private GameObject marblePrefab;
+    private GameObject blockerPrefab;
+
+    // Configuration du niveau
+    private int blockerFrequency;
+    private int compteurPlombGrille;
     private int compteurPlombReserve;
-    private bool coroutineEnCours = false;
+    private int marblesSinceLastBlocker;
 
-    private List<string> reserveQueue = new List<string>();
-    private List<GameObject> billesAffichees = new List<GameObject>();
+    // File d'attente des éléments (données)
+    private List<ReserveItemType> queue = new List<ReserveItemType>();
 
-    public void Setup(GameObject bille, GameObject plomb, int totalBilles, int freqPlomb)
+    // Éléments affichés (visuels)
+    private List<GameObject> displayedItems = new List<GameObject>();
+
+    // État des animations
+    private bool isAnimating = false;
+
+    // ============================================================
+    // INITIALISATION
+    // ============================================================
+
+    public void Setup(GameObject marble, GameObject blocker, int totalMarbles, int blockerFreq)
     {
-        billePrefab = bille;
-        plombPrefab = plomb;
-        frequencePlomb = freqPlomb;
-        compteurPourPlomb = 0;
+        marblePrefab = marble;
+        blockerPrefab = blocker;
+        blockerFrequency = blockerFreq;
+        compteurPlombGrille = 0;
         compteurPlombReserve = 0;
 
-        reserveQueue.Clear();
-
-        if (freqPlomb > 0)
-        {
-            for (int i = 0; i < totalBilles; i++)
-            {
-                reserveQueue.Insert(0, "bille");
-                compteurPlombReserve++;
-
-                if (compteurPlombReserve >= frequencePlomb)
-                {
-                    reserveQueue.Insert(0, "plomb");
-                    compteurPlombReserve = 0;
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < totalBilles; i++)
-            {
-                reserveQueue.Add("bille");
-            }
-        }
+        queue.Clear();
+        BuildInitialQueue(totalMarbles);
 
         RefreshDisplay();
         AdjustCamera();
     }
 
+    /// <summary>
+    /// Construit la queue initiale avec les billes et plombs
+    /// </summary>
+    private void BuildInitialQueue(int totalMarbles)
+    {
+        if (blockerFrequency > 0)
+        {
+            int blockerCounter = 0;
+            for (int i = 0; i < totalMarbles; i++)
+            {
+                queue.Insert(0, ReserveItemType.Marble);
+                blockerCounter++;
+
+                if (blockerCounter >= blockerFrequency)
+                {
+                    queue.Insert(0, ReserveItemType.Blocker);
+                    blockerCounter = 0;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < totalMarbles; i++)
+            {
+                queue.Add(ReserveItemType.Marble);
+            }
+        }
+    }
+
+    // ============================================================
+    // MISE À JOUR (PHYSIQUE)
+    // ============================================================
+
     private void FixedUpdate()
     {
-        foreach (GameObject bille in billesAffichees)
+        ApplyHorizontalForce();
+    }
+
+    /// <summary>
+    /// Applique une force horizontale aux éléments affichés
+    /// </summary>
+    private void ApplyHorizontalForce()
+    {
+        foreach (GameObject item in displayedItems)
         {
-            if (bille != null)
+            if (item != null)
             {
-                Rigidbody rb = bille.GetComponent<Rigidbody>();
+                Rigidbody rb = item.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
-                    rb.AddForce(Vector3.right * graviteHorizontale, ForceMode.Acceleration);
+                    rb.AddForce(Vector3.right * horizontalGravity, ForceMode.Acceleration);
                 }
             }
         }
     }
+
+    // ============================================================
+    // CONSOMMATION (quand le joueur pose une bille)
+    // ============================================================
 
     public void ConsommerBille()
     {
-        if (reserveQueue.Count > 0)
+        if (queue.Count == 0) return;
+
+        // 1. Retirer de la queue
+        queue.RemoveAt(queue.Count - 1);
+
+        // 2. Supprimer visuellement l'élément le plus à droite
+        RemoveRightmostDisplayedItem();
+
+        // 3. Ajouter un nouvel élément à gauche si nécessaire
+        if (!isAnimating)
         {
-            reserveQueue.RemoveAt(reserveQueue.Count - 1);
+            TryAddItemOnLeft();
+        }
 
-            if (billesAffichees.Count > 0)
+        // 4. Gérer le compteur de plombs
+        HandleBlockerCounter();
+    }
+
+    /// <summary>
+    /// Gère le compteur de plombs et retire le plomb de la queue si nécessaire
+    /// </summary>
+    private void HandleBlockerCounter()
+    {
+        if (blockerFrequency <= 0) return;
+
+        compteurPlombGrille++;
+
+        if (compteurPlombGrille >= blockerFrequency)
+        {
+            compteurPlombGrille = 0;
+
+            if (queue.Count > 0 && queue[queue.Count - 1] == ReserveItemType.Blocker)
             {
-                // Trouver la bille la plus à droite (position X max)
-                GameObject billeASupprimer = billesAffichees[0];
-                int indexASupprimer = 0;
+                queue.RemoveAt(queue.Count - 1);
+                RemoveRightmostDisplayedItem();
 
-                for (int i = 1; i < billesAffichees.Count; i++)
+                if (!isAnimating)
                 {
-                    if (billesAffichees[i].transform.localPosition.x > billeASupprimer.transform.localPosition.x)
-                    {
-                        billeASupprimer = billesAffichees[i];
-                        indexASupprimer = i;
-                    }
-                }
-
-                billesAffichees.RemoveAt(indexASupprimer);
-                StartCoroutine(ShrinkAnimation(billeASupprimer));
-            }
-
-            if (!coroutineEnCours)
-            {
-                AjouterNouvelleBilleAGauche();
-            }
-
-            compteurPourPlomb++;
-            if (frequencePlomb > 0 && compteurPourPlomb >= frequencePlomb)
-            {
-                compteurPourPlomb = 0;
-                EventManager.TriggerEvent("PoserPlomb");
-
-                if (reserveQueue.Count > 0 && reserveQueue[reserveQueue.Count - 1] == "plomb")
-                {
-                    reserveQueue.RemoveAt(reserveQueue.Count - 1);
-
-                    if (billesAffichees.Count > 0)
-                    {
-                        // Trouver le plomb le plus à droite (position X max)
-                        GameObject plombASupprimer = billesAffichees[0];
-                        int indexASupprimer = 0;
-
-                        for (int i = 1; i < billesAffichees.Count; i++)
-                        {
-                            if (billesAffichees[i].transform.localPosition.x > plombASupprimer.transform.localPosition.x)
-                            {
-                                plombASupprimer = billesAffichees[i];
-                                indexASupprimer = i;
-                            }
-                        }
-
-                        billesAffichees.RemoveAt(indexASupprimer);
-                        StartCoroutine(ShrinkAnimation(plombASupprimer));
-                    }
-
-                    if (!coroutineEnCours)
-                    {
-                        AjouterNouvelleBilleAGauche();
-                    }
+                    TryAddItemOnLeft();
                 }
             }
         }
     }
 
-    private IEnumerator ShrinkAnimation(GameObject bille)
+    // ============================================================
+    // AJOUT DE BILLES (quand le joueur forme une quinte)
+    // ============================================================
+
+    public void AjouterBilles(int count)
     {
-        float duration = 0.2f;
-        float elapsed = 0f;
+        List<ReserveItemType> itemsToAdd = new List<ReserveItemType>();
 
-        Vector3 startScale = bille.transform.localScale;
-        Vector3 endScale = new Vector3(0.1f, 0.1f, 0.1f);
+        for (int i = 0; i < count; i++)
+        {
+            queue.Insert(0, ReserveItemType.Marble);
+            itemsToAdd.Add(ReserveItemType.Marble);
 
-        Rigidbody rb = bille.GetComponent<Rigidbody>();
+            if (blockerFrequency > 0)
+            {
+                compteurPlombReserve++;
+
+                if (compteurPlombReserve >= blockerFrequency)
+                {
+                    queue.Insert(0, ReserveItemType.Blocker);
+                    itemsToAdd.Add(ReserveItemType.Blocker);
+                    compteurPlombReserve = 0;
+                }
+            }
+        }
+
+        if (blockerFrequency > 0)
+        {
+            StartCoroutine(AddItemsVisuallyAnimated(itemsToAdd));
+        }
+        else
+        {
+            AddItemsVisuallyImmediate(count);
+        }
+    }
+
+    /// <summary>
+    /// Ajoute les éléments visuellement sans animation
+    /// </summary>
+    private void AddItemsVisuallyImmediate(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (displayedItems.Count < maxDisplayedItems)
+            {
+                TryAddItemOnLeft();
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Ajoute les éléments visuellement avec animation séquentielle
+    /// </summary>
+    private IEnumerator AddItemsVisuallyAnimated(List<ReserveItemType> items)
+    {
+        isAnimating = true;
+
+        // Démarrer bien à gauche, hors champ de la caméra
+        float safeOffset = -maxDisplayedItems * spacing;
+
+        foreach (ReserveItemType itemType in items)
+        {
+            if (displayedItems.Count < maxDisplayedItems)
+            {
+                AddItemOnLeft(itemType, safeOffset);
+                yield return new WaitForSeconds(0.4f); // Délai augmenté pour laisser partir la bille
+            }
+        }
+
+        isAnimating = false;
+    }
+
+    // ============================================================
+    // GESTION DE L'AFFICHAGE
+    // ============================================================
+
+    /// <summary>
+    /// Trouve et supprime l'élément affiché le plus à droite
+    /// </summary>
+    private void RemoveRightmostDisplayedItem()
+    {
+        if (displayedItems.Count == 0) return;
+
+        int rightmostIndex = FindRightmostIndex();
+        GameObject itemToRemove = displayedItems[rightmostIndex];
+
+        displayedItems.RemoveAt(rightmostIndex);
+        StartCoroutine(ShrinkAndDestroy(itemToRemove));
+    }
+
+    /// <summary>
+    /// Trouve l'index de l'élément le plus à droite
+    /// </summary>
+    private int FindRightmostIndex()
+    {
+        int rightmostIndex = 0;
+        float maxX = displayedItems[0].transform.localPosition.x;
+
+        for (int i = 1; i < displayedItems.Count; i++)
+        {
+            float x = displayedItems[i].transform.localPosition.x;
+            if (x > maxX)
+            {
+                maxX = x;
+                rightmostIndex = i;
+            }
+        }
+
+        return rightmostIndex;
+    }
+
+    /// <summary>
+    /// Tente d'ajouter un élément à gauche si la limite n'est pas atteinte
+    /// </summary>
+    private void TryAddItemOnLeft()
+    {
+        int itemsToDisplay = Mathf.Min(maxDisplayedItems, queue.Count);
+
+        if (displayedItems.Count < itemsToDisplay)
+        {
+            int queueIndex = queue.Count - itemsToDisplay;
+            ReserveItemType itemType = (queueIndex >= 0) ? queue[queueIndex] : ReserveItemType.Marble;
+            AddItemOnLeft(itemType, 0f);
+        }
+    }
+
+    /// <summary>
+    /// Ajoute un élément visuel à gauche
+    /// </summary>
+    private void AddItemOnLeft(ReserveItemType itemType, float offsetX)
+    {
+        GameObject prefab = (itemType == ReserveItemType.Blocker) ? blockerPrefab : marblePrefab;
+        if (prefab == null) return;
+
+        GameObject newItem = Instantiate(prefab, container);
+        ConfigureDisplayedItem(newItem, new Vector3(offsetX, 0, 0), isKinematic: true);
+
+        displayedItems.Insert(0, newItem);
+        StartCoroutine(GrowAnimation(newItem));
+    }
+
+    /// <summary>
+    /// Rafraîchit complètement l'affichage
+    /// </summary>
+    private void RefreshDisplay()
+    {
+        // Détruire les éléments existants
+        foreach (GameObject item in displayedItems)
+        {
+            if (item != null)
+            {
+                Destroy(item);
+            }
+        }
+        displayedItems.Clear();
+
+        // Recréer les éléments
+        int itemsToDisplay = Mathf.Min(maxDisplayedItems, queue.Count);
+        int startIndex = queue.Count - itemsToDisplay;
+
+        for (int i = 0; i < itemsToDisplay; i++)
+        {
+            int queueIndex = startIndex + i;
+            ReserveItemType itemType = queue[queueIndex];
+            GameObject prefab = (itemType == ReserveItemType.Blocker) ? blockerPrefab : marblePrefab;
+
+            if (prefab != null)
+            {
+                GameObject newItem = Instantiate(prefab, container);
+                Vector3 position = new Vector3(i * spacing, 0, 0);
+                ConfigureDisplayedItem(newItem, position, isKinematic: false);
+                displayedItems.Add(newItem);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Configure un élément affiché (position, Rigidbody, rotation)
+    /// </summary>
+    private void ConfigureDisplayedItem(GameObject item, Vector3 localPosition, bool isKinematic)
+    {
+        item.transform.localPosition = localPosition;
+        item.transform.localRotation = Quaternion.identity;
+        item.transform.localScale = isKinematic ? new Vector3(0.1f, 0.1f, 0.1f) : Vector3.one;
+
+        Rigidbody rb = item.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.useGravity = false;
+            rb.isKinematic = isKinematic;
+            rb.constraints = RigidbodyConstraints.FreezePositionY
+                           | RigidbodyConstraints.FreezePositionZ
+                           | RigidbodyConstraints.FreezeRotation;
+        }
+
+        BilleController bc = item.GetComponent<BilleController>();
+        if (bc != null)
+        {
+            bc.DoRotate(false);
+        }
+    }
+
+    /// <summary>
+    /// Ajuste la position de la caméra
+    /// </summary>
+    private void AdjustCamera()
+    {
+        float totalWidth = (maxDisplayedItems - 1) * spacing;
+        float centerX = totalWidth / 2.0f;
+        reserveCam.transform.localPosition = new Vector3(centerX, 0, -1);
+    }
+
+    // ============================================================
+    // ANIMATIONS
+    // ============================================================
+
+    /// <summary>
+    /// Animation de rétrécissement puis destruction
+    /// </summary>
+    private IEnumerator ShrinkAndDestroy(GameObject item)
+    {
+        Rigidbody rb = item.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.isKinematic = true;
         }
 
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.SmoothStep(0, 1, elapsed / duration);
-
-            if (bille != null)
-            {
-                bille.transform.localScale = Vector3.Lerp(startScale, endScale, t);
-            }
-
-            yield return null;
-        }
-
-        if (bille != null)
-        {
-            Destroy(bille);
-        }
-    }
-
-    private void AjouterNouvelleBilleAGauche(string typeForce = null, float decalageX = 0f)
-    {
-        int nombreAAfficher = Mathf.Min(nombreBillesAffichees, reserveQueue.Count);
-
-        bool doitAjouter = (typeForce != null)
-            ? (billesAffichees.Count < nombreBillesAffichees)
-            : (billesAffichees.Count < nombreAAfficher);
-
-        if (doitAjouter)
-        {
-            string type;
-            if (typeForce != null)
-            {
-                type = typeForce;
-            }
-            else
-            {
-                int indexQueue = reserveQueue.Count - nombreAAfficher;
-                type = (indexQueue >= 0) ? reserveQueue[indexQueue] : "bille";
-            }
-
-            GameObject prefab = (type == "plomb") ? plombPrefab : billePrefab;
-
-            if (prefab != null)
-            {
-                GameObject nouvelleBille = Instantiate(prefab, container);
-                nouvelleBille.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                nouvelleBille.transform.localPosition = new Vector3(decalageX, 0, 0);
-                nouvelleBille.transform.localRotation = Quaternion.identity;
-
-                Rigidbody rb = nouvelleBille.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.useGravity = false;
-                    rb.isKinematic = true;
-                    rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-                }
-
-                BilleController bc = nouvelleBille.GetComponent<BilleController>();
-                if (bc != null)
-                {
-                    bc.DoRotate(false);
-                }
-
-                billesAffichees.Insert(0, nouvelleBille);
-
-                StartCoroutine(ScaleUpAnimation(nouvelleBille));
-            }
-        }
-    }
-
-    private IEnumerator ScaleUpAnimation(GameObject bille)
-    {
-        float duration = 0.3f;
+        Vector3 startScale = item.transform.localScale;
+        Vector3 endScale = new Vector3(0.1f, 0.1f, 0.1f);
         float elapsed = 0f;
 
-        Vector3 startScale = new Vector3(0.1f, 0.1f, 0.1f);
-        Vector3 endScale = new Vector3(1f, 1f, 1f);
-
-        while (elapsed < duration)
+        while (elapsed < shrinkDuration)
         {
             elapsed += Time.deltaTime;
-            float t = Mathf.SmoothStep(0, 1, elapsed / duration);
+            float t = Mathf.SmoothStep(0, 1, elapsed / shrinkDuration);
 
-            if (bille != null)
+            if (item != null)
             {
-                bille.transform.localScale = Vector3.Lerp(startScale, endScale, t);
+                item.transform.localScale = Vector3.Lerp(startScale, endScale, t);
             }
 
             yield return null;
         }
 
-        if (bille != null)
+        if (item != null)
         {
-            bille.transform.localScale = endScale;
+            Destroy(item);
+        }
+    }
 
-            Rigidbody rb = bille.GetComponent<Rigidbody>();
+    /// <summary>
+    /// Animation de grossissement
+    /// </summary>
+    private IEnumerator GrowAnimation(GameObject item)
+    {
+        Vector3 startScale = new Vector3(0.1f, 0.1f, 0.1f);
+        Vector3 endScale = Vector3.one;
+        float elapsed = 0f;
+
+        while (elapsed < growDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0, 1, elapsed / growDuration);
+
+            if (item != null)
+            {
+                item.transform.localScale = Vector3.Lerp(startScale, endScale, t);
+            }
+
+            yield return null;
+        }
+
+        if (item != null)
+        {
+            item.transform.localScale = endScale;
+
+            Rigidbody rb = item.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 rb.isKinematic = false;
             }
         }
-    }
-
-    public void AjouterBilles(int nombre)
-    {
-        if (frequencePlomb > 0)
-        {
-            List<string> pourAffichage = new List<string>();
-
-            for (int i = 0; i < nombre; i++)
-            {
-                reserveQueue.Insert(0, "bille");
-                pourAffichage.Add("bille");
-                compteurPlombReserve++;
-
-                if (compteurPlombReserve >= frequencePlomb)
-                {
-                    reserveQueue.Insert(0, "plomb");
-                    pourAffichage.Add("plomb");
-                    compteurPlombReserve = 0;
-                }
-            }
-
-            StartCoroutine(AjouterBillesVisuellement(pourAffichage));
-        }
-        else
-        {
-            for (int i = 0; i < nombre; i++)
-            {
-                reserveQueue.Insert(0, "bille");
-            }
-
-            for (int i = 0; i < nombre; i++)
-            {
-                if (billesAffichees.Count < nombreBillesAffichees)
-                {
-                    AjouterNouvelleBilleAGauche();
-                }
-            }
-        }
-    }
-
-    public int GetNombreRestant()
-    {
-        return reserveQueue.Count;
-    }
-
-    private void RefreshDisplay()
-    {
-        foreach (GameObject billeObj in billesAffichees)
-        {
-            if (billeObj != null)
-            {
-                Destroy(billeObj);
-            }
-        }
-        billesAffichees.Clear();
-
-        int nombreAAfficher = Mathf.Min(nombreBillesAffichees, reserveQueue.Count);
-        int startIndex = reserveQueue.Count - nombreAAfficher;
-
-        for (int i = 0; i < nombreAAfficher; i++)
-        {
-            int indexQueue = startIndex + i;
-            string type = reserveQueue[indexQueue];
-            GameObject prefab = (type == "plomb") ? plombPrefab : billePrefab;
-
-            if (prefab != null)
-            {
-                GameObject nouvelleBille = Instantiate(prefab, container);
-                nouvelleBille.transform.localScale = new Vector3(1, 1, 1);
-                nouvelleBille.transform.localPosition = new Vector3(i * espacement, 0, 0);
-                nouvelleBille.transform.localRotation = Quaternion.identity;
-
-                Rigidbody rb = nouvelleBille.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.useGravity = false;
-                    rb.isKinematic = false;
-                    rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-                }
-
-                BilleController bc = nouvelleBille.GetComponent<BilleController>();
-                if (bc != null)
-                {
-                    bc.DoRotate(false);
-                }
-
-                billesAffichees.Add(nouvelleBille);
-            }
-        }
-    }
-
-    private void AdjustCamera()
-    {
-        float largeurTotale = (nombreBillesAffichees - 1) * espacement;
-        float centerX = largeurTotale / 2.0f;
-        reserveCam.transform.localPosition = new Vector3(centerX, 0, -1);
-    }
-
-    private IEnumerator AjouterBillesVisuellement(List<string> elements)
-    {
-        coroutineEnCours = true;
-
-        float decalage = 0f;
-
-        foreach (string type in elements)
-        {
-            if (billesAffichees.Count < nombreBillesAffichees)
-            {
-                AjouterNouvelleBilleAGauche(type, decalage);
-                decalage -= espacement;
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-
-        coroutineEnCours = false;
     }
 }

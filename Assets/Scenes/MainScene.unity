@@ -1382,7 +1382,7 @@ MonoBehaviour:
   reserveCam: {fileID: 1097734866}
   nombreBillesAffichees: 10
   espacement: 1
-  cameraSize: 1.2
+  cameraSize: 1.4
   graviteHorizontale: 5
 --- !u!1 &428699210
 GameObject:

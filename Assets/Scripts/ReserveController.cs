@@ -17,6 +17,7 @@ public class ReserveController : MonoBehaviour
     private GameObject plombPrefab;
     private int frequencePlomb;
     private int compteurPourPlomb;
+    private int compteurPlombReserve;
     private bool coroutineEnCours = false;
 
     private List<string> reserveQueue = new List<string>();
@@ -28,29 +29,21 @@ public class ReserveController : MonoBehaviour
         plombPrefab = plomb;
         frequencePlomb = freqPlomb;
         compteurPourPlomb = 0;
+        compteurPlombReserve = 0;
 
         reserveQueue.Clear();
 
         if (freqPlomb > 0)
         {
-            int billesRestantes = totalBilles;
-            int compteur = 0;
-
-            while (billesRestantes > 0)
+            for (int i = 0; i < totalBilles; i++)
             {
-                int billesAvantPlomb = Mathf.Min(freqPlomb - compteur, billesRestantes);
+                reserveQueue.Insert(0, "bille");
+                compteurPlombReserve++;
 
-                for (int i = 0; i < billesAvantPlomb; i++)
-                {
-                    reserveQueue.Insert(0, "bille");
-                    billesRestantes--;
-                    compteur++;
-                }
-
-                if (compteur >= freqPlomb && billesRestantes > 0)
+                if (compteurPlombReserve >= frequencePlomb)
                 {
                     reserveQueue.Insert(0, "plomb");
-                    compteur = 0;
+                    compteurPlombReserve = 0;
                 }
             }
         }
@@ -274,33 +267,22 @@ public class ReserveController : MonoBehaviour
 
             for (int i = 0; i < nombre; i++)
             {
-                // 1. Compter les billes consécutives à GAUCHE (début de la queue)
-                int billesAGauche = 0;
-                for (int j = 0; j < reserveQueue.Count; j++)
-                {
-                    if (reserveQueue[j] == "plomb")
-                        break;
-                    billesAGauche++;
-                }
-
-                // 2. Ajouter la bille à gauche
                 reserveQueue.Insert(0, "bille");
                 pourAffichage.Add("bille");
+                compteurPlombReserve++;
 
-                // 3. Si (billes à gauche + notre bille) >= fréquence → ajouter plomb
-                if ((billesAGauche + 1) >= frequencePlomb)
+                if (compteurPlombReserve >= frequencePlomb)
                 {
                     reserveQueue.Insert(0, "plomb");
                     pourAffichage.Add("plomb");
+                    compteurPlombReserve = 0;
                 }
             }
 
-            // 4. Afficher visuellement
             StartCoroutine(AjouterBillesVisuellement(pourAffichage));
         }
         else
         {
-            // Sans plomb : que des billes
             for (int i = 0; i < nombre; i++)
             {
                 reserveQueue.Insert(0, "bille");

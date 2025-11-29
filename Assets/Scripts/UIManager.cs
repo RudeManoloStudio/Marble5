@@ -114,7 +114,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void SetMainPanel(List<LevelStruct> list, string rank)
+    public void SetMainPanel(List<LevelStruct> list, string rank, int globalScore)
     {
 
         mainPanel.gameObject.SetActive(true);
@@ -144,7 +144,7 @@ public class UIManager : MonoBehaviour
         }
 
         rankText.text = totalStars.ToString() + "/" + list.Count * 3;
-        rankTitle.text = rank;
+        rankTitle.text = "Global score : " + globalScore.ToString() + "\n<size=60%>           Σ (score niveau × bonus étoiles)</size>";
 
         InitializeDeveloperToggle(GameManager.Instance.DeveloperMode);
 

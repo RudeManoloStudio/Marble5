@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     private float fxVolume;
     private Camera _camera;
     private int totalStars;
+    private int globalScore;
     private string rank;
     private bool developerMode;
 
@@ -69,6 +70,11 @@ public class GameManager : MonoBehaviour
     public int TotalStars
     {
         get { return totalStars; }
+    }
+
+    public int GlobalScore
+    {
+        get { return globalScore; }
     }
 
     public bool DeveloperMode
@@ -230,6 +236,9 @@ public class GameManager : MonoBehaviour
             list.Add(levelStruct);
         }
 
+        // Calcul du score global et du total d'étoiles
+        CalculateGlobalScore();
+
         // on calcule le rank
         for (int x = rankingData.layers.Length - 1; x >= 0; x--)
         {
@@ -240,7 +249,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        uiManager.SetMainPanel(list, rank);
+        uiManager.SetMainPanel(list, rank, globalScore);
         display.ResetBoard();
     }
 
@@ -375,13 +384,8 @@ public class GameManager : MonoBehaviour
             // Sauvegarde du dictionnaire
             DictionaryStorage.SaveDictionaryToFile(scores, "dictionnaire.json");
 
-            // ici calcul du nombre d'étoiles total
-            // mise à jour de la propriété TotalStars
-            totalStars = 0;
-            foreach (KeyValuePair<int, int> kvp in scores)
-            {
-                totalStars += CalculateStars(kvp.Value, levelData.layers[kvp.Key]);
-            }
+            // Mise à jour du score global et du total d'étoiles
+            CalculateGlobalScore();
 
             // gameover sequence
             placeBille.Pause();
@@ -455,12 +459,40 @@ public class GameManager : MonoBehaviour
     private int CalculateStars(int score, LevelData.Layer levelLayer)
     {
         int stars = 0;
-        
+
         if (score >= levelLayer.FirstStarScore) stars++;
         if (score >= levelLayer.SecondStarScore) stars++;
         if (score >= levelLayer.ThirdStarScore) stars++;
-        
+
         return stars;
+    }
+
+    /// <summary>
+    /// Calcule le score global basé sur les scores de tous les niveaux.
+    /// Formule : score × multiplicateur selon le nombre d'étoiles
+    /// 1 étoile = ×1, 2 étoiles = ×1.5, 3 étoiles = ×2
+    /// </summary>
+    private void CalculateGlobalScore()
+    {
+        globalScore = 0;
+        totalStars = 0;
+
+        foreach (KeyValuePair<int, int> kvp in scores)
+        {
+            int levelId = kvp.Key;
+            int levelScore = kvp.Value;
+            int stars = CalculateStars(levelScore, levelData.layers[levelId]);
+
+            totalStars += stars;
+
+            // Multiplicateur selon le nombre d'étoiles
+            float multiplier = 0f;
+            if (stars == 1) multiplier = 1.0f;
+            else if (stars == 2) multiplier = 1.5f;
+            else if (stars == 3) multiplier = 2.0f;
+
+            globalScore += Mathf.RoundToInt(levelScore * multiplier);
+        }
     }
 }
 

@@ -185,6 +185,27 @@ Une quinte = 5 billes alignées. Algorithme dans `PlaceBille.cs` :
 - 3 seuils étoiles par niveau (`FirstStarScore`, `SecondStarScore`, `ThirdStarScore`)
 - Sauvegarde chiffrée avec hash SHA256
 
+### Score Global
+
+Le score global est calculé en sommant les scores de tous les niveaux, avec un multiplicateur selon le nombre d'étoiles obtenues :
+
+| Étoiles | Multiplicateur | Bonus |
+|---------|----------------|-------|
+| 0 ★     | ×0             | 0%    |
+| 1 ★     | ×1             | 0%    |
+| 2 ★★    | ×1.5           | +50%  |
+| 3 ★★★   | ×2             | +100% |
+
+**Formule** : `Score Global = Σ (score_niveau × multiplicateur_étoiles)`
+
+**Exemple** :
+- Niveau 1 : 100 pts avec 2★ → 100 × 1.5 = 150
+- Niveau 2 : 200 pts avec 3★ → 200 × 2.0 = 400
+- Niveau 3 : 150 pts avec 1★ → 150 × 1.0 = 150
+- **Score Global = 700**
+
+Implémenté dans `GameManager.CalculateGlobalScore()` et affiché dans le menu principal via `UIManager.SetMainPanel()`.
+
 ---
 
 ## Configuration des Niveaux

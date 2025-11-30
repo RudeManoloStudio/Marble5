@@ -4,7 +4,11 @@
       "Bash(dir:*)",
       "Bash(git fetch:*)",
       "Bash(git checkout:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git merge:*)",
+      "Bash(git push)",
+      "Bash(git branch:*)"
     ],
     "deny": [],
     "ask": []

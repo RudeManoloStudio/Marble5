@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform rankPanel;
     [SerializeField] private TMP_Text rankText;
     [SerializeField] private TMP_Text rankTitle;
+    [SerializeField] private TMP_Text leaderboardRankText;
 
     // score
     [SerializeField] private Transform scorePanel;
@@ -144,10 +145,29 @@ public class UIManager : MonoBehaviour
         }
 
         rankText.text = totalStars.ToString() + "/" + list.Count * 3;
-        rankTitle.text = "Global score : " + globalScore.ToString() + "\n<size=60%>           Σ (score niveau × bonus étoiles)</size>";
+        rankTitle.text = "Global score : " + globalScore.ToString() + "<size=60%> Σ (score niveau × bonus étoiles)</size>";
+
+        UpdateLeaderboardRank();
 
         InitializeDeveloperToggle(GameManager.Instance.DeveloperMode);
 
+    }
+
+    private void UpdateLeaderboardRank()
+    {
+        if (leaderboardRankText != null)
+        {
+            // TODO: Remplacer par les vraies données Google Play Games
+            leaderboardRankText.text = "Classement mondial (hors ligne)";
+        }
+    }
+
+    public void SetLeaderboardRank(int rank, int totalPlayers)
+    {
+        if (leaderboardRankText != null)
+        {
+            leaderboardRankText.text = $"Classement : {rank} sur {totalPlayers}";
+        }
     }
 
     private void AddLevelButton(Button b, int x)

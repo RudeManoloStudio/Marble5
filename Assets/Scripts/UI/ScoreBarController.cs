@@ -9,7 +9,12 @@ public class ScoreBarController : MonoBehaviour
     [SerializeField] private RectTransform firstStar, secondStar, thirdStar;
     [SerializeField] private Sprite fullStar;
     [SerializeField] private Sprite emptyStar;
-    [SerializeField] private Color fillColor;
+
+    [Header("Couleurs des étoiles")]
+    [SerializeField] private Color star1Color = new Color(1f, 1f, 0.6f, 1f);      // Jaune clair
+    [SerializeField] private Color star2Color = new Color(1f, 0.9f, 0.2f, 1f);    // Jaune
+    [SerializeField] private Color star3Color = new Color(1f, 0.75f, 0f, 1f);     // Or
+    [SerializeField] private Color starNotObtainedColor = new Color(0.3f, 0.3f, 0.3f, 0.5f); // Gris semi-transparent
 
     private float maxScore;
     private float currentScore;
@@ -39,22 +44,21 @@ public class ScoreBarController : MonoBehaviour
         currentScore = Mathf.Clamp(currentScore, 0, maxScore);
         UpdateHealthBar();
 
-        // ajout changement de couleur
+        // ajout changement de couleur avec nuances de jaune
         if (currentScore >= firstStarScore)
         {
             firstStar.gameObject.GetComponent<Image>().sprite = fullStar;
-            firstStar.gameObject.GetComponent<Image>().color = fillColor;
-
+            firstStar.gameObject.GetComponent<Image>().color = star1Color;  // Jaune clair
         }
         if (currentScore >= secondStarScore)
         {
             secondStar.gameObject.GetComponent<Image>().sprite = fullStar;
-            secondStar.gameObject.GetComponent<Image>().color = fillColor;
+            secondStar.gameObject.GetComponent<Image>().color = star2Color;  // Jaune
         }
         if (currentScore >= thirdStarScore)
         {
             thirdStar.gameObject.GetComponent<Image>().sprite = fullStar;
-            thirdStar.gameObject.GetComponent<Image>().color = fillColor;
+            thirdStar.gameObject.GetComponent<Image>().color = star3Color;   // Or
         }
 
     }
@@ -99,13 +103,13 @@ public class ScoreBarController : MonoBehaviour
         thirdStar.anchoredPosition = new Vector2(50, thirdStar.anchoredPosition.y);
 
         firstStar.gameObject.GetComponent<Image>().sprite = emptyStar;
-        firstStar.gameObject.GetComponent<Image>().color = fillColor;
+        firstStar.gameObject.GetComponent<Image>().color = starNotObtainedColor;
 
         secondStar.gameObject.GetComponent<Image>().sprite = emptyStar;
-        secondStar.gameObject.GetComponent<Image>().color = fillColor;
+        secondStar.gameObject.GetComponent<Image>().color = starNotObtainedColor;
 
         thirdStar.gameObject.GetComponent<Image>().sprite = emptyStar;
-        thirdStar.gameObject.GetComponent<Image>().color = fillColor;
+        thirdStar.gameObject.GetComponent<Image>().color = starNotObtainedColor;
 
     }
 }

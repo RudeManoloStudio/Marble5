@@ -94,12 +94,21 @@ public class UIManager : MonoBehaviour
 
     public void ToggleSliders()
     {
+        // Détecter si on est en jeu AVANT de masquer le scorePanel
+        bool inGame = scorePanel.gameObject.activeSelf;
+
         if (!slidersPanel.gameObject.activeSelf)
         {
             slidersPanel.gameObject.SetActive(true);
 
+            // Masquer le RankPanel (menu principal) ou ScorePanel (en jeu)
+            rankPanel.gameObject.SetActive(false);
+            if (inGame)
+            {
+                scorePanel.gameObject.SetActive(false);
+            }
+
             // Afficher/cacher les boutons selon le contexte
-            bool inGame = scorePanel.gameObject.activeSelf;
             restartButton.SetActive(inGame);
             quitToMenuButton.SetActive(inGame);
         }
@@ -107,10 +116,16 @@ public class UIManager : MonoBehaviour
         {
             slidersPanel.gameObject.SetActive(false);
 
-            // Rafraîchir UNIQUEMENT si on est dans le menu principal
+            // Réafficher le panel approprié
             if (mainPanel.gameObject.activeSelf)
             {
+                rankPanel.gameObject.SetActive(true);
                 GameManager.Instance.PrepareMainMenu();
+            }
+            else
+            {
+                // On est en jeu, réafficher le scorePanel
+                scorePanel.gameObject.SetActive(true);
             }
         }
     }

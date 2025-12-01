@@ -22,7 +22,7 @@ public class ReserveController : MonoBehaviour
     [Header("Configuration")]
     [SerializeField] private int maxDisplayedItems = 10;
     [SerializeField] private float spacing = 1.0f;
-    [SerializeField] private float horizontalGravity = 5.0f;
+    [SerializeField] private float horizontalGravity = 15.0f;
 
     [Header("Animation")]
     [SerializeField] private float shrinkDuration = 0.2f;
@@ -117,6 +117,12 @@ public class ReserveController : MonoBehaviour
                 if (rb != null)
                 {
                     rb.AddForce(Vector3.right * horizontalGravity, ForceMode.Acceleration);
+
+                    // Empêcher le mouvement vers la gauche (anti-rebond)
+                    if (rb.velocity.x < 0)
+                    {
+                        rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+                    }
                 }
             }
         }
@@ -230,8 +236,8 @@ public class ReserveController : MonoBehaviour
     {
         isAnimating = true;
 
-        // Démarrer bien à gauche, hors champ de la caméra
-        float safeOffset = -maxDisplayedItems * spacing;
+        // Démarrer bien à gauche, hors de la file
+        float safeOffset = -15f * spacing;
 
         foreach (ReserveItemType itemType in items)
         {
@@ -295,7 +301,7 @@ public class ReserveController : MonoBehaviour
         {
             int queueIndex = queue.Count - itemsToDisplay;
             ReserveItemType itemType = (queueIndex >= 0) ? queue[queueIndex] : ReserveItemType.Marble;
-            AddItemOnLeft(itemType, 0f);
+            AddItemOnLeft(itemType, -15f * spacing);
         }
     }
 
@@ -366,6 +372,16 @@ public class ReserveController : MonoBehaviour
             rb.constraints = RigidbodyConstraints.FreezePositionY
                            | RigidbodyConstraints.FreezePositionZ
                            | RigidbodyConstraints.FreezeRotation;
+        }
+
+        // Désactiver le rebond sur le collider
+        Collider col = item.GetComponent<Collider>();
+        if (col != null)
+        {
+            PhysicMaterial noBounceMat = new PhysicMaterial();
+            noBounceMat.bounciness = 0f;
+            noBounceMat.bounceCombine = PhysicMaterialCombine.Minimum;
+            col.material = noBounceMat;
         }
 
         BilleController bc = item.GetComponent<BilleController>();
@@ -440,6 +456,8 @@ public class ReserveController : MonoBehaviour
             if (item != null)
             {
                 item.transform.localScale = Vector3.Lerp(startScale, endScale, t);
+                // Déplacer vers la droite pendant l'animation (kinematic)
+                item.transform.localPosition += Vector3.right * horizontalGravity * Time.deltaTime;
             }
 
             yield return null;
@@ -453,6 +471,7 @@ public class ReserveController : MonoBehaviour
             if (rb != null)
             {
                 rb.isKinematic = false;
+                rb.velocity = Vector3.right * horizontalGravity;
             }
         }
     }

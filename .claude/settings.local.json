@@ -8,7 +8,12 @@
       "Bash(git commit:*)",
       "Bash(git merge:*)",
       "Bash(git push)",
-      "Bash(git branch:*)"
+      "Bash(git branch:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(gh repo list:*)",
+      "Bash(where:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []

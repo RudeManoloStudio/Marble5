@@ -4,8 +4,9 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private float panSpeed = 1f;
     [SerializeField] [Range(0.1f, 5f)] private float zoomSpeed = 2.5f;
-    [SerializeField] private float minZoom = 10.0f;
-    [SerializeField] private float maxZoom = 20.0f;
+    [SerializeField] private float minZoom = 5.0f;
+    [SerializeField] private float maxZoom = 30.0f;
+    [SerializeField] private float panMargin = 3.0f;
 
     private bool isPanning = false;
     private Vector3 lastMousePosition;
@@ -30,8 +31,8 @@ public class CameraController : MonoBehaviour
         sizeX = gridSize.x;
         sizeY = gridSize.y;
 
-        minPosition = new Vector2(0, 0);
-        maxPosition = new Vector2(sizeX - 1, sizeY - 1);
+        minPosition = new Vector2(0 - panMargin, 0 - panMargin);
+        maxPosition = new Vector2(sizeX - 1 + panMargin, sizeY - 1 + panMargin);
 
         mainCamera.orthographicSize = 16f;
         mainCamera.transform.SetPositionAndRotation(new Vector3(sizeX / 2 + 0.5f, sizeY / 2 + 0.5f, -10), Quaternion.identity);
@@ -40,11 +41,11 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
-        HandleMouseInput(); // Garde les contrôles PC
+        HandleMouseInput(); // Garde les contrï¿½les PC
 #endif
 
 #if UNITY_ANDROID || UNITY_IOS
-        HandleTouchInput(); // Contrôles tactiles pour mobile
+        HandleTouchInput(); // Contrï¿½les tactiles pour mobile
 #endif
     }
 
@@ -76,7 +77,7 @@ public class CameraController : MonoBehaviour
             float minY = minPosition.y + vertExtent;
             float maxY = maxPosition.y - vertExtent;
 
-            // Sécurité : si la grille est plus petite que la vue, on centre
+            // Sï¿½curitï¿½ : si la grille est plus petite que la vue, on centre
             if (minX > maxX)
             {
                 float centerX = (minPosition.x + maxPosition.x) / 2f;
@@ -142,7 +143,7 @@ public class CameraController : MonoBehaviour
             float minY = minPosition.y + vertExtent;
             float maxY = maxPosition.y - vertExtent;
 
-            // Sécurité : si la grille est plus petite que la vue, on centre
+            // Sï¿½curitï¿½ : si la grille est plus petite que la vue, on centre
             if (minX > maxX)
             {
                 float centerX = (minPosition.x + maxPosition.x) / 2f;

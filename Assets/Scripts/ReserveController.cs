@@ -69,22 +69,41 @@ public class ReserveController : MonoBehaviour
     /// <summary>
     /// Construit la queue initiale avec les billes et plombs
     /// </summary>
+    /// <summary>
+    /// Construit la queue initiale avec les billes et plombs.
+    /// Ordre : Élément le plus à droite (consommé en premier) -> Élément le plus à gauche.
+    /// </summary>
     private void BuildInitialQueue(int totalMarbles)
     {
+        queue.Clear();
+        compteurPlombReserve = 0; // Réinitialisation du compteur pour l'initialisation
+
         if (blockerFrequency > 0)
         {
-            int blockerCounter = 0;
+            int billesInserees = 0;
+            // On ajoute les éléments dans l'ordre de consommation (de droite à gauche)
             for (int i = 0; i < totalMarbles; i++)
             {
-                queue.Insert(0, ReserveItemType.Marble);
-                blockerCounter++;
+                // 1. Ajouter la bille
+                queue.Add(ReserveItemType.Marble);
+                billesInserees++;
 
-                if (blockerCounter >= blockerFrequency)
+                // 2. Vérifier si un plomb doit suivre
+                if (billesInserees % blockerFrequency == 0)
                 {
-                    queue.Insert(0, ReserveItemType.Blocker);
-                    blockerCounter = 0;
+                    // Insère le plomb qui sera consommé JUSTE APRÈS les 'blockerFrequency' billes.
+                    queue.Add(ReserveItemType.Blocker);
                 }
             }
+
+            // Correction : Inverser la liste pour que l'index 0 soit le plus neuf
+            // et l'index Count-1 le plus ancien (le premier à consommer).
+            queue.Reverse();
+
+            // S'assurer que le compteur de plomb qui gère les NOUVEAUX ajouts
+            // commence à partir de là où on s'est arrêté.
+            // Le nombre de billes depuis le dernier plomb inséré (dans l'ordre inversé)
+            compteurPlombReserve = billesInserees % blockerFrequency;
         }
         else
         {
@@ -155,25 +174,37 @@ public class ReserveController : MonoBehaviour
     /// <summary>
     /// Gère le compteur de plombs et retire le plomb de la queue si nécessaire
     /// </summary>
+    /// <summary>
+    /// Gère le compteur de plombs et retire le plomb de la queue si nécessaire
+    /// </summary>
+    /// <summary>
+    /// Gère le compteur de plombs et retire le plomb de la queue si nécessaire
+    /// </summary>
     private void HandleBlockerCounter()
     {
         if (blockerFrequency <= 0) return;
 
-        compteurPlombGrille++;
+        compteurPlombGrille++; // La bille qui vient d'être posée
 
         if (compteurPlombGrille >= blockerFrequency)
         {
-            compteurPlombGrille = 0;
-
+            // Vérifier si l'élément le plus à droite est bien un Plomb qui doit être consommé
             if (queue.Count > 0 && queue[queue.Count - 1] == ReserveItemType.Blocker)
             {
+                // 1. Retirer le plomb de la queue de données
                 queue.RemoveAt(queue.Count - 1);
+
+                // 2. Supprimer visuellement l'élément le plus à droite (c'est le plomb !)
                 RemoveRightmostDisplayedItem();
 
+                // 3. Ajouter un nouvel élément à gauche si nécessaire
                 if (!isAnimating)
                 {
                     TryAddItemOnLeft();
                 }
+
+                // Réinitialiser le compteur seulement APRÈS avoir consommé le plomb
+                compteurPlombGrille = 0;
             }
         }
     }
@@ -188,22 +219,25 @@ public class ReserveController : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            queue.Insert(0, ReserveItemType.Marble);
+            // 1. Ajouter la bille
+            queue.Insert(0, ReserveItemType.Marble); // Ajout au début de la queue
             itemsToAdd.Add(ReserveItemType.Marble);
 
             if (blockerFrequency > 0)
             {
-                compteurPlombReserve++;
+                compteurPlombReserve++; // Une bille a été ajoutée
 
                 if (compteurPlombReserve >= blockerFrequency)
                 {
+                    // 2. Ajouter le plomb immédiatement APRES la bille, donc AVANT dans la liste (index 0)
                     queue.Insert(0, ReserveItemType.Blocker);
                     itemsToAdd.Add(ReserveItemType.Blocker);
-                    compteurPlombReserve = 0;
+                    compteurPlombReserve = 0; // Le cycle recommence
                 }
             }
         }
 
+        // ... (Le reste de la méthode AjouterBilles reste inchangé) ...
         if (blockerFrequency > 0)
         {
             StartCoroutine(AddItemsVisuallyAnimated(itemsToAdd));
@@ -232,6 +266,9 @@ public class ReserveController : MonoBehaviour
     /// <summary>
     /// Ajoute les éléments visuellement avec animation séquentielle
     /// </summary>
+    /// <summary>
+    /// Ajoute les éléments visuellement avec animation séquentielle
+    /// </summary>
     private IEnumerator AddItemsVisuallyAnimated(List<ReserveItemType> items)
     {
         isAnimating = true;
@@ -241,10 +278,17 @@ public class ReserveController : MonoBehaviour
 
         foreach (ReserveItemType itemType in items)
         {
+            // Vérifier la limite max avant l'ajout
             if (displayedItems.Count < maxDisplayedItems)
             {
                 AddItemOnLeft(itemType, safeOffset);
-                yield return new WaitForSeconds(0.4f); // Délai augmenté pour laisser partir la bille
+                yield return new WaitForSeconds(0.4f);
+            }
+            else
+            {
+                // Si la file est pleine, on arrête l'animation pour les éléments restants, 
+                // car ils sont déjà dans la queue de données.
+                break;
             }
         }
 
@@ -293,15 +337,28 @@ public class ReserveController : MonoBehaviour
     /// <summary>
     /// Tente d'ajouter un élément à gauche si la limite n'est pas atteinte
     /// </summary>
+    /// <summary>
+    /// Tente d'ajouter un élément à gauche si la limite n'est pas atteinte
+    /// </summary>
     private void TryAddItemOnLeft()
     {
-        int itemsToDisplay = Mathf.Min(maxDisplayedItems, queue.Count);
-
-        if (displayedItems.Count < itemsToDisplay)
+        // 1. Vérifier si on doit afficher un nouvel élément.
+        // On affiche un élément si on est sous la limite max ET s'il y a encore des éléments dans la queue de données.
+        if (displayedItems.Count < maxDisplayedItems && displayedItems.Count < queue.Count)
         {
-            int queueIndex = queue.Count - itemsToDisplay;
-            ReserveItemType itemType = (queueIndex >= 0) ? queue[queueIndex] : ReserveItemType.Marble;
-            AddItemOnLeft(itemType, -15f * spacing);
+            // L'index de l'élément à ajouter est le premier élément NON affiché
+            // qui se trouve à l'avant (index 0) de la sous-liste de la queue *NON* affichée.
+            // L'index dans la queue de données est donc : queue.Count - displayedItems.Count - 1
+            // (La liste visuelle affichée a une taille 'displayedItems.Count', et l'index 0 de la queue est le plus à gauche.)
+            int queueIndex = queue.Count - (displayedItems.Count + 1);
+
+            // Sanity check, mais avec la condition ci-dessus, il devrait toujours être >= 0
+            if (queueIndex >= 0)
+            {
+                ReserveItemType itemType = queue[queueIndex];
+                // L'offset est utilisé pour que la bille/bloc démarre hors-champ
+                AddItemOnLeft(itemType, -15f * spacing);
+            }
         }
     }
 

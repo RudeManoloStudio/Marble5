@@ -477,6 +477,10 @@ MonoBehaviour:
   star2: {fileID: 1278398026548852535}
   star3: {fileID: 4332107125518879864}
   vault: {fileID: 9195102501486482737}
+  star1Color: {r: 1, g: 1, b: 0.6, a: 1}
+  star2Color: {r: 1, g: 0.9, b: 0.2, a: 1}
+  star3Color: {r: 1, g: 0.75, b: 0, a: 1}
+  starNotObtainedColor: {r: 0.5396226, g: 0.53656816, b: 0.53656816, a: 0.6784314}
 --- !u!1 &5456093912879450382
 GameObject:
   m_ObjectHideFlags: 0

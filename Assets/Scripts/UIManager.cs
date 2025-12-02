@@ -54,6 +54,8 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         UpdatePrototypeExpirationText();
+
+        EventManager.AddListener("UpdateBilleCompteur", _OnUpdateBilleCompteur);
     }
 
     private void UpdatePrototypeExpirationText()
@@ -310,5 +312,11 @@ public class UIManager : MonoBehaviour
     {
         EventManager.TriggerEvent("ReturnToMainMenu");
         slidersPanel.gameObject.SetActive(false); // Fermer le panneau
+    }
+
+    private void _OnUpdateBilleCompteur(object data)
+    {
+        int newCompteur = (int)data;
+        reserveBilleCounter.text = newCompteur.ToString();
     }
 }

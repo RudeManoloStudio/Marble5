@@ -62,6 +62,8 @@ public class ReserveController : MonoBehaviour
         queue.Clear();
         BuildInitialQueue(totalMarbles);
 
+        EventManager.TriggerEvent("UpdateBilleCompteur", totalMarbles);
+
         RefreshDisplay();
         AdjustCamera();
     }
@@ -155,6 +157,9 @@ public class ReserveController : MonoBehaviour
     {
         if (queue.Count == 0) return;
 
+        // On vérifie le type AVANT de retirer l'élément de la queue.
+        ReserveItemType consumedItem = queue[queue.Count - 1];
+
         // 1. Retirer de la queue
         queue.RemoveAt(queue.Count - 1);
 
@@ -165,6 +170,21 @@ public class ReserveController : MonoBehaviour
         if (!isAnimating)
         {
             TryAddItemOnLeft();
+        }
+
+        if (consumedItem == ReserveItemType.Marble)
+        {
+            int marbleCount = 0;
+
+            // Compter uniquement les billes
+            foreach (var item in queue)
+            {
+                if (item == ReserveItemType.Marble)
+                {
+                    marbleCount++;
+                }
+            }
+            EventManager.TriggerEvent("UpdateBilleCompteur", marbleCount);
         }
 
         // 4. Gérer le compteur de plombs
@@ -236,6 +256,20 @@ public class ReserveController : MonoBehaviour
                 }
             }
         }
+
+     
+            int marbleCount = 0;
+
+            // Compter uniquement les billes
+            foreach (var item in queue)
+            {
+                if (item == ReserveItemType.Marble)
+                {
+                    marbleCount++;
+                }
+            }
+            EventManager.TriggerEvent("UpdateBilleCompteur", marbleCount);
+        
 
         // ... (Le reste de la méthode AjouterBilles reste inchangé) ...
         if (blockerFrequency > 0)

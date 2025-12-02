@@ -103,9 +103,8 @@ public class GameManager : MonoBehaviour
         musicVolume = userData.musicVolume;
         // FX
         fxVolume = userData.fxVolume;
-        // Developer Mode
-        developerMode = userData.developerMode;
-
+        // Developer Mode - toujours désactivé au lancement
+        developerMode = false;
     }
 
     private void Start()
@@ -253,11 +252,11 @@ public class GameManager : MonoBehaviour
         display.ResetBoard();
     }
 
-        public void SetDeveloperMode(bool isEnabled)
+    public void SetDeveloperMode(bool isEnabled)
     {
         developerMode = isEnabled;
         userDataManager.SaveDeveloperMode(isEnabled);
-        //PrepareMainMenu(); // Rafraîchit l'affichage
+        uiManager.UpdateDeveloperModeLabel(isEnabled);
     }
 
     public void PrepareLevel(int level)

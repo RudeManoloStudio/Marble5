@@ -46,7 +46,7 @@ public class UIManager : MonoBehaviour
 
     // reserve
     [SerializeField] private Transform reservePanel;
-    [SerializeField] private Toggle developerModeToggle;
+    private GameObject developerModeLabel;
     [SerializeField] private TMP_Text reserveBilleCounter;
     [SerializeField] private TMP_Text reservePlombCounter;
 
@@ -102,6 +102,9 @@ public class UIManager : MonoBehaviour
         if (!slidersPanel.gameObject.activeSelf)
         {
             slidersPanel.gameObject.SetActive(true);
+
+            // Synchroniser le toggle developerMode avec la valeur actuelle
+            UpdateDeveloperModeLabel(GameManager.Instance.DeveloperMode);
 
             // Masquer le RankPanel (menu principal) ou ScorePanel (en jeu)
             rankPanel.gameObject.SetActive(false);
@@ -166,7 +169,7 @@ public class UIManager : MonoBehaviour
 
         UpdateLeaderboardRank();
 
-        InitializeDeveloperToggle(GameManager.Instance.DeveloperMode);
+        UpdateDeveloperModeLabel(GameManager.Instance.DeveloperMode);
 
     }
 
@@ -282,24 +285,25 @@ public class UIManager : MonoBehaviour
         EventManager.TriggerEvent("ReturnToMainMenu");
     }
 
-    public void OnDeveloperModeToggled(bool isEnabled)
+    public void UpdateDeveloperModeLabel(bool isEnabled)
     {
-        GameManager.Instance.SetDeveloperMode(isEnabled);
-    
-}
-
-    public void InitializeDeveloperToggle(bool currentValue)
-    {
-        if (developerModeToggle != null)
+        // Chercher le label s'il n'est pas encore assigné
+        if (developerModeLabel == null)
         {
-            // Désactiver temporairement l'événement pour éviter de déclencher OnValueChanged
-            developerModeToggle.onValueChanged.RemoveListener(OnDeveloperModeToggled);
+            var allObjects = Resources.FindObjectsOfTypeAll<Transform>();
+            foreach (var t in allObjects)
+            {
+                if (t.name == "DeveloperModeLabel" && t.gameObject.scene.isLoaded)
+                {
+                    developerModeLabel = t.gameObject;
+                    break;
+                }
+            }
+        }
 
-            // Mettre à jour la valeur visuelle
-            developerModeToggle.isOn = currentValue;
-
-            // Réactiver l'événement
-            developerModeToggle.onValueChanged.AddListener(OnDeveloperModeToggled);
+        if (developerModeLabel != null)
+        {
+            developerModeLabel.SetActive(isEnabled);
         }
     }
     public void RestartLevel()

@@ -30,7 +30,7 @@ public class PrototypeManager : MonoBehaviour
 
         if (expirationMessageText != null)
         {
-            expirationMessageText.text = "Prototype Marble5 expir�";
+            expirationMessageText.text = "La bêta fermée a expiré";
         }
 
         Invoke(nameof(QuitGame), 10f);

@@ -62,7 +62,7 @@ public class UIManager : MonoBehaviour
     {
         if (prototypeExpirationText != null)
         {
-            prototypeExpirationText.text = $"Prototype - Expire le {PrototypeManager.ExpirationDateString}";
+            prototypeExpirationText.text = $"Bêta fermée • Expire le {PrototypeManager.ExpirationDateString}";
         }
     }
 
@@ -165,7 +165,7 @@ public class UIManager : MonoBehaviour
         }
 
         rankText.text = totalStars.ToString() + "/" + list.Count * 3;
-        rankTitle.text = "Global score : " + globalScore.ToString() + "<size=60%> Σ (score niveau × bonus étoiles)</size>";
+        rankTitle.text = "Global score : " + globalScore.ToString();
 
         UpdateLeaderboardRank();
 

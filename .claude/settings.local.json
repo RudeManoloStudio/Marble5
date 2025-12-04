@@ -13,7 +13,13 @@
       "Bash(find:*)",
       "Bash(gh repo list:*)",
       "Bash(where:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(cat:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(git config:*)"
     ],
     "deny": [],
     "ask": []

@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EtoileMat
+  m_Name: SunMat
   m_Shader: {fileID: -6465566751694194690, guid: 1a1e143618049a34296a4e4e1ecb26fe, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

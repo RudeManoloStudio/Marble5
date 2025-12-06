@@ -7,6 +7,11 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
 
+    // panneau floutant
+    [SerializeField] private Transform panneauFloutant;
+    // Header
+    [SerializeField] private Transform panneauHeader;
+
     // rank
     [SerializeField] private Transform rankPanel;
     [SerializeField] private TMP_Text rankText;
@@ -96,6 +101,12 @@ public class UIManager : MonoBehaviour
 
     public void ToggleSliders()
     {
+        // afficher le panneau floutant
+        panneauFloutant.gameObject.SetActive(true);
+        // masquer le panneau header
+        //panneauHeader.gameObject.SetActive(false);
+        
+
         // Détecter si on est en jeu AVANT de masquer le scorePanel
         bool inGame = scorePanel.gameObject.activeSelf;
 

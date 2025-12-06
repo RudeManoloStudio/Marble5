@@ -165,7 +165,8 @@ public class UIManager : MonoBehaviour
         }
 
         rankText.text = totalStars.ToString() + "/" + list.Count * 3;
-        rankTitle.text = "Global score : " + globalScore.ToString();
+        //rankTitle.text = "Global score : " + globalScore.ToString();
+        rankTitle.text = globalScore.ToString();
 
         UpdateLeaderboardRank();
 

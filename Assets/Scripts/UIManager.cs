@@ -200,6 +200,7 @@ public class UIManager : MonoBehaviour
         scorePanel.gameObject.SetActive(false);
         slidersPanel.gameObject.SetActive(false);
         reservePanel.gameObject.SetActive(false);
+        panneauFloutant.gameObject.SetActive(false);
 
         ClearMenu();
 
@@ -366,6 +367,7 @@ public class UIManager : MonoBehaviour
     {
         GameManager.Instance.Replay();
         slidersPanel.gameObject.SetActive(false); // Fermer le panneau
+        panneauFloutant.gameObject.SetActive(false); // et le panneau floutant
     }
 
     public void QuitToMenu()
@@ -378,5 +380,15 @@ public class UIManager : MonoBehaviour
     {
         int newCompteur = (int)data;
         reserveBilleCounter.text = newCompteur.ToString();
+    }
+
+    public void OpenRulesLink()
+    {
+        Application.OpenURL("http://marble5.app");
+    }
+
+    public void OpenContactUs()
+    {
+        Application.OpenURL("http://marble5.app#concept");
     }
 }

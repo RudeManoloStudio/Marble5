@@ -145,7 +145,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6e0e59f514bfc1e4d8e1c4bbb928ef8c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 54089c7725da5a74886930e76fc8842d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -171,6 +171,17 @@ MonoBehaviour:
   firstStar: {fileID: 4711317896124572330}
   secondStar: {fileID: 7457916983985111834}
   thirdStar: {fileID: 8016739651869668491}
+  fullStar: {fileID: 0}
+  emptyStar: {fileID: 0}
+  star1Color: {r: 1, g: 1, b: 0.6, a: 1}
+  star2Color: {r: 1, g: 0.9, b: 0.2, a: 1}
+  star3Color: {r: 1, g: 0.75, b: 0, a: 1}
+  starNotObtainedColor: {r: 1, g: 1, b: 1, a: 1}
+  pulseScale: 4
+  pulseDuration: 4
+  starParticlePrefab: {fileID: 0}
+  starCount: 15
+  starRainDuration: 1.5
 --- !u!1 &6663973700432379715
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,7 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.2679245, g: 0.2542755, b: 0.2542755, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

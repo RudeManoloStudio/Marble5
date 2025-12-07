@@ -9,8 +9,12 @@ public class UIManager : MonoBehaviour
 
     // panneau floutant
     [SerializeField] private Transform panneauFloutant;
-    // Header
+    // panneau header
     [SerializeField] private Transform panneauHeader;
+    // panneau options
+    [SerializeField] private Transform panneauOptions;
+    [SerializeField] private Transform inGamePanneauOptions;
+    [SerializeField] private Transform outGamePanneauOptions;
 
     // rank
     [SerializeField] private Transform rankPanel;
@@ -99,7 +103,47 @@ public class UIManager : MonoBehaviour
         reservePlombCounter.text = count.ToString();
     }
 
-    public void ToggleSliders()
+    public void ShowOptionsPanel()
+    {
+
+        // afficher le panneau floutant
+        panneauFloutant.gameObject.SetActive(true);
+
+        // afficher le panneau des options
+        panneauOptions.gameObject.SetActive(true);
+
+        // Détecter si on est en jeu AVANT de masquer le scorePanel
+        bool inGame = scorePanel.gameObject.activeSelf;
+
+        if (inGame)
+        {
+
+            inGamePanneauOptions.gameObject.SetActive(true);
+            outGamePanneauOptions.gameObject.SetActive(false);
+
+        } else
+        {
+
+            outGamePanneauOptions.gameObject.SetActive(true);
+            inGamePanneauOptions.gameObject.SetActive(false);
+            
+        }
+
+    }
+
+    public void HideOptionsPanel()
+    {
+
+        // masquer le panneau flottant
+        panneauFloutant.gameObject.SetActive(false);
+
+        // masquer le panneau des options
+        panneauOptions.gameObject.SetActive(false);
+
+
+    }
+
+    public void ToggleOptionsPanel()
     {
         // afficher le panneau floutant
         panneauFloutant.gameObject.SetActive(true);

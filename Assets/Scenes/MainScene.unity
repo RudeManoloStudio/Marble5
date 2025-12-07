@@ -8626,11 +8626,11 @@ PrefabInstance:
     - target: {fileID: -4282779056903967993, guid: d56dba7c191bd38439b55920c01b93c8, type: 3}
       propertyPath: fullStar
       value: 
-      objectReference: {fileID: 21300000, guid: b1bb61735cb5d174198db8746f502b22, type: 3}
+      objectReference: {fileID: 21300000, guid: 0a8b17ca9a1353e4b9e7d1f80c264e6d, type: 3}
     - target: {fileID: -4282779056903967993, guid: d56dba7c191bd38439b55920c01b93c8, type: 3}
       propertyPath: emptyStar
       value: 
-      objectReference: {fileID: 21300000, guid: f3892b333743ff445bcb5215c1b07d2c, type: 3}
+      objectReference: {fileID: 21300000, guid: 30a1f88f170e226438c0a839c8b3b365, type: 3}
     - target: {fileID: -4282779056903967993, guid: d56dba7c191bd38439b55920c01b93c8, type: 3}
       propertyPath: pulseScale
       value: 3

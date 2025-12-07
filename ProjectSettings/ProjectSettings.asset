@@ -165,7 +165,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.RymoStudio.Marble5
+    Android: com.OneMoreMoveStudio.Marble5
     Standalone: com.RymoStudio.Marble5
   buildNumber:
     Standalone: 0
@@ -270,7 +270,7 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: '{inproject}: marble5-release.keystore'
+  AndroidKeystoreName: '{inproject}: Keystores/marble5-release.keystore'
   AndroidKeyaliasName: marble5
   AndroidEnableArmv9SecurityFeatures: 0
   AndroidBuildApkPerCpuArchitecture: 0

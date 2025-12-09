@@ -125,8 +125,6 @@ MonoBehaviour:
   maxRotationSpeed: 0.2
   textures:
   - {fileID: 2800000, guid: a82414172cbdc794f973380e1cf2bfdd, type: 3}
-  - {fileID: 2800000, guid: 2a4ac2c3df6bb744291f12ce8087a5a3, type: 3}
-  - {fileID: 2800000, guid: 2d175447cecc8e941a2f3e4998b1db4c, type: 3}
 --- !u!54 &-458794077632730842
 Rigidbody:
   m_ObjectHideFlags: 0

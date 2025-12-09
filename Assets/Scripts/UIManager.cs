@@ -389,6 +389,6 @@ public class UIManager : MonoBehaviour
 
     public void OpenContactUs()
     {
-        Application.OpenURL("http://marble5.app#concept");
+        Application.OpenURL("http://marble5.app#contact");
     }
 }

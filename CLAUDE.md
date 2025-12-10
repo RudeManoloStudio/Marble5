@@ -4,7 +4,7 @@
 
 Marble5 est un jeu de puzzle Unity où le joueur place des billes sur une grille pour former des "quintes" (alignements de 5 billes). Le jeu inclut un système de score, d'étoiles, de progression par niveaux et de bloqueurs pour augmenter la difficulté.
 
-**Version prototype** : Expire le 31/03/2026
+**Version** : Private beta live
 
 ---
 
@@ -266,7 +266,7 @@ public class Layer
 
 ## Notes Importantes
 
-1. **Prototype** : Le jeu expire le 31/03/2026 (voir `PrototypeManager`)
+1. **Private beta live** : Le jeu est en bêta privée (voir `PrototypeManager`)
 2. **Sécurité scores** : Hash SHA256 avec clé secrète pour éviter la triche
 3. **EventManager requis** : Doit être présent dans la scène
 4. **GameManager singleton** : `DontDestroyOnLoad`, un seul dans la hiérarchie

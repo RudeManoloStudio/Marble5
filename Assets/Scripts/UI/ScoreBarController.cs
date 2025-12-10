@@ -36,6 +36,11 @@ public class ScoreBarController : MonoBehaviour
     private bool secondStarObtained;
     private bool thirdStarObtained;
 
+    // Scale original des étoiles pour le filet de sécurité
+    private Vector3 firstStarOriginalScale;
+    private Vector3 secondStarOriginalScale;
+    private Vector3 thirdStarOriginalScale;
+
     public void SetStars(Vector3Int starsScore)
     {
 
@@ -52,6 +57,11 @@ public class ScoreBarController : MonoBehaviour
         firstStarObtained = false;
         secondStarObtained = false;
         thirdStarObtained = false;
+
+        // Sauvegarder le scale original des étoiles
+        firstStarOriginalScale = firstStar.localScale;
+        secondStarOriginalScale = secondStar.localScale;
+        thirdStarOriginalScale = thirdStar.localScale;
 
         UpdateHealthBar();
     }
@@ -71,6 +81,8 @@ public class ScoreBarController : MonoBehaviour
             firstStar.gameObject.GetComponent<Image>().color = star1Color;
             StartCoroutine(PulseStar(firstStar));
             StartCoroutine(StarRain(firstStar, star1Color, 1)); // Multiplicateur x1
+            // Filet de sécurité : reset du scale si la coroutine est interrompue
+            Invoke(nameof(ResetFirstStarScale), pulseDuration + 0.5f);
         }
         if (currentScore >= secondStarScore && !secondStarObtained)
         {
@@ -79,6 +91,8 @@ public class ScoreBarController : MonoBehaviour
             secondStar.gameObject.GetComponent<Image>().color = star2Color;
             StartCoroutine(PulseStar(secondStar));
             StartCoroutine(StarRain(secondStar, star2Color, 2)); // Multiplicateur x2
+            // Filet de sécurité : reset du scale si la coroutine est interrompue
+            Invoke(nameof(ResetSecondStarScale), pulseDuration + 0.5f);
         }
         if (currentScore >= thirdStarScore && !thirdStarObtained)
         {
@@ -87,6 +101,8 @@ public class ScoreBarController : MonoBehaviour
             thirdStar.gameObject.GetComponent<Image>().color = star3Color;
             StartCoroutine(PulseStar(thirdStar));
             StartCoroutine(StarRain(thirdStar, star3Color, 4)); // Multiplicateur x4
+            // Filet de sécurité : reset du scale si la coroutine est interrompue
+            Invoke(nameof(ResetThirdStarScale), pulseDuration + 0.5f);
         }
 
     }
@@ -245,5 +261,21 @@ public class ScoreBarController : MonoBehaviour
         }
 
         Destroy(star.gameObject);
+    }
+
+    // Filets de sécurité pour reset du scale des étoiles
+    private void ResetFirstStarScale()
+    {
+        firstStar.localScale = firstStarOriginalScale;
+    }
+
+    private void ResetSecondStarScale()
+    {
+        secondStar.localScale = secondStarOriginalScale;
+    }
+
+    private void ResetThirdStarScale()
+    {
+        thirdStar.localScale = thirdStarOriginalScale;
     }
 }

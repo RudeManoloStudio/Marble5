@@ -62,7 +62,7 @@ public class UIManager : MonoBehaviour
     {
         if (prototypeExpirationText != null)
         {
-            prototypeExpirationText.text = $"Bêta fermée • Expire le {PrototypeManager.ExpirationDateString}";
+            prototypeExpirationText.text = "Private beta live";
         }
     }
 

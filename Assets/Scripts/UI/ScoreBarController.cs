@@ -205,6 +205,10 @@ public class ScoreBarController : MonoBehaviour
             // Lancer l'animation de chute
             StartCoroutine(FallingStar(miniStarRect, miniStarImage));
 
+            // Filet de sécurité : destruction garantie même si la coroutine est interrompue
+            // La durée de vie dans FallingStar est de 1.5s + marge de sécurité
+            Destroy(miniStar, 2f);
+
             // Délai entre chaque étoile
             yield return new WaitForSeconds(totalDuration / totalStars);
         }

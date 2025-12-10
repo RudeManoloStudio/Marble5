@@ -21,6 +21,9 @@ public class UpdateScoreIncrement : MonoBehaviour
     {
         targetScoreText = scoreText;
         StartCoroutine(FlyCoroutine());
+
+        // Filet de sécurité : destruction garantie même si la coroutine est interrompue
+        Destroy(gameObject, flyDuration + 0.5f);
     }
 
     private IEnumerator FlyCoroutine()

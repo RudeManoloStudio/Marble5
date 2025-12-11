@@ -31,7 +31,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject contactUsButton;
     [SerializeField] private TMP_Text prototypeExpirationText;
 
-
     // main panel
     [SerializeField] private Transform mainPanel;
     [SerializeField] private Transform levelPanel;
@@ -176,8 +175,11 @@ public class UIManager : MonoBehaviour
 
         }
 
-        rankText.text = totalStars.ToString() + "/" + list.Count * 3;
-        rankTitle.text = "Global score : " + globalScore.ToString();
+        rankText.text = totalStars.ToString(); //+ "/" + list.Count * 3;
+        // mettre à jour le global score
+        // rankTitle.text = globalScore.ToString();
+        // en attendant c'est fake
+        rankTitle.text = "13";
 
         UpdateLeaderboardRank();
 

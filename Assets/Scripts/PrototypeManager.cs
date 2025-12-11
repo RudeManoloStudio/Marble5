@@ -1,47 +1,16 @@
-using System;
 using UnityEngine;
-using TMPro;
 
+/// <summary>
+/// Gestionnaire de prototype - système d'expiration désactivé pour bêta privée ouverte
+/// </summary>
 public class PrototypeManager : MonoBehaviour
 {
-    // Date d'expiration du prototype
-    private static readonly DateTime EXPIRATION_DATE = new DateTime(2026, 3, 31);
+    // Système d'expiration désactivé - bêta privée sans restriction
+    // [SerializeField] private GameObject expirationPanel;
+    // [SerializeField] private TMP_Text expirationMessageText;
+    // private static readonly DateTime EXPIRATION_DATE = new DateTime(2026, 3, 31);
+    // public static bool IsExpired => DateTime.Now > EXPIRATION_DATE;
+    // public static string ExpirationDateString => EXPIRATION_DATE.ToString("dd/MM/yyyy");
 
-    [SerializeField] private GameObject expirationPanel;
-    [SerializeField] private TMP_Text expirationMessageText;
-
-    public static bool IsExpired => DateTime.Now > EXPIRATION_DATE;
-    public static string ExpirationDateString => EXPIRATION_DATE.ToString("dd/MM/yyyy");
-
-    private void Awake()
-    {
-        if (IsExpired)
-        {
-            ShowExpirationAndQuit();
-        }
-    }
-
-    private void ShowExpirationAndQuit()
-    {
-        if (expirationPanel != null)
-        {
-            expirationPanel.SetActive(true);
-        }
-
-        if (expirationMessageText != null)
-        {
-            expirationMessageText.text = "La bêta fermée a expiré";
-        }
-
-        Invoke(nameof(QuitGame), 10f);
-    }
-
-    private void QuitGame()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
-    }
+    public static bool IsExpired => false;
 }

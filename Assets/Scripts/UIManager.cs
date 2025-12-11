@@ -27,6 +27,8 @@ public class UIManager : MonoBehaviour
     // options paramètres 
     [SerializeField] private GameObject restartButton;    
     [SerializeField] private GameObject quitToMenuButton;
+    [SerializeField] private GameObject rulesButton;
+    [SerializeField] private GameObject contactUsButton;
     [SerializeField] private TMP_Text prototypeExpirationText;
 
 
@@ -116,6 +118,9 @@ public class UIManager : MonoBehaviour
             // Afficher/cacher les boutons selon le contexte
             restartButton.SetActive(inGame);
             quitToMenuButton.SetActive(inGame);
+            rulesButton.SetActive(!inGame);
+            contactUsButton.SetActive(!inGame);
+
         }
         else
         {
@@ -132,8 +137,14 @@ public class UIManager : MonoBehaviour
                 // On est en jeu, réafficher le scorePanel
                 scorePanel.gameObject.SetActive(true);
             }
+
+            restartButton.SetActive(false);
+            quitToMenuButton.SetActive(false);
+            rulesButton.SetActive(false);
+            contactUsButton.SetActive(false);
         }
     }
+
 
     public void SetMainPanel(List<LevelStruct> list, string rank, int globalScore)
     {
@@ -145,6 +156,7 @@ public class UIManager : MonoBehaviour
         scorePanel.gameObject.SetActive(false);
         slidersPanel.gameObject.SetActive(false);
         reservePanel.gameObject.SetActive(false);
+
 
         ClearMenu();
 
@@ -316,6 +328,16 @@ public class UIManager : MonoBehaviour
     {
         EventManager.TriggerEvent("ReturnToMainMenu");
         slidersPanel.gameObject.SetActive(false); // Fermer le panneau
+    }
+
+    public void GetRules()
+    {
+        Application.OpenURL("http://marble5.app/#concept");
+    }
+
+    public void ContactUs()
+    {
+        Application.OpenURL("http://marble5.app/#contact");
     }
 
     private void _OnUpdateBilleCompteur(object data)

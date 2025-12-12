@@ -98,7 +98,8 @@ public class UIManager : MonoBehaviour
     public void ToggleSliders()
     {
         // Détecter si on est en jeu AVANT de masquer le scorePanel
-        bool inGame = scorePanel.gameObject.activeSelf;
+        //bool inGame = scorePanel.gameObject.activeSelf;
+        bool inGame = GameManager.Instance.InGame;
 
         if (!slidersPanel.gameObject.activeSelf)
         {
@@ -115,11 +116,25 @@ public class UIManager : MonoBehaviour
             }
 
             // Afficher/cacher les boutons selon le contexte
-            restartButton.SetActive(inGame);
-            quitToMenuButton.SetActive(inGame);
-            rulesButton.SetActive(!inGame);
-            contactUsButton.SetActive(!inGame);
+            if (inGame)
+            {
 
+                restartButton.SetActive(true);
+                quitToMenuButton.SetActive(true);
+
+                rulesButton.SetActive(false);
+                contactUsButton.SetActive(!false);
+            
+            } else
+            {
+
+                restartButton.SetActive(false);
+                quitToMenuButton.SetActive(false);
+
+                rulesButton.SetActive(true);
+                contactUsButton.SetActive(!true);
+
+            }
         }
         else
         {
@@ -156,6 +171,7 @@ public class UIManager : MonoBehaviour
         slidersPanel.gameObject.SetActive(false);
         reservePanel.gameObject.SetActive(false);
 
+        GameManager.Instance.InGame = false;
 
         ClearMenu();
 
@@ -176,7 +192,6 @@ public class UIManager : MonoBehaviour
         }
 
         rankText.text = totalStars.ToString(); //+ "/" + list.Count * 3;
-        // mettre à jour le global score
         rankTitle.text = globalScore.ToString();
     
 
@@ -228,6 +243,8 @@ public class UIManager : MonoBehaviour
 
         scoreText.text = "0";
         scoreBarController.SetStars(starsScore);
+
+        GameManager.Instance.InGame = true;
     }
 
     public void HideReservePanel()

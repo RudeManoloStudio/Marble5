@@ -39,8 +39,15 @@ public class GameManager : MonoBehaviour
     private int globalScore;
     private string rank;
     private bool developerMode;
+    private bool inGame;
 
     public static GameManager Instance { get; private set; }
+
+    public bool InGame
+    {
+        get { return inGame; }
+        set { inGame = value; }
+    }
 
     public Vector2Int GridSize
     {
@@ -105,6 +112,7 @@ public class GameManager : MonoBehaviour
         fxVolume = userData.fxVolume;
         // Developer Mode - toujours désactivé au lancement
         developerMode = false;
+
     }
 
     private void Start()
@@ -285,6 +293,7 @@ public class GameManager : MonoBehaviour
 
         uiManager.SetGameMode(starsScore);
         placeBille.Unpause();
+        inGame = true;
 
         // positionnement de la camera
         _camera.GetComponent<CameraController>().Setup(gridSize);

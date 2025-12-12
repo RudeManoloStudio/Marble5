@@ -139,12 +139,16 @@ public class ScoreBarController : MonoBehaviour
         float firstStarPosIL = Mathf.InverseLerp(0f, (float)maxScore, (float)starsScore.x);
         float secondStarPosIL = Mathf.InverseLerp(0f, (float)maxScore, (float)starsScore.y);
 
-        float firstStarPos = Mathf.Lerp(-50, 50, firstStarPosIL);
-        float secondStarPos = Mathf.Lerp(-50, 50, secondStarPosIL);
+        //float firstStarPos = Mathf.Lerp(-50, 50, firstStarPosIL);
+        //float secondStarPos = Mathf.Lerp(-50, 50, secondStarPosIL);
+
+        float firstStarPos = Mathf.Lerp(-200, 200, firstStarPosIL);
+        float secondStarPos = Mathf.Lerp(-200, 200, secondStarPosIL);
 
         firstStar.anchoredPosition = new Vector2(firstStarPos, firstStar.anchoredPosition.y);
         secondStar.anchoredPosition = new Vector2(secondStarPos, secondStar.anchoredPosition.y);
-        thirdStar.anchoredPosition = new Vector2(50, thirdStar.anchoredPosition.y);
+        //thirdStar.anchoredPosition = new Vector2(50, thirdStar.anchoredPosition.y);
+        thirdStar.anchoredPosition = new Vector2(200, thirdStar.anchoredPosition.y);
 
         firstStar.gameObject.GetComponent<Image>().sprite = emptyStar;
         firstStar.gameObject.GetComponent<Image>().color = starNotObtainedColor;

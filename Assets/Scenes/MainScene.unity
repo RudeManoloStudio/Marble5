@@ -6709,6 +6709,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 659390669}
     m_Modifications:
+    - target: {fileID: 417516397035987366, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 417516397035987366, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 417516397035987366, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 417516397035987366, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 417516397035987366, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5025731454904277547, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
       propertyPath: m_Name
       value: GlobalScorePrefab
@@ -6739,7 +6759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5190888820043787237, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5190888820043787237, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
       propertyPath: m_SizeDelta.y
@@ -6791,6 +6811,50 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5190888820043787237, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038516706919813907, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038516706919813907, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038516706919813907, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038516706919813907, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038516706919813907, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978549798725151408, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978549798725151408, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978549798725151408, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978549798725151408, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978549798725151408, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978549798725151408, guid: 19b7ee9dfc910ff4098cab354d7b47fe, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -7356,8 +7420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9680e78c0c68a614d85b821eae5d675b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  expirationPanel: {fileID: 995344462}
-  expirationMessageText: {fileID: 925715967}
 --- !u!4 &1719591830
 Transform:
   m_ObjectHideFlags: 0

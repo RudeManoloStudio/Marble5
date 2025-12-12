@@ -177,9 +177,8 @@ public class UIManager : MonoBehaviour
 
         rankText.text = totalStars.ToString(); //+ "/" + list.Count * 3;
         // mettre à jour le global score
-        // rankTitle.text = globalScore.ToString();
-        // en attendant c'est fake
-        rankTitle.text = "13";
+        rankTitle.text = globalScore.ToString();
+    
 
         UpdateLeaderboardRank();
 

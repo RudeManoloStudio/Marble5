@@ -66,6 +66,7 @@ public class ReserveController : MonoBehaviour
 
         RefreshDisplay();
         AdjustCamera();
+        UpdateAllItemsOpacity();
     }
 
     /// <summary>
@@ -171,6 +172,9 @@ public class ReserveController : MonoBehaviour
         {
             TryAddItemOnLeft();
         }
+
+        // 4. Mettre à jour l'opacité des éléments
+        UpdateAllItemsOpacity();
 
         if (consumedItem == ReserveItemType.Marble)
         {
@@ -294,6 +298,7 @@ public class ReserveController : MonoBehaviour
                 TryAddItemOnLeft();
             }
         }
+        UpdateAllItemsOpacity();
     }
 
 
@@ -327,6 +332,7 @@ public class ReserveController : MonoBehaviour
         }
 
         isAnimating = false;
+        UpdateAllItemsOpacity();
     }
 
     // ============================================================
@@ -493,6 +499,62 @@ public class ReserveController : MonoBehaviour
     }
 
     // ============================================================
+    // TRANSPARENCE (fade progressif positions 7-10)
+    // ============================================================
+
+    /// <summary>
+    /// Met à jour l'opacité de tous les éléments affichés.
+    /// Positions 1-6 : opacité 100%
+    /// Position 7 : opacité 90%
+    /// Position 8 : opacité 80%
+    /// Position 9 : opacité 70%
+    /// Position 10 : opacité 60%
+    /// </summary>
+    private void UpdateAllItemsOpacity()
+    {
+        // Trier les éléments par position X (de droite à gauche)
+        List<GameObject> sortedItems = new List<GameObject>(displayedItems);
+        sortedItems.Sort((a, b) => b.transform.localPosition.x.CompareTo(a.transform.localPosition.x));
+
+        for (int i = 0; i < sortedItems.Count; i++)
+        {
+            int position = i + 1; // Position 1 = plus à droite
+            float alpha = GetAlphaForPosition(position);
+            SetItemAlpha(sortedItems[i], alpha);
+        }
+    }
+
+    /// <summary>
+    /// Retourne l'opacité pour une position donnée (1 = droite, 10 = gauche)
+    /// </summary>
+    private float GetAlphaForPosition(int position)
+    {
+        switch (position)
+        {
+            case 7: return 0.9f;
+            case 8: return 0.8f;
+            case 9: return 0.7f;
+            case 10: return 0.6f;
+            default: return 1.0f; // Positions 1-6 : opacité totale
+        }
+    }
+
+    /// <summary>
+    /// Définit l'opacité d'un élément via la propriété _Transparency du shader
+    /// </summary>
+    private void SetItemAlpha(GameObject item, float alpha)
+    {
+        if (item == null) return;
+
+        MeshRenderer mr = item.GetComponent<MeshRenderer>();
+        if (mr != null && mr.material != null)
+        {
+            // Utilise .material pour créer une instance et ne pas affecter le prefab
+            mr.material.SetFloat("_Transparency", alpha);
+        }
+    }
+
+    // ============================================================
     // ANIMATIONS
     // ============================================================
 
@@ -565,5 +627,8 @@ public class ReserveController : MonoBehaviour
                 rb.velocity = Vector3.right * horizontalGravity;
             }
         }
+
+        // Mettre à jour l'opacité après l'animation
+        UpdateAllItemsOpacity();
     }
 }

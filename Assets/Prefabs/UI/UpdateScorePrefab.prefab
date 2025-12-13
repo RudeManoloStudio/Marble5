@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -3526092748810669884}
   - component: {fileID: 7344720298376757105}
   m_Layer: 5
-  m_Name: UpdateScore
+  m_Name: UpdateScorePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

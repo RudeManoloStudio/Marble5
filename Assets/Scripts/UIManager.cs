@@ -132,7 +132,7 @@ public class UIManager : MonoBehaviour
                 quitToMenuButton.SetActive(false);
 
                 rulesButton.SetActive(true);
-                contactUsButton.SetActive(!true);
+                contactUsButton.SetActive(true);
 
             }
         }

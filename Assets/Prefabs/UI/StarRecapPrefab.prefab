@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 3454652461921026024}
   - component: {fileID: 5926927857319896569}
   m_Layer: 5
-  m_Name: StarRecap
+  m_Name: StarRecapPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

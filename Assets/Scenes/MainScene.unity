@@ -1981,6 +1981,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RestartPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 8633108587738063019, guid: 5efa881876b3d0446ac5bf078ffb3fda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8658496155563446622, guid: 5efa881876b3d0446ac5bf078ffb3fda, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -2234,6 +2238,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &524973029 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4040620224658803306, guid: 272c1f4740d952042ab35b92780e3e7d, type: 3}
+  m_PrefabInstance: {fileID: 1452817484}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &541805243 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3177146267081867422, guid: 6316107203ef10c459f6561f0a7eb5a1, type: 3}
@@ -3488,8 +3497,8 @@ MonoBehaviour:
   slidersPanel: {fileID: 1030168674}
   restartButton: {fileID: 1993030262}
   quitToMenuButton: {fileID: 1989146020}
-  rulesButton: {fileID: 6920625975363262435, guid: 29f7afa02c78dea4ab5f98cfb773c18a, type: 3}
-  contactUsButton: {fileID: 4040620224658803306, guid: 272c1f4740d952042ab35b92780e3e7d, type: 3}
+  rulesButton: {fileID: 2088363746}
+  contactUsButton: {fileID: 524973029}
   prototypeExpirationText: {fileID: 739608725}
   mainPanel: {fileID: 1287479020}
   levelPanel: {fileID: 1052892059}
@@ -9051,6 +9060,11 @@ MonoBehaviour:
   reserveContainer: {fileID: 1313232828}
   reserveRenderer: {fileID: 1831276359}
   initialBackgroundSprite: {fileID: 21300000, guid: 34aa649afa3c1ab458e513d7161bf5c4, type: 3}
+--- !u!1 &2088363746 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6920625975363262435, guid: 29f7afa02c78dea4ab5f98cfb773c18a, type: 3}
+  m_PrefabInstance: {fileID: 500761630}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2100743247
 GameObject:
   m_ObjectHideFlags: 0

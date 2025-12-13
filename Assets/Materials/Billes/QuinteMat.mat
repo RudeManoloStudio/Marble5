@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: QuinteMat 1
+  m_Name: QuinteMat
   m_Shader: {fileID: -6465566751694194690, guid: 044b5acfb10fa5943a8b9003f74ba735, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

@@ -35,6 +35,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform mainPanel;
     [SerializeField] private Transform levelPanel;
     [SerializeField] private GameObject levelPrefab;
+    [SerializeField] private GameObject mainMenuBG;
+    [SerializeField] private GameObject mainMenuLogo;
 
     // gameover
     [SerializeField] private Transform gameOverPanel;
@@ -165,6 +167,8 @@ public class UIManager : MonoBehaviour
 
         mainPanel.gameObject.SetActive(true);
         rankPanel.gameObject.SetActive(true);
+        mainMenuBG.SetActive(true);
+        mainMenuLogo.SetActive(true);
 
         gameOverPanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
@@ -240,6 +244,8 @@ public class UIManager : MonoBehaviour
         mainPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
         rankPanel.gameObject.SetActive(false);
+        mainMenuBG.SetActive(false);
+        mainMenuLogo.SetActive(false);
 
         scoreText.text = "0";
         scoreBarController.SetStars(starsScore);

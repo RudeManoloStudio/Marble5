@@ -1498,6 +1498,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3295917664484766925, guid: 5efa881876b3d0446ac5bf078ffb3fda, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9411765
+      objectReference: {fileID: 0}
     - target: {fileID: 8633108587738063019, guid: 5efa881876b3d0446ac5bf078ffb3fda, type: 3}
       propertyPath: m_Name
       value: RestartPrefab
@@ -1977,6 +1981,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3295917664484766925, guid: 5efa881876b3d0446ac5bf078ffb3fda, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9411765
+      objectReference: {fileID: 0}
     - target: {fileID: 8633108587738063019, guid: 5efa881876b3d0446ac5bf078ffb3fda, type: 3}
       propertyPath: m_Name
       value: RestartPrefab
@@ -2139,6 +2147,10 @@ PrefabInstance:
     - target: {fileID: 385935005049875835, guid: 29f7afa02c78dea4ab5f98cfb773c18a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099096717781310462, guid: 29f7afa02c78dea4ab5f98cfb773c18a, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9411765
       objectReference: {fileID: 0}
     - target: {fileID: 6107652736337858875, guid: 29f7afa02c78dea4ab5f98cfb773c18a, type: 3}
       propertyPath: m_Pivot.x
@@ -2794,6 +2806,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1099592961}
     m_Modifications:
+    - target: {fileID: 1295125028562381023, guid: 2989c0d8856714245bb7d60b1e07db31, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9411765
+      objectReference: {fileID: 0}
     - target: {fileID: 1411620971956728992, guid: 2989c0d8856714245bb7d60b1e07db31, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -2954,7 +2970,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 10}
   m_SizeDelta: {x: 400, y: 20}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &739608725
@@ -3004,8 +3020,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3368,7 +3384,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 100}
+  m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &786480640
 MonoBehaviour:
@@ -5095,8 +5111,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1f3df19c3fe6e444a97903caa0426bcf, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -10301,15 +10317,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.20642926, g: 0.24862197, b: 0.2981131, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1556a407d16dee946be1946e34460c5f, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 571634e7152a1644283fe974abb2b1c0, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -10452,7 +10468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.13725491, g: 0.19607843, b: 0.101960786, a: 0.78039217}
+  m_Color: {r: 0.13725491, g: 0.19607843, b: 0.101960786, a: 0.9411765}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10669,8 +10685,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1f3df19c3fe6e444a97903caa0426bcf, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -11333,6 +11349,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 27258901}
     m_Modifications:
+    - target: {fileID: 1295125028562381023, guid: 2989c0d8856714245bb7d60b1e07db31, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9411765
+      objectReference: {fileID: 0}
     - target: {fileID: 1411620971956728992, guid: 2989c0d8856714245bb7d60b1e07db31, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -11753,6 +11773,10 @@ PrefabInstance:
     - target: {fileID: 4709026507476608645, guid: 272c1f4740d952042ab35b92780e3e7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6373147685965057785, guid: 272c1f4740d952042ab35b92780e3e7d, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9411765
       objectReference: {fileID: 0}
     - target: {fileID: 8680524720576086833, guid: 272c1f4740d952042ab35b92780e3e7d, type: 3}
       propertyPath: m_Pivot.x
@@ -12405,7 +12429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.13725491, g: 0.19607843, b: 0.101960786, a: 0.78039217}
+  m_Color: {r: 0.13725491, g: 0.19607843, b: 0.101960786, a: 0.9411765}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12884,7 +12908,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 350, y: -150}
-  m_SizeDelta: {x: 400, y: 100}
+  m_SizeDelta: {x: 400, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1831276360
 MonoBehaviour:
@@ -12915,7 +12939,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 1.5
 --- !u!222 &1831276361
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13441,15 +13465,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.20642926, g: 0.24862197, b: 0.2981131, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1556a407d16dee946be1946e34460c5f, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 07a8e079e2d986548a21a90dce2c9c00, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -14256,6 +14280,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BestScorePrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 1536204365917918223, guid: 53e7c24ed371ae84987ea75e90ad43bd, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9411765
+      objectReference: {fileID: 0}
     - target: {fileID: 3108860288545021504, guid: 53e7c24ed371ae84987ea75e90ad43bd, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -14385,6 +14413,10 @@ PrefabInstance:
     - target: {fileID: 2433973396867077768, guid: a4c08b88a26e83947900d6b3aef7ea08, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610705355205234860, guid: a4c08b88a26e83947900d6b3aef7ea08, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9411765
       objectReference: {fileID: 0}
     - target: {fileID: 7591287716927076469, guid: a4c08b88a26e83947900d6b3aef7ea08, type: 3}
       propertyPath: m_Pivot.x

@@ -395,6 +395,12 @@ public class GameManager : MonoBehaviour
             // Mise à jour du score global et du total d'étoiles
             CalculateGlobalScore();
 
+            // Soumettre le score global au leaderboard Google Play Games
+            if (LeaderboardManager.Instance != null)
+            {
+                LeaderboardManager.Instance.SubmitScore(globalScore);
+            }
+
             // gameover sequence
             placeBille.Pause();
             StartCoroutine("GameOverSequence");

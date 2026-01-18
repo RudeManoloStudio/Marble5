@@ -24,12 +24,13 @@ public class UIManager : MonoBehaviour
     // options sons
     [SerializeField] private Transform slidersPanel;
 
-    // options paramètres 
-    [SerializeField] private GameObject restartButton;    
+    // options paramètres
+    [SerializeField] private GameObject restartButton;
     [SerializeField] private GameObject quitToMenuButton;
     [SerializeField] private GameObject rulesButton;
     [SerializeField] private GameObject contactUsButton;
     [SerializeField] private TMP_Text prototypeExpirationText;
+    [SerializeField] private GameObject leaderboardButton;
 
     // main panel
     [SerializeField] private Transform mainPanel;
@@ -169,6 +170,7 @@ public class UIManager : MonoBehaviour
         rankPanel.gameObject.SetActive(true);
         mainMenuBG.SetActive(true);
         mainMenuLogo.SetActive(true);
+        if (leaderboardButton != null) leaderboardButton.SetActive(true);
 
         gameOverPanel.gameObject.SetActive(false);
         scorePanel.gameObject.SetActive(false);
@@ -246,6 +248,7 @@ public class UIManager : MonoBehaviour
         rankPanel.gameObject.SetActive(false);
         mainMenuBG.SetActive(false);
         mainMenuLogo.SetActive(false);
+        if (leaderboardButton != null) leaderboardButton.SetActive(false);
 
         scoreText.text = "0";
         scoreBarController.SetStars(starsScore);
@@ -362,6 +365,22 @@ public class UIManager : MonoBehaviour
     public void ContactUs()
     {
         Application.OpenURL("http://marble5.app/#contact");
+    }
+
+    /// <summary>
+    /// Ouvre l'interface native Google Play Games du leaderboard.
+    /// À appeler depuis un bouton "Classement" dans le menu principal.
+    /// </summary>
+    public void ShowLeaderboard()
+    {
+        if (LeaderboardManager.Instance != null)
+        {
+            LeaderboardManager.Instance.ShowLeaderboard();
+        }
+        else
+        {
+            Debug.LogWarning("[UIManager] LeaderboardManager non trouvé.");
+        }
     }
 
     private void _OnUpdateBilleCompteur(object data)

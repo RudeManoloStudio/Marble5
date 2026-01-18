@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] [Range(0.1f, 5f)] private float zoomSpeed = 2.5f;
     [SerializeField] private float minZoom = 4.0f;
     [SerializeField] private float maxZoom = 40.0f;
-    [SerializeField] private float panMargin = 3.0f;
+    [SerializeField] private float panMargin = 5.0f;
 
     private bool isPanning = false;
     private Vector3 lastMousePosition;

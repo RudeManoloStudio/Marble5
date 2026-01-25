@@ -236,7 +236,11 @@ public class GameManager : MonoBehaviour
             {
                 levelStruct.available = true;
                 levelStruct.stars = stars;
+            }
 
+            // 2 étoiles minimum pour débloquer le niveau suivant
+            if (stars >= 2)
+            {
                 nextLevelAvailable = true;
             }
 
